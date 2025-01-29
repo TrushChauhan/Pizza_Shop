@@ -16,7 +16,8 @@
     height: 40px;
 }
 .mx-8{
-    margin: 7rem;
+    margin-left: 7rem;
+    margin-right: 7rem;
 }
 .login-button{
     border: none;
@@ -28,8 +29,77 @@
     text-decoration: none;
     color: rgb(104, 159, 168);
 }
+.send-button{
+    border: none;
+    height: 34px;
+    color: white;
+    border-radius: 2px;
+}
+.submit-button{
+    border: none;
+    height: 34px;
+    color: white;
+    border-radius: 2px;
+}
+.pizza-background{
+    width: 100%;
+}
+.brand-name-dashboard{
+    color: blue;
+    font-weight: 500;
+}
+ul {
+    list-style-type: none;
+  }
+a{
+    text-decoration: none;
+}
+.navbar-profile{
+    text-align: right;
+}
+.search-textbox{
+    width: auto;
+    height: 100%;
+    margin-right: 20px;
+    padding-right: 25px;
+    background: url(../images/icons/customer.svg) no-repeat right;
+    background-size: auto;
+    background-color: white;
+}
+.status-active{
+    color: white;
+    background-color: green;
+    width: 50px;
+    height: 40px;
+    border-radius: 5px;
+}
+.status-inactive{
+    color: white;
+    background-color: rgb(128, 0, 0);
+    width: 50px;
+    height: 40px;
+    border-radius: 5px;
+}
+.users-table{
+    border: 1px solid;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.back-button{
+    color: blue;
+    border: blue 1px solid;
+}
+.add-user-frame{
+        border: 1px solid;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
+}
 @media screen and (max-width:576px) {
     .mx-8{
-        margin: 4rem;
+        margin-left: 4rem;
+        margin-right: 4rem;
+    }
+    .pizza-background{
+        display: none;
     }
 }
+
