@@ -90,8 +90,44 @@ a{
 }
 .add-user-frame{
         border: 1px solid;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   
+}
+.select-profile-picture{
+    border: 1px solid gray;
+}
+.create-user-button{
+    border: none;
+    color: white;
+    background-color: blue;
+    border-radius: 3px;
+}
+.cancel-user-button{
+    color: blue;
+    border: blue 1px solid;
+    border-radius: 3px;
+}
+.confirmmodal{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+.no-button{
+    color: blue;
+    border: 1px solid blue;
+    background-color: white;
+}
+.cancel-permissions{
+    color: blue;
+    border: blue 1px solid;
+    border-radius: 3px;
+}
+.save-cancel-div{
+    text-align: right;
+}
+.menu-frame{
+    border: 1px solid;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   
 }
 @media screen and (max-width:576px) {
     .mx-8{
@@ -102,4 +138,3 @@ a{
         display: none;
     }
 }
-

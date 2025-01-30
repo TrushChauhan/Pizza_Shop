@@ -4,68 +4,69 @@
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>assignment</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
   <script src="/js/custom.js"></script>
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-2">
-        <div class=" row">
-          <div class="col d-flex ">
-            <div class="row"><img class="img-fluid col" src="images/logos/pizzashop_logo.png" alt=""></div>
-            <div class="row fs-5 align-items-center">
-              <p class="brand-name-dashboard  ">PIZZASHOP</p>
-            </div>
+
+      <div class="container-fluid" id="entire-frame">
+        <div class="row">
+          <div class="col col-md-2 side-bar">
+              <div class="col d-flex">
+                <div class="row w-50"><img class="" src="images/logos/pizzashop_logo.png " alt=""></div>
+                <div class="row fs-5 align-items-center">
+                  <p class="brand-name-dashboard">PIZZASHOP</p>
+                </div>
+              </div>
+              <div class="col">
+              <ul class="d-flex flex-column">
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=""><a href="dashboard.html" class="text-decoration-none">Dashboard</a></span>
+                </li>
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=" color-primary"><a href="users.html" class="text-decoration-none ">Users</a></span>
+                </li>
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=""><a href="dashboard.html" class="text-decoration-none">role and permissions</a></span>
+                </li>
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=""><a href="dashboard.html" class="text-decoration-none">Menu</a></span>
+                </li>
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=""><a href="dashboard.html" class="text-decoration-none">tables and sections</a></span>
+                </li>
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=""><a href="dashboard.html" class="text-decoration-none">taxes and fees</a></span>
+                </li>
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=""><a href="dashboard.html" class="text-decoration-none">Orders</a></span>
+                </li>
+                <li class="sidebar-item m-2">
+                  <img src="images/icons/customer.svg" alt="">
+                  <span class=""><a href="dashboard.html" class="text-decoration-none">Customers</a></span>
+                </li>
+              </ul>
+              </div>
           </div>
-          <ul class="align-items-start justify-content-center d-flex flex-column ">
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2"><a href="dashboard.html" class="text-decoration-none">Dashboard</a></span>
-            </li>
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2 color-primary"><a href="users.html" class="text-decoration-none ">Users</a></span>
-            </li>
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2"><a href="dashboard.html" class="text-decoration-none">role and permissions</a></span>
-            </li>
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2"><a href="dashboard.html" class="text-decoration-none">Menu</a></span>
-            </li>
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2"><a href="dashboard.html" class="text-decoration-none">tables and sections</a></span>
-            </li>
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2"><a href="dashboard.html" class="text-decoration-none">taxes and fees</a></span>
-            </li>
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2"><a href="dashboard.html" class="text-decoration-none">Orders</a></span>
-            </li>
-            <li class="sidebar-item m-3">
-              <img src="images/icons/customer.svg" alt="">
-              <span class="mx-2"><a href="dashboard.html" class="text-decoration-none">Customers</a></span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-10 ">
+      <div class="col col-md-10">
         <div class="row-1 bg-primary navbar-profile w-100">
           <img class="col my-2 mx-2" src="images/Default_pfp.svg.png" alt="" height="30px">
         </div>
-        <div class="row-11 d-flex my-2 mx-5">
+        <div class="row-11 d-flex my-2 mx-2">
           <div class="col-2 text-primary fs-2">
             Users
           </div>
@@ -78,7 +79,7 @@
             </button>
           </div>
         </div>
-        <div class="table-responsive users-table row m-5">
+        <div class="table-responsive users-table row m-3">
           <table class="table ">
               <thead>
                   <tr>
@@ -97,15 +98,21 @@
                       <td>9876543210</td>
                       <td>Chef</td>
                       <td ><span class="status-active">active</span></td>
-                      <td><img src="images/icons/veg-icon.svg "alt=""></td>
-                  </tr>
+                      <td>
+                        <i class="material-icons " onclick="editUser()">edit</i>
+                        <i class="material-icons" id="modal" data-toggle="modal" data-target="#confirmmodal" onclick="deleteUserModal()">delete</i>
+                      </td>
+                  </tr> 
                   <tr>
                       <td>john sina</td>
                       <td>georgia.young@example.com</td>
                       <td>6528176819</td>
                       <td>account</td>
                       <td><span class="status-inactive">inactive</span></td>
-                      <td><img src="images/icons/veg-icon.svg "alt=""></td>
+                      <td>
+                        <i class="material-icons">edit</i>
+                        <i class="material-icons" id="modal" data-toggle="modal" data-target="#confirmmodal" onclick="deleteUserModal()">delete</i>
+                      </td>
                   </tr>
                   <tr>
                       <td>samay raina</td>
@@ -113,7 +120,10 @@
                       <td>1234567890</td>
                       <td>admin</td>
                       <td><span class="status-active">active</span></td>
-                      <td><img src="images/icons/veg-icon.svg "alt=""></td>
+                      <td>
+                        <i class="material-icons">edit</i>
+                        <i class="material-icons" id="modal" data-toggle="modal" data-target="#confirmmodal" onclick="deleteUserModal()">delete</i>
+                      </td>
                   </tr>
                   <tr>
                       <td>wilson sane</td>
@@ -121,7 +131,10 @@
                       <td>9375389303</td>
                       <td>admin</td>
                       <td><span class="status-active">active</span></td>
-                      <td><img src="images/icons/veg-icon.svg "alt=""></td>
+                      <td>
+                        <i class="material-icons">edit</i>
+                        <i class="material-icons" id="modal" data-toggle="modal" data-target="#confirmmodal" onclick="deleteUserModal()">delete</i>
+                      </td>
                   </tr>
                   <tr>
                       <td>alex schutz</td>
@@ -129,11 +142,31 @@
                       <td>9173011872</td>
                       <td>admin</td>
                       <td><span class="status-inactive">Inactive</span></td>
-                      <td><img src="images/icons/veg-icon.svg "alt=""></td>
+                      <td>
+                        <i class="material-icons">edit</i>
+                        <i class="material-icons" id="modal" data-toggle="modal" data-target="#confirmmodal" onclick="deleteUserModal()">delete</i>
+                      </td>
                   </tr>
               </tbody>
           </table>
       </div>
+      </div>
+    </div>
+  </div>
+  <div id="modal-del" class="confirmmodal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered container ">
+      <div class=" row modal-content w-100 border border-dark">
+        <div class="modal-header row">
+          <h5 class="modal-title col-10">Delete confirmation</h5>
+          <button type="button" class="btn-close col-2" data-bs-dismiss="modal" aria-label="Close" onclick="removeModal()"></button>
+        </div>
+        <div class="modal-body row">
+          <p class="col-12">Are you sure want to delete this user.</p>
+        </div>
+        <div class=" row modal-footer m-3 d-flex align-items-center justify-content-center">
+          <button type="button" class="btn btn-primary col" data-bs-dismiss="modal">Yes</button>
+          <button type="button" class=" no-button col">No</button>
+        </div>
       </div>
     </div>
   </div>

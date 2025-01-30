@@ -67,7 +67,7 @@
         </div>
         <div class="row-11 d-flex my-2 ">
           <div class="col-6 text-primary fs-2">
-            Add New User
+            Edit User
           </div>
           <div class="col-6 d-flex justify-content-end">
             <button onclick="backToUsers()" class=" back-button">
@@ -91,7 +91,11 @@
           </div>
           <div class="row m-2">
             <input type="textbox" class="col m-2" placeholder="Email">
-            <input type="textbox" class="col m-2" placeholder="Password">
+            <select class="form-select col m-2" aria-label="Default select example">
+                <option selected>Select status</option>
+                <option value="1">Active</option>
+                <option value="2">Inactive</option>
+              </select>
           </div>
           <div class="row m-2">
             <button class="select-profile-picture col d-flex flex-column justify-content-center align-items-center m-2">
@@ -124,9 +128,9 @@
           <div class="row m-2 my-3">
             <div class="col">
               <button class="create-user-button ">
-                Create User
+                Update User
               </button>
-              <button class="cancel-user-button">
+              <button class="cancel-user-button " onclick="backToUsers()">
                 Cancel
               </button>
             </div>
@@ -134,6 +138,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </body>
 </html>
