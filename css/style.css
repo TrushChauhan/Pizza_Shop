@@ -1,5 +1,5 @@
 .icon-email{
-    padding-right: 25px;
+    padding-right: 30px;
     background: url(../images/icons/customer.svg) no-repeat right;
     background-size: auto;
     color: black;
@@ -8,38 +8,60 @@
     height: 40px;
 }
 .icon-password{
-    padding-right: 25px;
-    background: url(../images/icons/customer.svg) no-repeat right;
-    background-size: auto;
+    padding-right: 30px;
+    background: url(/images/visibility\ off.png) no-repeat right;
+    background-size: 20px 20px;
     background-color: white;
     border: none;
+    margin-right: 15px;
     height: 40px;
 }
 .mx-8{
     margin-left: 7rem;
     margin-right: 7rem;
 }
+
+.pizza-shop-header{
+    color:rgba(66,119,153,255);
+}
 .login-button{
+    background-color:rgba(5,101,158,255);
     border: none;
     height: 34px;
     color: white;
     border-radius: 2px;
 }
+.forgot-password-div{
+    text-align: right;
+}
+#togglePassword{
+    float: right;
+    right: 10px;
+    position: relative;
+    z-index: 2;
+}
 .forgot-password-link{
     text-decoration: none;
-    color: rgb(104, 159, 168);
+    color: (170,202,240,255);
+    margin-right: -10px;
+    margin-top: -20px;
+}
+.back-ground{
+    background-color:rgba(216,239,247,255);
 }
 .send-button{
     border: none;
     height: 34px;
     color: white;
     border-radius: 2px;
+    background-color: rgba(5,101,158,255);
 }
 .submit-button{
     border: none;
     height: 34px;
     color: white;
     border-radius: 2px;
+    background-color: rgba(5,101,158,255);
 }
 .pizza-background{
     width: 100%;
@@ -56,6 +78,10 @@ a{
 }
 .navbar-profile{
     text-align: right;
+    background-color:rgba(66,119,153,255);
+}
+.text-Users-title{
+    color:rgba(66,119,153,255);
 }
 .search-textbox{
     width: auto;
@@ -65,10 +91,11 @@ a{
     background: url(../images/icons/customer.svg) no-repeat right;
     background-size: auto;
     background-color: white;
+    border: 1px solid;
 }
 .status-active{
     color: white;
-    background-color: green;
+    background-color: rgb(83, 196, 83);
     width: 50px;
     height: 40px;
     border-radius: 5px;
@@ -81,46 +108,57 @@ a{
     border-radius: 5px;
 }
 .users-table{
-    border: 1px solid;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+th{
+    color: gray;
+}
 .back-button{
-    color: blue;
-    border: blue 1px solid;
+    color: rgba(66,119,153,255);
+    border: rgba(66,119,153,255) 1px solid;
+    background-color: white;
 }
 .add-user-frame{
-        border: 1px solid;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   
 }
 .select-profile-picture{
     border: 1px solid gray;
 }
-.create-user-button{
-    border: none;
+.add-user-button{
+    background-color: rgba(66,119,153,255);
     color: white;
-    background-color: blue;
-    border-radius: 3px;
+    border: none;
+    border-radius: 2px;
+}
+.create-user-button{
+    background-color: rgba(66,119,153,255);
+    color: white;
+    border: none;
+    border-radius: 2px;
 }
 .cancel-user-button{
-    color: blue;
-    border: blue 1px solid;
+    color:rgba(66,119,153,255);
+    border: rgba(66,119,153,255)1px solid;
     border-radius: 3px;
 }
 .confirmmodal{
     display: none;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
 }
 .no-button{
-    color: blue;
-    border: 1px solid blue;
+    color: rgba(66,119,153,255);
+    border: 1px solid rgba(66,119,153,255);
     background-color: white;
 }
 .cancel-permissions{
-    color: blue;
-    border: blue 1px solid;
-    border-radius: 3px;
+    background-color: rgba(66,119,153,255);
+    color: white;
+    border: none;
+    border-radius: 2px;
+}
+.save-users-button{
+    color: rgba(66,119,153,255);
+    border: rgba(66,119,153,255) 1px solid;
+    background-color: white;
 }
 .save-cancel-div{
     text-align: right;
@@ -129,12 +167,19 @@ a{
     border: 1px solid;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   
 }
+
 @media screen and (max-width:576px) {
     .mx-8{
-        margin-left: 4rem;
-        margin-right: 4rem;
+        margin-left: 10px;
+        margin-right: 10px;
     }
     .pizza-background{
         display: none;
+    }
+}
+@media screen and (max-width:1200px) {
+    .mx-8{
+        margin-left: 4rem;
+        margin-right: 4rem;
     }
 }
