@@ -30,3 +30,9 @@ const togglePassword = document
             // Toggle the eye and bi-eye icon
             this.classList.toggle('bi-eye');
         });
+        $('.nav-link').click(function(){
+            $('.nav-link').removeClass('active');
+            $('.nav-link').removeClass('show');
+            $(this).addClass('active');
+            $(this).addClass('show');
+        })

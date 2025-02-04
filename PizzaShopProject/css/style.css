@@ -167,7 +167,41 @@ th{
     border: 1px solid;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   
 }
-
+.items-icon{
+    width: 20px;
+    height: 20px;
+}
+.plus-button{
+    width: 20px;
+    height: 20px;
+}
+.menu-item-icon{
+    width: 20px;
+    height: 20px;
+}
+.search-row-menu{
+    text-align: right;
+}
+.search-textbox{
+    width: 100px;
+    height: 100%;
+    margin-right: 20px;
+    padding-right: 25px;
+    background: url(../images/icons/customer.svg) no-repeat right;
+    background-size: auto;
+    background-color: white;
+    border: 1px solid;
+}
+.delete-item{
+    width: 20px;
+    height: 20px;
+}
+.add-new-item{
+    background-color: rgba(66,119,153,255);
+    color: white;
+    border: none;
+    border-radius: 2px;
+}
 @media screen and (max-width:576px) {
     .mx-8{
         margin-left: 10px;
