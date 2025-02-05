@@ -12,6 +12,7 @@
   <title>assignment</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/bootstrap.bundle.min.js"></script>
   <script src="/js/custom.js"></script>
 </head>
 
@@ -87,15 +88,15 @@
            <div class="tab-content " >
             <div class="tab-pane fade show active menu-item d-flex" id="items" role="tabpanel" aria-labelledby="home-tab">
               <div class="col-2 col-md-2">
-                <div class="row m-3">
+                <div class="row w-100 m-3 d-flex justify-content-between align-items-center">
                   <div class="col">
                     Category
                   </div>
-                  <div class="col">
-                    <img src="images/plus-button.png" alt="" class="plus-button">
-                  </div>
+                  <button class="col plus-button">
+                    <img src="images/plus-button.png" alt="" class="plus-button-icon" class="col" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                  </button>
                 </div>
-                <div class="row my-2 align-items-start">
+                <div class="row my-2 ">
                   <img src="images/menu-item-icon.png" alt="" class="menu-item-icon col-2">
                   <p class="col">Sandwich</p>
                 </div>
@@ -125,16 +126,16 @@
                 </div>
               </div>
               <div class="col-10 col-md-10">
-                <div class="row m-2">
+                <div class="row mx-3 text-Users-title fs-3"> 
                   Items
                 </div>
-                <div class="search-row-menu">
+                <div class="search-row-menu m-3">
                   <input type="text" placeholder="Search" class="search-textbox-items col">
                   <button class="col"><img src="images/delete-icon.png" alt="" class="delete-item"></button>
                   <button class="col add-new-item">+ New Item</button>
                 </div>
                 <div class="table-responsive users-table row m-3">
-                  <table class="table ">
+                  <table class="table">
                       <thead>
                           <tr>
                               <th scope="col" class="text-black-50"><input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled></th>
@@ -225,6 +226,28 @@
             <div class="tab-pane fade menu-item" id="Modifiers" role="tabpanel" aria-labelledby="profile-tab">
               hi
             </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content container">
+        <div class="modal-header d-flex row">
+          <h5 class="modal-title col" id="exampleModalLongTitle">Add Category</h5>
+          <div class="text-align-right col">
+            <button type="button" class="close text-decoration-none" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body row">
+            <input type="textbox" placeholder="Name" class="col-12 p-3 m-2">
+            <input type="textbox" placeholder="Description" class="col-12 p-3 m-2">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>

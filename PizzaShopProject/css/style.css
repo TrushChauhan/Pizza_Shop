@@ -148,6 +148,8 @@ th{
     color: rgba(66,119,153,255);
     border: 1px solid rgba(66,119,153,255);
     background-color: white;
+    height: 40px;
+    border-radius: 5px;
 }
 .cancel-permissions{
     background-color: rgba(66,119,153,255);
@@ -171,20 +173,26 @@ th{
     width: 20px;
     height: 20px;
 }
-.plus-button{
+.plus-button-icon{
     width: 20px;
     height: 20px;
 }
+.plus-button{
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
 .menu-item-icon{
-    width: 20px;
-    height: 20px;
+    width: auto;
+    height: auto;
 }
 .search-row-menu{
     text-align: right;
 }
 .search-textbox{
     width: 100px;
-    height: 100%;
+    height: 30px;
     margin-right: 20px;
     padding-right: 25px;
     background: url(../images/icons/customer.svg) no-repeat right;
@@ -193,14 +201,18 @@ th{
     border: 1px solid;
 }
 .delete-item{
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 25px;
 }
 .add-new-item{
     background-color: rgba(66,119,153,255);
     color: white;
     border: none;
     border-radius: 2px;
+    height: 30px;
+}
+.text-align-right{
+    text-align: right;
 }
 @media screen and (max-width:576px) {
     .mx-8{
