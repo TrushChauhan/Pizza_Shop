@@ -35,11 +35,10 @@ public class HomeController : Controller
     [Route("", Name = "")]
         public IActionResult Login(UserDemo model)
         {
-            if (!ModelState.IsValid)
+            var existingUser = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email || u.Password == model.Password);
+            if (existingUser != null)
             {
-                return BadRequest(ModelState);
-            }
-            if(model.IsRemember){
+                if(model.IsRemember){
                     CookieOptions cookie = new CookieOptions(){
                         Expires = DateTime.Now.AddDays(30)
                     };
@@ -47,13 +46,9 @@ public class HomeController : Controller
                     Response.Cookies.Append("Email",model.Email,cookie);
                     Response.Cookies.Append("Password",model.Password,cookie);
                 }
-            var existingUser = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email || u.Password == model.Password);
-            if (existingUser != null)
-            {
-                return RedirectToPage("Index");
-
+                else return RedirectToPage("/Content","Main");
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("/Home","Index");
         }        
     public IActionResult ResetPassword()
     {

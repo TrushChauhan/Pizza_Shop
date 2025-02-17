@@ -21,7 +21,7 @@ public partial class Userlogin
 
     public bool Isdeleted { get; set; }
 
-    public int Roleid { get; set; }
+    public int? Roleid{ get; set; }
 
     public virtual ICollection<City> CityCreatedbyNavigations { get; } = new List<City>();
 

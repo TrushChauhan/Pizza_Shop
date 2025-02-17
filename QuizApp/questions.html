@@ -1,0 +1,25 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script></script>
+    <title>QuizApp</title>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100 ">
+        <div class="row d-flex flex-column justify-content-center align-items-center vh-100 "  id="quiz-frame">
+            <div class="ques fs-5 w-100 d-flex align-items-center justify-content-center" id="question"></div>
+            <div class="row my-5">
+                <button class="btn col-6" id="a" onclick="checkAns(this.id)"></button>
+                <button class="btn col-6" id="b" onclick="checkAns(this.id)"></button>
+                <button class="btn col-6" id="c" onclick="checkAns(this.id)"></button>
+                <button class="btn col-6" id="d" onclick="checkAns(this.id)"></button>
+            </div>
+            <a class="d-flex align-items-center justify-content-center next-button" id="next" onclick="nextQuestion()">Next</a>
+        </div>
+    </div>
+    <script src="./js/custom.js"></script>
+</body>
+</html>
