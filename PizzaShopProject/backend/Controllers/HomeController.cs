@@ -18,40 +18,43 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        string UserEmail = Request.Cookies["Email"];
+        string UserEmail = HttpContext.Session.GetString("Email");
         if(UserEmail != null) {
-            HttpContext.Session.SetString("Email",UserEmail.ToString());
+            var existingUser = _dbcontext.Userlogins.Any(u => u.Email == UserEmail);
+            if(existingUser){
             return RedirectToAction("Content", "Main");
+            }
         }
         return View();
     }
-   
     public IActionResult ForgotPassword()
     {
-        return View();
+        string userEmail=HttpContext.Session.GetString("Email");
+        var model=new UserDemo{Email=userEmail};
+        return View(model);
     }
 
     [HttpPost]
-    [Route("", Name = "")]
         public IActionResult Login(UserDemo model)
-        {
-            var existingUser = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email || u.Password == model.Password);
+        { 
+            var existingUser = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
             if (existingUser != null)
             {
+                HttpContext.Session.SetString("Email",model.Email);
                 if(model.IsRemember){
                     CookieOptions cookie = new CookieOptions(){
                         Expires = DateTime.Now.AddDays(30)
                     };
 
                     Response.Cookies.Append("Email",model.Email,cookie);
-                    Response.Cookies.Append("Password",model.Password,cookie);
                 }
-                else return RedirectToPage("/Content","Main");
+                else return RedirectToAction("Content","Main");
             }
-            return RedirectToPage("/Home","Index");
-        }        
+            return RedirectToAction("Index","Home");
+        }  
+
     public IActionResult ResetPassword()
-    {
+    {   
         return View();
     }
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
