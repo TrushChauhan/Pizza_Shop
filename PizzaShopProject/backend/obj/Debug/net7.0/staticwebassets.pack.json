@@ -117,8 +117,8 @@
       "PackagePath": "staticwebassets\\images\\transperent-pizza.png"
     },
     {
-      "Id": "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\wwwroot\\images\\visibility off.png",
-      "PackagePath": "staticwebassets\\images\\visibility off.png"
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\wwwroot\\images\\visibility-off.png",
+      "PackagePath": "staticwebassets\\images\\visibility-off.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\wwwroot\\js\\site.js",

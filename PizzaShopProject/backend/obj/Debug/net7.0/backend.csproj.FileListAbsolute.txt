@@ -50,3 +50,10 @@ D:\Project\Pizza_Shop\PizzaShopProject\backend\obj\Debug\net7.0\refint\backend.d
 D:\Project\Pizza_Shop\PizzaShopProject\backend\obj\Debug\net7.0\backend.pdb
 D:\Project\Pizza_Shop\PizzaShopProject\backend\obj\Debug\net7.0\backend.genruntimeconfig.cache
 D:\Project\Pizza_Shop\PizzaShopProject\backend\obj\Debug\net7.0\ref\backend.dll
+D:\Project\Pizza_Shop\PizzaShopProject\backend\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Project\Pizza_Shop\PizzaShopProject\backend\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Project\Pizza_Shop\PizzaShopProject\backend\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+D:\Project\Pizza_Shop\PizzaShopProject\backend\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+D:\Project\Pizza_Shop\PizzaShopProject\backend\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Project\Pizza_Shop\PizzaShopProject\backend\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+D:\Project\Pizza_Shop\PizzaShopProject\backend\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

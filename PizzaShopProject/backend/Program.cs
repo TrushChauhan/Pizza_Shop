@@ -1,6 +1,7 @@
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,7 +22,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+var JwtSettings=builder.Configuration.GetSection("Jwt");
+var key=Encoding.ASCII.GetBytes(JwtSettings["Key"]);
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
