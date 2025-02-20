@@ -30,18 +30,23 @@ public class HomeController : Controller
             return RedirectToAction("Content", "Main");
             }
         }
+        if (Request.Cookies["Email"] != null){
+            return RedirectToAction("Content", "Main");
+        }
         return View();
     }
    
-    public IActionResult ForgotPassword()
+    public IActionResult ForgotPassword(UserDemo model)
     {
-        return View();
+        var Email = model.Email;
+        var vm = new userEmail();
+     vm.Email = Email;
+     return View(vm);
     }
 
     [HttpPost]
         public IActionResult Login(UserDemo model)
         {   string userPassword=encryptPassword(model.Password);
-            Console.WriteLine(userPassword);
             var existingUser = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email && u.Password == userPassword);
             if (existingUser != null)
             {
@@ -52,6 +57,7 @@ public class HomeController : Controller
                     };
 
                     Response.Cookies.Append("Email",model.Email,cookie);
+                    Response.Cookies.Append("Password",model.Password,cookie);
                 }
                 else return RedirectToAction("Content","Main");
             }

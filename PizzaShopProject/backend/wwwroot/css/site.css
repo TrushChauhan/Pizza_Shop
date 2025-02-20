@@ -30,13 +30,19 @@ body {
   height: 40px;
 }
 .icon-password{
-  padding-right: 10px;
-  background: url() no-repeat right;
-  background-size: 20px 20px;
+
   background-color: white;
   border: none;
-  margin-right: 15px;
   height: 40px;
+}
+#togglePassword{
+  float: right;
+  position: relative;
+  z-index: 2;
+  cursor: pointer; position: absolute;
+  top: -35%; 
+  right: 30px; 
+  transform: translateY(-50%);
 }
 .mx-8{
   margin-left: 7rem;
