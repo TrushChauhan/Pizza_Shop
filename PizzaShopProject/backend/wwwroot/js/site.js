@@ -3,24 +3,23 @@
     const password = document.querySelector("#password");
 
     togglePassword.addEventListener("click", function () {
-    
+
         const type = password.getAttribute("type") === "password" ? "text" : "password";
         password.setAttribute("type", type);
 
-        // Toggle the icon
         this.classList.toggle("bi-eye");
     });
 });
-function addUser(){
+function addUser() {
     window.location.href = 'add-user.html';
 }
-function backToUsers(){
-    window.location.href='users.html';
+function backToUsers() {
+    window.location.href = 'users.html';
 }
-function editUser(){
-    window.location.href='edit-user.html'
+function editUser() {
+    window.location.href = 'edit-user.html'
 }
- function navigateToForgotPassword() {
-        var email = document.getElementById('Email').value;
-        window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
-    }
+function navigateToForgotPassword() {
+    var email = document.getElementById('Email').value;
+    window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
+}
