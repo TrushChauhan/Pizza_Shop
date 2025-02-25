@@ -27,7 +27,7 @@
             <input type="checkbox" asp-for="IsRemember" class="form-check-input row" id="exampleCheck1">
             <label class="form-check-label row mx-3 " for="exampleCheck1" asp-for="IsRemember">Remember Me</label>
             <div class="col forgot-password-div">
-                <a class="forgot-password-link" asp-controller="Home" asp-action="ForgotPassword" type="submit">Forgot Password?</a>
+                <a class="forgot-password-link" onclick="navigateToForgotPassword()">Forgot Password?</a>
             </div>
         </div>
     </div>
@@ -37,6 +37,9 @@
 </form>
 <script>
            
+
+
+
             $('#loginform').validate( {
                 rules:{
                     Email:{

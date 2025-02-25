@@ -20,3 +20,7 @@ function backToUsers(){
 function editUser(){
     window.location.href='edit-user.html'
 }
+ function navigateToForgotPassword() {
+        var email = document.getElementById('Email').value;
+        window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
+    }

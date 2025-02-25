@@ -36,10 +36,9 @@ public class HomeController : Controller
         return View();
     }
    
-    public IActionResult ForgotPassword(UserDemo model)
+    public IActionResult ForgotPassword(string email)
     {
-        var Emailu = model.Email;
-        var vm = new userEmail(Emailu);
+        var vm = new userEmail(email);
         return View(vm);
     }
 
