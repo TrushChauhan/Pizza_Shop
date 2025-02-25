@@ -141,6 +141,35 @@ a{
 th{
   color: gray;
 }
+.pagination-container {
+  padding: 15px 0;
+  border-top: 1px solid #dee2e6;
+}
+
+.page-link {
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  margin: 0 4px;
+  border-radius: 4px !important;
+}
+
+.page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.page-link:hover {
+  color: #0056b3;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
 .back-button{
   color: rgba(66,119,153,255);
   border: rgba(66,119,153,255) 1px solid;

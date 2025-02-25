@@ -38,10 +38,9 @@ public class HomeController : Controller
    
     public IActionResult ForgotPassword(UserDemo model)
     {
-        var Email = model.Email;
-        var vm = new userEmail();
-     vm.Email = Email;
-     return View(vm);
+        var Emailu = model.Email;
+        var vm = new userEmail(Emailu);
+        return View(vm);
     }
 
     [HttpPost]
