@@ -214,6 +214,9 @@ th{
 .text-align-right{
     text-align: right;
 }
+.change-password-container{
+    margin-left: 25%;
+}
 @media screen and (max-width:576px) {
     .mx-8{
         margin-left: 10px;
