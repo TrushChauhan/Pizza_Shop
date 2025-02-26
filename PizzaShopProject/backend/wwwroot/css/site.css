@@ -37,11 +37,11 @@ body {
 }
 #togglePassword{
   float: right;
-  position: relative;
   z-index: 2;
-  cursor: pointer; position: absolute;
-  top: -35%; 
-  right: 30px; 
+  cursor: pointer; 
+  position: absolute;
+  top: 30%; 
+  right: 10px; 
   transform: translateY(-50%);
 }
 .mx-8{
@@ -61,12 +61,6 @@ body {
 }
 .forgot-password-div{
   text-align: right;
-}
-#togglePassword{
-  float: right;
-  right: 10px;
-  position: relative;
-  z-index: 2;
 }
 .forgot-password-link{
   text-decoration: none;

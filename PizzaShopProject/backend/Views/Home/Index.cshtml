@@ -18,7 +18,7 @@
     
     <div class="row w-100">
         <div class="col mx-8 my-2 position-relative w-100 p-0">
-            <input type="password" asp-for="Password" placeholder="Password" name="Password" class="icon-password col w-100 align-items-center" id="Password">
+            <input type="password" asp-for="Password" placeholder="Password" name="Password" class="icon-password col w-100 align-items-center" id="password">
             <i class="bi bi-eye-slash" id="togglePassword"></i>
         </div>
     </div>
@@ -36,8 +36,6 @@
     </div>
 </form>
 <script>
-           
-
     function navigateToForgotPassword() {
         var email = document.getElementById('Email').value;
         window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
