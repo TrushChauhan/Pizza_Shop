@@ -5,8 +5,9 @@ using backend.Models;
 using System.IO.Pipelines;
 using System.Net;
 using static Microsoft.AspNetCore.Http.HttpContext;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 namespace backend.Controllers;
-
 public class MainController : Controller
 {
     private readonly ILogger<MainController> _logger;
@@ -16,17 +17,51 @@ public class MainController : Controller
     {
         _logger = logger;
         this._dbcontext = context;
+    } 
+     public IActionResult Content()
+    {
+        Users();
+        return View();
     }
-    public IActionResult Logout()
-    {   HttpContext.Session.Clear();
+    public IActionResult Users()
+{
+    var users = _dbcontext.Userdetails
+        .Include(ud => ud.User)       
+        .Include(ud => ud.Role)       
+        .Where(ud => !ud.Isdeleted && !ud.User.Isdeleted)  
+        .Select(ud => new UserTable
+        {
+            UserId = ud.Userid,
+            Name = $"{ud.Firstname} {ud.Lastname}",
+            Email = ud.User.Email,
+            Phone = ud.Phonenumber,
+            Role = ud.Role.Rolename,
+            Status = ud.Status ? "active" : "inactive",
+            ProfileImage = ud.Profileimage 
+        })
+        .ToList();
+
+    return View(users);
+}
+[Authorize (Roles ="Admin")]
+public IActionResult Logout()
+    {   
+        HttpContext.Session.Clear();
         foreach (var cookie in Request.Cookies.Keys)
         {
             Response.Cookies.Delete(cookie);
         }
         return RedirectToAction("Index","Home");
     }
-    public IActionResult Content()
+[HttpPost]
+public IActionResult Delete(int id)
+{
+    var userDetail = _dbcontext.Userdetails.FirstOrDefault(u => u.Userid == id);
+    if (userDetail != null)
     {
-        return View();
+        userDetail.Isdeleted = true;
+        _dbcontext.SaveChanges();
     }
+    return Ok();
+}
 }
