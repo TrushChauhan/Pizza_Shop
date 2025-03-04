@@ -283,3 +283,6 @@ th{
       margin-right: 4rem;
   }
 }
+label.error{
+  color:red;
+}

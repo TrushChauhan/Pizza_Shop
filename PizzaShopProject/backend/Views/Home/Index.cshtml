@@ -20,6 +20,7 @@
         <div class="col mx-8 my-2 position-relative w-100 p-0">
             <input type="password" asp-for="Password" placeholder="Password" name="Password" class="icon-password col w-100 align-items-center" id="password">
             <i class="bi bi-eye-slash" id="togglePassword"></i>
+            <strong class="text-danger">@TempData["Message"]</strong>
         </div>
     </div>
     <div class="row w-100 d-flex align-items-center justify-content-center my-3">

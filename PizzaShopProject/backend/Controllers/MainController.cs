@@ -6,6 +6,7 @@ using System.Net;
 using static Microsoft.AspNetCore.Http.HttpContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 namespace backend.Controllers;
 public class MainController : Controller
 {
@@ -56,11 +57,40 @@ public IActionResult ChangePassword(){
     return View();
 }
 [HttpPost]
-public IActionResult DoChangePassword(){
+public IActionResult DoChangePassword(ChangePassword model){
     
+ string userEmailString = User.Identity.Name;
+    Console.Write(userEmailString);
+    if(userEmailString == null){
+        Logout();
+    }
+    var user = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == userEmailString);
+     
+     if(encryptPassword(model.CurrentPassword)==user.Password){
+        user.Password = encryptPassword(model.NewPassword);
+        _dbcontext.SaveChanges();
+     }
+      else
+        {
+            TempData["Message"] = "Invalid Password";
+            ModelState.AddModelError(string.Empty, "Invalid login attempt");
+            return RedirectToAction("ChangePassword","Main");
+        }
     return RedirectToAction("Index","Home");
 }
-[HttpPost]
+public IActionResult AddNewUser(){
+    return View();
+}
+public string encryptPassword(string pass)
+    {
+        byte[] encode = new byte[pass.Length];
+        encode = System.Text.Encoding.UTF8.GetBytes(pass);
+        string encodedData = Convert.ToBase64String(encode);
+        return encodedData;
+    }
+
+
+    [HttpPost]
 public IActionResult Delete(int id)
 {
     try

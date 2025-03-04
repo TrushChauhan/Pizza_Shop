@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 namespace backend.Controllers;
 
 public class HomeController : Controller
@@ -71,62 +72,89 @@ public class HomeController : Controller
         var user = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email);
         if (user == null)
         {
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
         user.Password = encryptPassword(model.NewPassword);
         _dbcontext.SaveChanges();
-        return RedirectToAction("Index","Home");
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]
-    public IActionResult Login(UserDemo model)
+    public async Task<IActionResult> Login(UserDemo model)
     {
         string userPassword = encryptPassword(model.Password);
-    var existingUser = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email &&  u.Password == userPassword);
-    var userRole= _dbcontext.Userroles.FirstOrDefault(u=> u.Roleid == existingUser.Roleid);
-    if (existingUser != null)
-    {
-        ViewBag.User=existingUser;
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
-        var tokenDescriptor = new SecurityTokenDescriptor
+        var existingUser = _dbcontext.Userlogins
+            .FirstOrDefault(u => u.Email == model.Email && u.Password == userPassword);
+
+        if (existingUser != null)
         {
-            Subject = new ClaimsIdentity(new Claim[]
+            var userRole = _dbcontext.Userroles
+                .FirstOrDefault(u => u.Roleid == existingUser.Roleid);
+
+            ViewBag.User = existingUser;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                new Claim(ClaimTypes.Name, existingUser.Email),
                 new Claim(ClaimTypes.Email, existingUser.Email),
                 new Claim(ClaimTypes.Role, userRole.Rolename)
-            }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            Issuer = _config["Jwt:Issuer"],
-            Audience = _config["Jwt:Audience"],
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key), 
-                SecurityAlgorithms.HmacSha256Signature)
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                Issuer = _config["Jwt:Issuer"],
+                Audience = _config["Jwt:Audience"],
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            HttpContext.Session.SetString("Token", tokenString);
+            HttpContext.Session.SetString("Email", model.Email);
+            HttpContext.Session.SetString("Role", userRole.Rolename);
+
+            if (model.IsRemember)
+            {
+                CookieOptions cookie = new CookieOptions()
+                {
+                    Expires = DateTime.Now.AddDays(30)
+                };
+                Response.Cookies.Append("Token", tokenString, cookie);
+                Response.Cookies.Append("Email", model.Email, cookie);
+                Response.Cookies.Append("Jwt", tokenString, cookie);
+            }
+
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, existingUser.Email),
+            new Claim(ClaimTypes.Role, userRole.Rolename)
         };
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        var tokenString = tokenHandler.WriteToken(token);
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
 
-        HttpContext.Session.SetString("Token", tokenString);
-        HttpContext.Session.SetString("Email", model.Email);
-        HttpContext.Session.SetString("Role", userRole.Rolename);
+            await HttpContext.SignInAsync(
+                "Cookies",
+                principal,
+                new AuthenticationProperties
+                {
+                    IsPersistent = model.IsRemember,
+                    ExpiresUtc = model.IsRemember ? DateTime.UtcNow.AddDays(30) : null
+                });
 
-        if (model.IsRemember)
-        {
-            CookieOptions cookie = new CookieOptions()
-            {
-                Expires = DateTime.Now.AddDays(30)
-            };
-            Response.Cookies.Append("Token", tokenString, cookie);
-            Response.Cookies.Append("Email", model.Email, cookie);
-            Response.Cookies.Append("Jwt", tokenString,cookie);
+            return RedirectToAction("Content", "Main");
         }
-
-        return RedirectToAction("Content", "Main");
-    }
-
-    ModelState.AddModelError(string.Empty, "Invalid login attempt");
-    return RedirectToAction("Index", "Home");
+        else
+        {
+            TempData["Message"] = "Invalid Attempt";
+            ModelState.AddModelError(string.Empty, "Invalid login attempt");
+        }
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]
@@ -140,7 +168,7 @@ public class HomeController : Controller
     {
         try
         {
-string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(toemail)}'>Reset Password</a>";
+            string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(toemail)}'>Reset Password</a>";
             string smtpEmail = _config.GetValue<string>("SMTPCredentials:Email");
             string smtpappPass = _config.GetValue<string>("SMTPCredentials:AppPass");
 
@@ -169,7 +197,7 @@ string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={W
             throw (ex);
         }
     }
-    public static string encryptPassword(string pass)
+    public string encryptPassword(string pass)
     {
         byte[] encode = new byte[pass.Length];
         encode = System.Text.Encoding.UTF8.GetBytes(pass);
