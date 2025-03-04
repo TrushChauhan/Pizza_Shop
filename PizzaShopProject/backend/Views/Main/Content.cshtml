@@ -47,7 +47,7 @@
           </td>
           <td>
             <i class="material-icons" onclick="editUser(@user.UserId)">edit</i>
-            <i class="material-icons" data-bs-toggle="modal" data-bs-target="#confirmmodal">delete</i>
+            <i class="material-icons delete-user" data-user-id="@user.UserId" data-bs-toggle="modal" data-bs-target="#confirmmodal">delete</i>
           </td>
         </tr>
       }
@@ -105,24 +105,41 @@
 </div>
 
 <script>
-    // Set up delete functionality
-    const deleteModal = document.getElementById('confirmmodal');
     let userIdToDelete = null;
 
-    // When modal opens
-    deleteModal.addEventListener('show.bs.modal', (e) => {
-        // Get user ID from clicked button
-        const button = e.relatedTarget;
-        userIdToDelete = button.closest('tr').dataset.userId;
+  
+    document.querySelectorAll('.delete-user').forEach(button => {
+        button.addEventListener('click', function() {
+            userIdToDelete = this.getAttribute('data-user-id');
+        });
     });
 
-    // Confirm delete action
-    document.getElementById('confirmDelete').addEventListener('click', () => {
-        if(userIdToDelete) {
+  
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        if (userIdToDelete) {
             fetch(`/Main/Delete/${userIdToDelete}`, {
-                method: 'POST'
-            }).then(() => {
-                window.location.reload();
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                  
+                    const row = document.querySelector(`tr[data-user-id="${userIdToDelete}"]`);
+                    if (row) {
+                        row.remove();
+                    }
+                    
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('confirmmodal'));
+                    modal.hide();
+                } else {
+                    alert('Error deleting user');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error deleting user');
             });
         }
     });

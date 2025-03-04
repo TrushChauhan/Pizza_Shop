@@ -1,4 +1,3 @@
-
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
@@ -43,7 +42,7 @@ public class MainController : Controller
 
     return View(users);
 }
-[Authorize (Roles ="Admin")]
+
 public IActionResult Logout()
     {   
         HttpContext.Session.Clear();
@@ -53,15 +52,43 @@ public IActionResult Logout()
         }
         return RedirectToAction("Index","Home");
     }
+public IActionResult ChangePassword(){
+    return View();
+}
+[HttpPost]
+public IActionResult DoChangePassword(){
+    
+    return RedirectToAction("Index","Home");
+}
 [HttpPost]
 public IActionResult Delete(int id)
 {
-    var userDetail = _dbcontext.Userdetails.FirstOrDefault(u => u.Userid == id);
-    if (userDetail != null)
+    try
     {
-        userDetail.Isdeleted = true;
-        _dbcontext.SaveChanges();
+        using (var transaction = _dbcontext.Database.BeginTransaction())
+        {
+            // Get both user detail and login records
+            var userDetail = _dbcontext.Userdetails.FirstOrDefault(u => u.Userid == id);
+            var userLogin = _dbcontext.Userlogins.FirstOrDefault(u => u.Userid == id);
+
+            if (userDetail != null && userLogin != null)
+            {
+                // Soft delete both records
+                userDetail.Isdeleted = true;
+                userLogin.Isdeleted = true;
+
+                _dbcontext.SaveChanges();
+                transaction.Commit();
+                return Ok(new { success = true, message = "User deleted successfully" });
+            }
+
+            return NotFound(new { success = false, message = "User not found" });
+        }
     }
-    return Ok();
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error deleting user");
+        return StatusCode(500, new { success = false, message = "Error deleting user" });
+    }
 }
 }

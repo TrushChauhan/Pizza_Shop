@@ -86,6 +86,7 @@ public class HomeController : Controller
     var userRole= _dbcontext.Userroles.FirstOrDefault(u=> u.Roleid == existingUser.Roleid);
     if (existingUser != null)
     {
+        ViewBag.User=existingUser;
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
         var tokenDescriptor = new SecurityTokenDescriptor

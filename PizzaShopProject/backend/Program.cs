@@ -51,6 +51,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); // Add this line before UseAuthorization
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -59,3 +60,4 @@ app.MapControllerRoute(
 
 app.UseSession();
 app.Run();
+

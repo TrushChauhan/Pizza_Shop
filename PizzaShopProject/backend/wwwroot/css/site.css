@@ -92,6 +92,9 @@ body {
   color: blue;
   font-weight: 500;
 }
+.change-password-container{
+  margin-left: 25%;
+}
 ul {
   list-style-type: none;
 }
