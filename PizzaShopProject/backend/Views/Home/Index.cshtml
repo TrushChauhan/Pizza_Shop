@@ -8,12 +8,14 @@
         PIZZASHOP
     </div>
 </div>
-<div class="row w-100">
-    <p class="col fs-3 welcome-text mx-8 my-1">Welcome,</p>
+<div class="row w-100 p-0">
+    <p class="col fs-3 welcome-text mx-8 my-1 p-0">Welcome,</p>
 </div>
 <form asp-controller="Home" asp-action="login" method="post" class="row" id=loginform>
-    <div class="row w-100">
-        <input type="email" asp-for="Email" id="Email" name="Email" placeholder="E-mail" class="icon-email form col mx-8 my-2">
+    <div class="row w-100 ">
+        <div class="col mx-8 my-2 p-0 w-100">
+            <input type="email" asp-for="Email" id="Email" name="Email" placeholder="E-mail" class="icon-email w-100">
+        </div>
     </div>
     
     <div class="row w-100">
@@ -36,28 +38,3 @@
         <button type="submit" class="login-button col mx-8 my-2">Login</button>
     </div>
 </form>
-<script>
-    function navigateToForgotPassword() {
-        var email = document.getElementById('Email').value;
-        window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
-    }
-
-            $('#loginform').validate( {
-                rules:{
-                    Email:{
-                        required:true
-                    },
-                    Password:{
-                        required:true
-                    }
-                },
-                messages:{
-                    Email:{
-                        required:"email is required"
-                    },
-                    Password:{
-                        required:"password is required"
-                    }
-                }
-            });
-</script>

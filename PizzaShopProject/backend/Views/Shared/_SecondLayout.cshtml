@@ -37,16 +37,16 @@
                         <ul class="d-flex flex-column">
                             <li class="sidebar-item m-2">
                                 <img src="~/images/icons/customer.svg" alt="">
-                                <span><a href="dashboard.html" class="text-decoration-none">Dashboard</a></span>
+                                <span><a asp-controller="Main" asp-action="Dashboard" class="text-decoration-none">Dashboard</a></span>
                             </li>
                             <li class="sidebar-item m-2">
                                 <img src="~/images/icons/customer.svg" alt="">
-                                <span class="color-primary"><a href="users.html"
+                                <span class="color-primary"><a asp-controller="Main" asp-action="Content"
                                         class="text-decoration-none">Users</a></span>
                             </li>
                             <li class="sidebar-item m-2">
                                 <img src="~/images/icons/customer.svg" alt="">
-                                <span><a href="dashboard.html" class="text-decoration-none">role and
+                                <span><a asp-controller="Main" asp-action="Permissions" class="text-decoration-none">role and
                                         permissions</a></span>
                             </li>
                             <li class="sidebar-item m-2">
@@ -75,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
                 <div class="navbar-profile w-100 py-2 px-3 d-flex align-items-center">
                     <button class="btn toggle-sidebar d-md-none" type="button" data-bs-toggle="offcanvas"

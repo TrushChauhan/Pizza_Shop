@@ -63,12 +63,6 @@ public class HomeController : Controller
             return View(model);
         }
 
-        if (model.NewPassword != model.ConfirmPassword)
-        {
-            ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
-            return View(model);
-        }
-
         var user = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == model.Email);
         if (user == null)
         {
@@ -151,7 +145,7 @@ public class HomeController : Controller
         }
         else
         {
-            TempData["Message"] = "Invalid Attempt";
+            TempData["Message"] = "Invalid Email or Password";
             ModelState.AddModelError(string.Empty, "Invalid login attempt");
         }
         return RedirectToAction("Index", "Home");

@@ -793,7 +793,7 @@ public partial class PostgresContext : DbContext
         modelBuilder.Entity<Userdetail>(entity =>
         {
             entity
-                .HasNoKey()
+                
                 .ToTable("userdetail");
 
             entity.Property(e => e.Address)

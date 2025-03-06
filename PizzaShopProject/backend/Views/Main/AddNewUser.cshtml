@@ -1,77 +1,186 @@
 @model Userdetail
 @{
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
-    ViewData["Title"] = "Page Title";
-}       
-        <div class="row-11 d-flex my-2 ">
-          <div class="col-6 text-Users-title fs-2">
-            Add New User
-          </div>
-          <div class="col-6 d-flex justify-content-end">
-            <a asp-controller="Main" asp-action="Content" class="text-decoration-none back-button mx-1 p-2">
-              Back
-            </a>
-          </div>
-        </div>
-        <form>
-        <div class="add-user-frame">
-          <div class="form-floating row m-2">
-            <input class=" col m-2 p-3" placeholder="" id="floatingTextarea"></textarea>
-            <label for="floatingTextarea">First Name</label>
-            <input class=" col m-2 p-3" placeholder="Last Name" id="floatingTextarea2"></textarea>
-            <label for="floatingTextarea2"></label>
-          </div>
-          <div class="row m-2">
-            <input type="textbox" class="col m-2 p-3" placeholder="User Name">
-            <select class="form-select col m-2 p-3" aria-label="Default select example">
-              <option selected>Select role</option>
-              <option value="1">Chef</option>
-              <option value="2">Account Manager</option>
-              <option value="3">Admin</option>
-            </select>
-          </div>
-          <div class="row m-2">
-            <input type="textbox" class="col m-2 p-3" placeholder="Email">
-            <input type="textbox" class="col m-2 p-3" placeholder="Password">
-          </div>
-          <div class="row m-2">
-            <button class="select-profile-picture col d-flex flex-column justify-content-center align-items-center m-2 p-3">
-              <img src="images/icons/customer.svg" class="m-2" alt="">
-              Browse-files
-            </button>
-          </div>
-          <div class="row m-2">
-            <select class="form-select col m-2 p-3" aria-label="Default select example">
-              <option selected>Select Country</option>
-              <option value="1">India</option>
-              <option value="2">Japan</option>
-            </select>
-            <select class="form-select col m-2 p-3" aria-label="Default select example">
-              <option selected>Select State</option>
-              <option value="1">Gujarat</option>
-              <option value="2">Rajasthan</option>
-            </select>
-            <select class="form-select col m-2 p-3" aria-label="Default select example">
-              <option selected>Select City</option>
-              <option value="1">Ahmedabad</option>
-              <option value="2">Surat</option>
-            </select>
-          </div>
-          <div class="row m-2">
-            <input type="textbox" class="col m-2 p-3" placeholder="Zipcode">
-            <input type="textbox" class="col m-2 p-3" placeholder="Address">
-            <input type="textbox" class="col m-2 p-3" placeholder="Phone">
-          </div>
-          <div class="row m-2 my-3">
-            <div class="col my-2">
-              <button type="submit" class="create-user-button p-2">
-                Create User
-              </button>
-              <button class="cancel-user-button p-2">
-                Cancel
-              </button>
+    ViewData["Title"] = "Add New User";
+}
+<div class="row-11 d-flex my-2">
+    <div class="col-6 text-Users-title fs-2">
+        Add New User
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+        <a asp-controller="Main" asp-action="Content" class="text-decoration-none back-button mx-1 p-2">
+            Back
+        </a>
+    </div>
+</div>
+<form asp-action="AddNewUser" method="post" enctype="multipart/form-data">
+    <div class="add-user-frame">
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="firstName" name="FirstName" placeholder="First Name" required>
+                <label for="firstName">First Name</label>
             </div>
-          </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="lastName" name="LastName" placeholder="Last Name" required>
+                <label for="lastName">Last Name</label>
+            </div>
+        </div>
+
+    
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="userName" name="UserName" placeholder="User Name" required>
+                <label for="userName">User Name</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="role" name="Role" required>
+                    <option selected disabled>Select role</option>
+                    <option value="Chef">Chef</option>
+                    <option value="Account Manager">Account Manager</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <label for="role">Role</label>
+            </div>
+        </div>
+
+      
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="email" class="form-control" id="email" name="Email" placeholder="Email">
+                <label for="email">Email</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="password" class="form-control icon-password" id="password" name="Password" placeholder="Password" >
+                <label for="password">Password</label>
+            </div>
+        </div>
+
+        
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="file" class="form-control" id="profileImage" name="ProfileImage" placeholder="Profile Image">
+                <label for="profileImage">Profile Image</label>
+            </div>
+        </div>
+
+        
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlCountry" name="Country" required>
+                    <option value="" selected disabled>Select Country</option>
+                </select>
+                <label for="ddlCountry">Country</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlState" name="State" required>
+                    <option value="" selected disabled>Select State</option>
+                </select>
+                <label for="ddlState">State</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlCity" name="City" required>
+                    <option value="" selected disabled>Select City</option>
+                </select>
+                <label for="ddlCity">City</label>
+            </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="zipcode" name="Zipcode" placeholder="Zipcode" required>
+                <label for="zipcode">Zipcode</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="address" name="Address" placeholder="Address" required>
+                <label for="address">Address</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="phone" name="Phone" placeholder="Phone" required>
+                <label for="phone">Phone</label>
+            </div>
+        </div>
+
+        <div class="row m-2 my-3">
+            <div class="col my-2">
+                <button type="submit" class="create-user-button p-2">
+                    Create User
+                </button>
+                <a asp-controller="Main" asp-action="Content" class="cancel-user-button text-decoration-none p-2">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
 </form>
-</div>
-</div>
+<script>
+    $(document).ready(function () {
+        var ddlCountry = $('#ddlCountry');
+        ddlCountry.append($("<option></option>").val('').html('Please Select Country'));
+        
+        $.ajax({
+            url: '@Url.Action("LoadCountry", "Main")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (d) {
+                $.each(d, function (i, country) {
+                    ddlCountry.append($("<option></option>").val(country.countryid).html(country.name));
+                });
+            },
+            error: function () {
+                alert('Error loading countries!');
+            }
+        });
+
+        $("#ddlCountry").change(function () {
+            var countryId = parseInt($(this).val());
+            if (!isNaN(countryId)) {
+                var ddlState = $('#ddlState');
+                ddlState.empty();
+                ddlState.append($("<option></option>").val('').html('Please wait ...'));
+
+                $.ajax({
+                    url: '@Url.Action("GetState", "Main")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { countryId: countryId },
+                    success: function (d) {
+                        ddlState.empty();
+                        ddlState.append($("<option></option>").val('').html('Select State'));
+                        $.each(d, function (i, state) {
+                            ddlState.append($("<option></option>").val(state.stateid).html(state.name));
+                        });
+                    },
+                    error: function () {
+                        alert('Error loading states!');
+                    }
+                });
+            }
+        });
+
+        $("#ddlState").change(function () {
+            var stateId = parseInt($(this).val());
+            if (!isNaN(stateId)) {
+                var ddlCity = $('#ddlCity');
+                ddlCity.empty();
+                ddlCity.append($("<option></option>").val('').html('Please wait ...'));
+
+                $.ajax({
+                    url: '@Url.Action("GetCity", "Main")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { stateId: stateId },
+                    success: function (d) {
+                        ddlCity.empty();
+                        ddlCity.append($("<option></option>").val('').html('Select City'));
+                        $.each(d, function (i, city) {
+                            ddlCity.append($("<option></option>").val(city.cityid).html(city.name));
+                        });
+                    },
+                    error: function () {
+                        alert('Error loading cities!');
+                    }
+                });
+            }
+        });
+    });
+</script>

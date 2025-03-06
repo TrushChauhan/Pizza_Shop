@@ -1,0 +1,176 @@
+@{
+    Layout = "~/Views/Shared/_SecondLayout.cshtml";
+    ViewData["Title"] = "Page Title";
+}
+<div class="row-11 d-flex my-2">
+          <div class="col-6 text-Users-title fs-2">
+            Permissions
+          </div>
+          <div class="col-6 d-flex justify-content-end">
+            <button onclick="backToUsers()" class="back-button">
+              Back
+            </button>
+          </div>
+        </div>
+
+        <div class="row m-2 form-floating">
+          <input type="textbox" class="col-4 form-floating" placeholder="role">
+      </div>
+        <div class="table-responsive row">
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th scope="col"class="text-black-50"> <img src="images/icons/customer.svg" alt="" height="20px"></th>
+                      <th scope="col"class="text-black-50">Permission</th>
+                      <th scope="col" class="text-black-50">Can View</th>
+                      <th scope="col" class="text-black-50">Can Add/Edit</th>
+                      <th scope="col" class="text-black-50">Can Delete</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                      <td>Users</td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                      <td>RoleAndPermission</td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                      <td>Menu</td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                      <td>TableAndSection</td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                      <td>TaxAndFee</td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                      <td>Order</td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                      <td>Customer</td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>        
+          </table>
+      </div>
+
+        <div class="row">
+          <div class="col save-cancel-div">
+            <button class="save-users-button col">Save</button>
+            <button class="cancel-permissions">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace backend.Models;
 
 public partial class Userdetail
 {
+    [Key]
     public int Userid { get; set; }
 
     public int Roleid { get; set; }
@@ -15,7 +17,7 @@ public partial class Userdetail
 
     public string Username { get; set; } = null!;
 
-    public string Profileimage { get; set; } = null!;
+    public string? Profileimage { get; set; } = null!;
 
     public string Phonenumber { get; set; } = null!;
 
