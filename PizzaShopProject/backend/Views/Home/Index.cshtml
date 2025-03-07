@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row d-flex justify-content-center align-items-center">
-    <img class="col" src="images/logos/pizzashop_logo.png" height="70px" width="70px">
+    <img class="col" src="~/images/logos/pizzashop_logo.png" height="70px" width="70px">
     <div class="col fs-2 pizza-shop-header">
         PIZZASHOP
     </div>
@@ -38,3 +38,29 @@
         <button type="submit" class="login-button col mx-8 my-2">Login</button>
     </div>
 </form>
+<script>
+    function navigateToForgotPassword() {
+    var email = document.getElementById('Email').value;
+    window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
+}
+$('#loginform').validate( {
+            rules:{
+                Email:{
+                    required:true
+                },
+                Password:{
+                    required:true
+                    //minlength:8
+                }
+            },
+            messages:{
+                Email:{
+                    required:"email is required"
+                },
+                Password:{
+                    required:"password is required"
+                    
+                }
+            }
+        });
+        </script>

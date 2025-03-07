@@ -19,7 +19,7 @@ public partial class Userdetail
 
     public string? Profileimage { get; set; } = null!;
 
-    public string Phonenumber { get; set; } = null!;
+    public string? Phonenumber { get; set; }
 
     public string Address { get; set; } = null!;
 

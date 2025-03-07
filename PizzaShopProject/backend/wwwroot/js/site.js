@@ -19,33 +19,5 @@ function backToUsers() {
 function editUser() {
     window.location.href = 'edit-user.html'
 }
-function navigateToForgotPassword() {
-    var email = document.getElementById('Email').value;
-    window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
-}
-
-function navigateToForgotPassword() {
-    var email = document.getElementById('Email').value;
-    window.location.href = '@Url.Action("ForgotPassword", "Home")' + '?email=' + encodeURIComponent(email);
-}
-
-        $('#loginform').validate( {
-            rules:{
-                Email:{
-                    required:true
-                },
-                Password:{
-                    required:true
-                }
-            },
-            messages:{
-                Email:{
-                    required:"email is required"
-                },
-                Password:{
-                    required:"password is required"
-                }
-            }
-        });
 
         

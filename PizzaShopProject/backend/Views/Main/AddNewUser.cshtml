@@ -1,4 +1,4 @@
-@model Userdetail
+@model AddUserDetail
 @{
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
     ViewData["Title"] = "Add New User";
@@ -17,11 +17,12 @@
     <div class="add-user-frame">
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" id="firstName" name="FirstName" placeholder="First Name" required>
+                <input type="text" class="form-control" asp-for="Firstname" id="firstName" placeholder="First Name" >
+                <span class="text-danger" asp-validation-for="Firstname"></span>
                 <label for="firstName">First Name</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" id="lastName" name="LastName" placeholder="Last Name" required>
+                <input type="text" class="form-control" asp-for="Lastname" id="lastName" placeholder="Last Name">
                 <label for="lastName">Last Name</label>
             </div>
         </div>
@@ -29,15 +30,12 @@
     
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" id="userName" name="UserName" placeholder="User Name" required>
+                <input type="text" class="form-control" asp-for="Username" id="userName" placeholder="User Name">
                 <label for="userName">User Name</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <select class="form-select" id="role" name="Role" required>
+                <select class="form-select" asp-for="Roleid" id="role">
                     <option selected disabled>Select role</option>
-                    <option value="Chef">Chef</option>
-                    <option value="Account Manager">Account Manager</option>
-                    <option value="Admin">Admin</option>
                 </select>
                 <label for="role">Role</label>
             </div>
@@ -46,11 +44,11 @@
       
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="email" class="form-control" id="email" name="Email" placeholder="Email">
+                <input type="email" class="form-control" asp-for="Email" id="email"  placeholder="Email">
                 <label for="email">Email</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <input type="password" class="form-control icon-password" id="password" name="Password" placeholder="Password" >
+                <input type="password" class="form-control icon-password" asp-for="Password" id="password" placeholder="Password" >
                 <label for="password">Password</label>
             </div>
         </div>
@@ -58,7 +56,7 @@
         
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="file" class="form-control" id="profileImage" name="ProfileImage" placeholder="Profile Image">
+                <input type="file" class="form-control" id="profileImage" asp-for="Profileimage" placeholder="Profile Image">
                 <label for="profileImage">Profile Image</label>
             </div>
         </div>
@@ -66,19 +64,19 @@
         
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <select class="form-select" id="ddlCountry" name="Country" required>
+                <select class="form-select" id="ddlCountry" asp-for="Countryid">
                     <option value="" selected disabled>Select Country</option>
                 </select>
                 <label for="ddlCountry">Country</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <select class="form-select" id="ddlState" name="State" required>
+                <select class="form-select" id="ddlState" asp-for="Stateid">
                     <option value="" selected disabled>Select State</option>
                 </select>
                 <label for="ddlState">State</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <select class="form-select" id="ddlCity" name="City" required>
+                <select class="form-select" id="ddlCity" asp-for="Cityid">
                     <option value="" selected disabled>Select City</option>
                 </select>
                 <label for="ddlCity">City</label>
@@ -87,15 +85,15 @@
 
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" id="zipcode" name="Zipcode" placeholder="Zipcode" required>
+                <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" asp-for="Zipcode">
                 <label for="zipcode">Zipcode</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" id="address" name="Address" placeholder="Address" required>
+                <input type="text" class="form-control" id="address" placeholder="Address" asp-for="Address">
                 <label for="address">Address</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" id="phone" name="Phone" placeholder="Phone" required>
+                <input type="text" class="form-control" id="phone" placeholder="Phone" asp-for="Phonenumber">
                 <label for="phone">Phone</label>
             </div>
         </div>
@@ -112,8 +110,24 @@
         </div>
     </div>
 </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script>
+    
     $(document).ready(function () {
+        var roles= $('#role');
+        roles.append($("<option></option>").val('').html('Please Select Role'));
+        $.ajax({
+            url: '@Url.Action("LoadRoles", "Main")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (d) {
+                $.each(d, function (i, role) {
+                    roles.append($("<option></option>").val(role.roleid).html(role.name));
+                });
+            }
+        });
         var ddlCountry = $('#ddlCountry');
         ddlCountry.append($("<option></option>").val('').html('Please Select Country'));
         
@@ -136,7 +150,6 @@
             if (!isNaN(countryId)) {
                 var ddlState = $('#ddlState');
                 ddlState.empty();
-                ddlState.append($("<option></option>").val('').html('Please wait ...'));
 
                 $.ajax({
                     url: '@Url.Action("GetState", "Main")',

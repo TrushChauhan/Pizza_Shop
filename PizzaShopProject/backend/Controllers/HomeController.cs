@@ -44,9 +44,19 @@ public class HomeController : Controller
         }
         return View();
     }
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
 
     public IActionResult ForgotPassword(string email)
     {
+        var user = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == email);
+        if (user == null)
+        {
+            TempData["Message"] = "Enter right Email Address";
+            return RedirectToAction("Index", "Home");
+        }
         var vm = new userEmail(email);
         return View(vm);
     }
