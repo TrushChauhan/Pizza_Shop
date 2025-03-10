@@ -1,52 +1,32 @@
+@model List<Userrole>
 @{
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
-    ViewData["Title"] = "Page Title";
+    ViewData["Title"] = "Roles Management";
 }
+
 <div class="mt-5 bg-white p-5">
-        <div class="row roles-table d-flex w-75">
-            <div class="col ml-5">
-                Role
-            </div>
-            <div class="col text-align-right">
-                Action
-            </div>    
-        </div>
-        <div class="row w-75">
-            <hr>
-        </div>
-        <form action="" class=" d-flex flex-column">
-            <div class="row roles-table d-flex w-75">
-                <div class="col ml-5">
-                    Admin
-                </div>
-                <div class="col text-align-right">
-                    <a asp-controller="Main" asp-action="Permissions"><img src="~/images/icons/customer.svg" alt=""></a>
-                </div>    
-            </div>
-            <div class="row w-75">
-                <hr>
-            </div>
-            <div class="row roles-table d-flex w-75">
-                <div class="col ml-5">
-                    Acount Manager
-                </div>
-                <div class="col text-align-right">
-                    <a asp-controller="Main" asp-action="Permissions"><img src="~/images/icons/customer.svg" alt=""></a>
-                </div>    
-            </div>
-            <div class="row w-75">
-                <hr>
-            </div>
-            <div class="row roles-table d-flex w-75">
-                <div class="col ml-5">
-                    Chef
-                </div>
-                <div class="col text-align-right">
-                    <a asp-controller="Main" asp-action="Permissions"><img src="~/images/icons/customer.svg" alt=""></a>
-                </div>    
-            </div>
-            <div class="row w-75">
-                <hr>
-            </div>
-        </form>
+    
+
+    <div class="table-responsive">
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th>Role Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>@role.Rolename</td>
+                        <td>
+                            <a href="@Url.Action("Permissions", "Main", new { roleId = role.Roleid })" 
+                               class="text-decoration-none"><i class="fa-solid fa-pen text-decoration-none"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

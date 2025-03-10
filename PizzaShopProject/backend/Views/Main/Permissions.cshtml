@@ -1,176 +1,101 @@
+@model List<PermissionViewModel>
 @{
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
-    ViewData["Title"] = "Page Title";
+    ViewData["Title"] = "Permissions Management";
 }
-<div class="row-11 d-flex my-2">
+
+    <div class="row-11 d-flex my-2">
           <div class="col-6 text-Users-title fs-2">
             Permissions
           </div>
           <div class="col-6 d-flex justify-content-end">
-            <button onclick="backToUsers()" class="back-button">
+            <a asp-action="Users" asp-controller="Main">
+            <button class="back-button">
               Back
             </button>
+            </a>
           </div>
         </div>
-
-        <div class="row m-2 form-floating">
-          <input type="textbox" class="col-4 form-floating" placeholder="role">
-      </div>
-        <div class="table-responsive row">
-          <table class="table">
-              <thead>
-                  <tr>
-                      <th scope="col"class="text-black-50"> <img src="images/icons/customer.svg" alt="" height="20px"></th>
-                      <th scope="col"class="text-black-50">Permission</th>
-                      <th scope="col" class="text-black-50">Can View</th>
-                      <th scope="col" class="text-black-50">Can Add/Edit</th>
-                      <th scope="col" class="text-black-50">Can Delete</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                      <td>Users</td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                      <td>RoleAndPermission</td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                      <td>Menu</td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                      <td>TableAndSection</td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                      <td>TaxAndFee</td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                      <td>Order</td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                      <td>Customer</td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          </div>
-                      </td>
-                  </tr>
-              </tbody>        
-          </table>
-      </div>
-
-        <div class="row">
-          <div class="col save-cancel-div">
-            <button class="save-users-button col">Save</button>
-            <button class="cancel-permissions">Cancel</button>
-          </div>
-        </div>
-      </div>
+    <div class="form-floating w-25">
+        <input value="@ViewBag.Rolename" disabled class="form-control" id="role">
+        <label for="role">Role</label>
+    </div>
+    <div class="table-responsive m-5 mr-5">
+        <table class="table" id="permissionsTable">
+            <thead class="thead-light">
+                <tr>
+                    <th class="text-black-50"><input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate" disabled></th>
+                    <th class="text-black-50">Permission</th>
+                    <th class="text-black-50">Can View</th>
+                    <th class="text-black-50">Can Add/Edit</th>
+                    <th class="text-black-50">Can Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var perm in Model)
+                {
+                    <tr data-permission-id="@perm.PermissionId">
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                        <td>@perm.PermissionName</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input view-check" type="checkbox" @(perm.CanView ? "checked" : "")>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input edit-check" type="checkbox" @(perm.CanAddEdit ? "checked" : "")>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input delete-check" type="checkbox" @(perm.CanDelete ? "checked" : "")>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
+    <div class="row">
+          <div class="col save-cancel-div">
+            <button class="save-users-button col" id="savePermissions">Save</button>
+            <a asp-controller="Main" asp-action="Users"><button class="cancel-permissions"> Cancel</button></a>
+          </div>
+        </div>
+</div>
+
+
+    <script>
+        document.getElementById('savePermissions').addEventListener('click', function() {
+            const permissions = [];
+            const rows = document.querySelectorAll('#permissionsTable tbody tr');
+            
+            rows.forEach(row => {
+                const permissionId = row.dataset.permissionId;
+                permissions.push({
+                    PermissionId: parseInt(permissionId),
+                    CanView: row.querySelector('.view-check').checked,
+                    CanAddEdit: row.querySelector('.edit-check').checked,
+                    CanDelete: row.querySelector('.delete-check').checked
+                });
+            });
+
+            fetch('@Url.Action("UpdatePermissions", "Main")?roleId=@ViewBag.RoleId', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(permissions)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Permissions updated successfully!');
+                    window.location.reload();
+                } else {
+                    alert('Error saving permissions');
+                }
+            });
+        });
+    </script>

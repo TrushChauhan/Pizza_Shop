@@ -261,19 +261,92 @@ public class MainController : Controller
             .ToListAsync();
         return Ok(roles);
     }
-    [Authorize(policy: "AdminOnly")]
-    public IActionResult Permissions()
-    {
-        return View();
-    }
-    [Authorize(policy: "AdminOnly")]
-    public IActionResult Roles()
-    {
-        return View();
-    }
+    
     [Authorize(policy: "AdminOnly")]
     public IActionResult Dashboard()
     {
         return View();
     }
+    [Authorize(policy: "AdminOnly")]
+public IActionResult Roles()
+{
+    var roles = _dbcontext.Userroles
+        .Where(r => !r.Isdeleted)
+        .ToList();
+    return View(roles);
+}
+
+[Authorize(policy: "AdminOnly")]
+public IActionResult Permissions(int roleId)
+{
+    var role = _dbcontext.Userroles
+        .Include(r => r.Roleandpermissions)
+        .FirstOrDefault(r => r.Roleid == roleId && !r.Isdeleted);
+
+    if (role == null)
+    {
+        return NotFound();
+    }
+
+    // Create dictionary for faster lookup
+    var rolePermissions = role.Roleandpermissions
+        .ToDictionary(rp => rp.Permissionid);
+
+    var permissions = _dbcontext.Userpermissions
+        .Where(p => !p.Isdeleted)
+        .AsEnumerable() 
+        .Select(p => 
+        {
+            rolePermissions.TryGetValue(p.Permissionid, out var rp);
+            return new PermissionViewModel
+            {
+                PermissionId = p.Permissionid,
+                PermissionName = p.Permissionname,
+                CanView = rp?.Canview ?? false,
+                CanAddEdit = rp?.Canaddedit ?? false,
+                CanDelete = rp?.Candelete ?? false
+            };
+        })
+        .ToList();
+
+    ViewBag.RoleName = role.Rolename;
+    ViewBag.RoleId = role.Roleid;
+    
+    return View(permissions);
+}
+
+[HttpPost]
+[Authorize(policy: "AdminOnly")]
+public IActionResult UpdatePermissions(int roleId, [FromBody] List<PermissionUpdateModel> permissions)
+{
+    try
+    {
+        var existingPermissions = _dbcontext.Roleandpermissions
+            .Where(rp => rp.Roleid == roleId)
+            .ToList();
+
+        _dbcontext.Roleandpermissions.RemoveRange(existingPermissions);
+
+        foreach (var perm in permissions)
+        {
+            _dbcontext.Roleandpermissions.Add(new Roleandpermission
+            {
+                Roleid = roleId,
+                Permissionid = perm.PermissionId,
+                Canview = perm.CanView,
+                Canaddedit = perm.CanAddEdit,
+                Candelete = perm.CanDelete,
+                Createddate = DateTime.Now,
+            });
+        }
+
+        _dbcontext.SaveChanges();
+        return Ok(new { success = true });
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error updating permissions");
+        return StatusCode(500, new { success = false });
+    }
+}
 }
