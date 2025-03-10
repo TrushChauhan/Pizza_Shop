@@ -267,6 +267,11 @@ public class MainController : Controller
         return View();
     }
     [Authorize(policy: "AdminOnly")]
+    public IActionResult Roles()
+    {
+        return View();
+    }
+    [Authorize(policy: "AdminOnly")]
     public IActionResult Dashboard()
     {
         return View();

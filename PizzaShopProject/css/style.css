@@ -217,6 +217,11 @@ th{
 .change-password-container{
     margin-left: 25%;
 }
+.roles-table{
+    margin-right: 25%;
+    margin-left: 20px;
+    margin-top: 25%;
+}
 @media screen and (max-width:576px) {
     .mx-8{
         margin-left: 10px;

@@ -1,0 +1,52 @@
+@{
+    Layout = "~/Views/Shared/_SecondLayout.cshtml";
+    ViewData["Title"] = "Page Title";
+}
+<div class="mt-5 bg-white p-5">
+        <div class="row roles-table d-flex w-75">
+            <div class="col ml-5">
+                Role
+            </div>
+            <div class="col text-align-right">
+                Action
+            </div>    
+        </div>
+        <div class="row w-75">
+            <hr>
+        </div>
+        <form action="" class=" d-flex flex-column">
+            <div class="row roles-table d-flex w-75">
+                <div class="col ml-5">
+                    Admin
+                </div>
+                <div class="col text-align-right">
+                    <a asp-controller="Main" asp-action="Permissions"><img src="~/images/icons/customer.svg" alt=""></a>
+                </div>    
+            </div>
+            <div class="row w-75">
+                <hr>
+            </div>
+            <div class="row roles-table d-flex w-75">
+                <div class="col ml-5">
+                    Acount Manager
+                </div>
+                <div class="col text-align-right">
+                    <a asp-controller="Main" asp-action="Permissions"><img src="~/images/icons/customer.svg" alt=""></a>
+                </div>    
+            </div>
+            <div class="row w-75">
+                <hr>
+            </div>
+            <div class="row roles-table d-flex w-75">
+                <div class="col ml-5">
+                    Chef
+                </div>
+                <div class="col text-align-right">
+                    <a asp-controller="Main" asp-action="Permissions"><img src="~/images/icons/customer.svg" alt=""></a>
+                </div>    
+            </div>
+            <div class="row w-75">
+                <hr>
+            </div>
+        </form>
+</div>
