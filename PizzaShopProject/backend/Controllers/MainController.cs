@@ -288,7 +288,6 @@ public IActionResult Permissions(int roleId)
         return NotFound();
     }
 
-    // Create dictionary for faster lookup
     var rolePermissions = role.Roleandpermissions
         .ToDictionary(rp => rp.Permissionid);
 
@@ -339,7 +338,6 @@ public IActionResult UpdatePermissions(int roleId, [FromBody] List<PermissionUpd
                 Createddate = DateTime.Now,
             });
         }
-
         _dbcontext.SaveChanges();
         return Ok(new { success = true });
     }

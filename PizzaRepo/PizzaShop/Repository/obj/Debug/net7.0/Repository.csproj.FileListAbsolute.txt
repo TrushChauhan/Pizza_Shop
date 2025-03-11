@@ -1,0 +1,15 @@
+D:\PizzaShop\Repository\bin\Debug\net7.0\Repository.deps.json
+D:\PizzaShop\Repository\bin\Debug\net7.0\Repository.dll
+D:\PizzaShop\Repository\bin\Debug\net7.0\Repository.pdb
+D:\PizzaShop\Repository\bin\Debug\net7.0\Entity.dll
+D:\PizzaShop\Repository\bin\Debug\net7.0\Entity.pdb
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.csproj.AssemblyReference.cache
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.AssemblyInfoInputs.cache
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.AssemblyInfo.cs
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.csproj.CoreCompileInputs.cache
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.csproj.CopyComplete
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.dll
+D:\PizzaShop\Repository\obj\Debug\net7.0\refint\Repository.dll
+D:\PizzaShop\Repository\obj\Debug\net7.0\Repository.pdb
+D:\PizzaShop\Repository\obj\Debug\net7.0\ref\Repository.dll

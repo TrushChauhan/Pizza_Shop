@@ -1,0 +1,200 @@
+@model Entity.ViewModel.AddUserDetail
+@{
+    Layout = "~/Views/Shared/_SecondLayout.cshtml";
+    ViewData["Title"] = "Add New User";
+}
+<div class="row-11 d-flex my-2">
+    <div class="col-6 text-Users-title fs-2">
+        Add New User
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+        <a asp-controller="Main" asp-action="Content" class="text-decoration-none back-button mx-1 p-2">
+            Back
+        </a>
+    </div>
+</div>
+<form asp-action="AddNewUser" method="post" enctype="multipart/form-data">
+    <div class="add-user-frame">
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" asp-for="Firstname" id="firstName" placeholder="First Name" >
+                <span class="text-danger" asp-validation-for="Firstname"></span>
+                <label for="firstName">First Name</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" asp-for="Lastname" id="lastName" placeholder="Last Name">
+                <span class="text-danger" asp-validation-for="Lastname"></span>
+                <label for="lastName">Last Name</label>
+            </div>
+        </div>
+
+    
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" asp-for="Username" id="userName" placeholder="User Name">
+                <label for="userName">User Name</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" asp-for="Roleid" id="role">
+                    <option selected disabled>Select role</option>
+                </select>
+                <label for="role">Role</label>
+            </div>
+        </div>
+
+      
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="email" class="form-control" asp-for="Email" id="email"  placeholder="Email">
+                <label for="email">Email</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="password" class="form-control icon-password" asp-for="Password" id="password" placeholder="Password" >
+                <label for="password">Password</label>
+            </div>
+        </div>
+
+        
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="file" class="form-control" id="profileImage" asp-for="Profileimage" placeholder="Profile Image">
+                <label for="profileImage">Profile Image</label>
+            </div>
+        </div>
+
+        
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlCountry" asp-for="Countryid">
+                    <option value="" selected disabled>Select Country</option>
+                </select>
+                <label for="ddlCountry">Country</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlState" asp-for="Stateid">
+                    <option value="" selected disabled>Select State</option>
+                </select>
+                <label for="ddlState">State</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlCity" asp-for="Cityid">
+                    <option value="" selected disabled>Select City</option>
+                </select>
+                <label for="ddlCity">City</label>
+            </div>
+        </div>
+
+        <div class="row m-2">
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" asp-for="Zipcode">
+                <label for="zipcode">Zipcode</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="address" placeholder="Address" asp-for="Address">
+                <label for="address">Address</label>
+            </div>
+            <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="phone" placeholder="Phone" asp-for="Phonenumber">
+                <label for="phone">Phone</label>
+            </div>
+        </div>
+
+        <div class="row m-2 my-3">
+            <div class="col my-2">
+                <button type="submit" class="create-user-button p-2">
+                    Create User
+                </button>
+                <a asp-controller="Main" asp-action="Content" class="cancel-user-button text-decoration-none p-2">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    
+    $(document).ready(function () {
+        var roles= $('#role');
+        roles.append($("<option></option>").val('').html('Please Select Role'));
+        $.ajax({
+            url: '@Url.Action("LoadRoles", "Main")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (d) {
+                $.each(d, function (i, role) {
+                    roles.append($("<option></option>").val(role.roleid).html(role.name));
+                });
+            }
+        });
+        var ddlCountry = $('#ddlCountry');
+        ddlCountry.append($("<option></option>").val('').html('Please Select Country'));
+        
+        $.ajax({
+            url: '@Url.Action("LoadCountry", "Main")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (d) {
+                $.each(d, function (i, country) {
+                    ddlCountry.append($("<option></option>").val(country.countryid).html(country.name));
+                });
+            },
+            error: function () {
+                alert('Error loading countries!');
+            }
+        });
+
+        $("#ddlCountry").change(function () {
+            var countryId = parseInt($(this).val());
+            if (!isNaN(countryId)) {
+                var ddlState = $('#ddlState');
+                ddlState.empty();
+
+                $.ajax({
+                    url: '@Url.Action("GetState", "Main")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { countryId: countryId },
+                    success: function (d) {
+                        ddlState.empty();
+                        ddlState.append($("<option></option>").val('').html('Select State'));
+                        $.each(d, function (i, state) {
+                            ddlState.append($("<option></option>").val(state.stateid).html(state.name));
+                        });
+                    },
+                    error: function () {
+                        alert('Error loading states!');
+                    }
+                });
+            }
+        });
+
+        $("#ddlState").change(function () {
+            var stateId = parseInt($(this).val());
+            if (!isNaN(stateId)) {
+                var ddlCity = $('#ddlCity');
+                ddlCity.empty();
+                ddlCity.append($("<option></option>").val('').html('Please wait ...'));
+
+                $.ajax({
+                    url: '@Url.Action("GetCity", "Main")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { stateId: stateId },
+                    success: function (d) {
+                        ddlCity.empty();
+                        ddlCity.append($("<option></option>").val('').html('Select City'));
+                        $.each(d, function (i, city) {
+                            ddlCity.append($("<option></option>").val(city.cityid).html(city.name));
+                        });
+                    },
+                    error: function () {
+                        alert('Error loading cities!');
+                    }
+                });
+            }
+        });
+    });
+</script>
