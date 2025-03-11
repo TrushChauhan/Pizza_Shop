@@ -18,7 +18,7 @@
             <tbody>
                 @foreach (var role in Model)
                 {
-                    <tr>
+                    <tr>         
                         <td>@role.Rolename</td>
                         <td>
                             <a href="@Url.Action("Permissions", "Main", new { roleId = role.Roleid })" 
