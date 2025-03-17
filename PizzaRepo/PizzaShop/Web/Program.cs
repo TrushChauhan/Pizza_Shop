@@ -21,6 +21,7 @@ builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IRoleRepository,RoleRepository>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.AddScoped<IUserService,UserService>();
 // Session Configuration
 builder.Services.AddSession(options =>
 {

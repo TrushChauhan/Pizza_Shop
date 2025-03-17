@@ -19,8 +19,44 @@ namespace Service.Implementations
         public void SendPasswordResetEmail(string email)
         {
             try
+            {
+                string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(email)}'>Reset Password</a>";
+                string smtpEmail = "test.dotnet@etatvasoft.com";
+                string smtpappPass = "P}N^{z-]7Ilp";
+
+                SmtpClient smtpclient = new SmtpClient("mail.etatvasoft.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(smtpEmail, smtpappPass),
+                    EnableSsl = true,
+                };
+
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress(smtpEmail),
+                    Subject = "Reset Password for PizzaShop",
+                    Body = emailBody,
+                    IsBodyHtml = true,
+
+                };
+                mail.IsBodyHtml = true;
+                mail.To.Add(email);
+                smtpclient.Send(mail);
+                return;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+        public void SendEmailToNewUser(string email, string password)
         {
-            string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(email)}'>Reset Password</a>";
+            try
+        {
+            string emailBody = $@"
+            <h>Login Details</h>
+            <div>useremail = {email} </div>
+            <div> Temporary Password = {password}";
             string smtpEmail = "test.dotnet@etatvasoft.com";
             string smtpappPass = "P}N^{z-]7Ilp";
 
@@ -34,7 +70,7 @@ namespace Service.Implementations
             MailMessage mail = new MailMessage
             {
                 From = new MailAddress(smtpEmail),
-                Subject = "Reset Password for PizzaShop",
+                Subject = "Login Details for PizzaShop",
                 Body = emailBody,
                 IsBodyHtml = true,
 

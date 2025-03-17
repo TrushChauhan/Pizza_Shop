@@ -16,7 +16,7 @@ public class AuthService : IAuthService
         IConfiguration config,
         IEmailService emailService)
     {
-        _roleRepo=roleRepo;
+        _roleRepo = roleRepo;
         _userRepo = userRepo;
         _config = config;
         _emailService = emailService;
@@ -28,7 +28,10 @@ public class AuthService : IAuthService
         var user = _userRepo.GetUserByEmail(email);
         return user?.Password == encryptedPass;
     }
-
+    public bool IsCorrectPassword(string email, string Password)
+    {
+        return _userRepo.IsCorrectPassword(email, EncryptPassword(Password));
+    }
     public async void SendPasswordResetEmail(string email)
     {
         if (_userRepo.IsUserExists(email))
@@ -36,9 +39,10 @@ public class AuthService : IAuthService
             _emailService.SendPasswordResetEmail(email);
         }
     }
-        public bool IsUserExists(string email){
-            return _userRepo.IsUserExists(email);
-        }
+    public bool IsUserExists(string email)
+    {
+        return _userRepo.IsUserExists(email);
+    }
     public void ResetPassword(string email, string newPassword)
     {
         var user = _userRepo.GetUserByEmail(email);
@@ -48,8 +52,9 @@ public class AuthService : IAuthService
             _userRepo.UpdateUser(user);
         }
     }
-    public string GetRoleByEmail(string email){
-        int roleId=_userRepo.GetRoleIdByEmail(email);
+    public string GetRoleByEmail(string email)
+    {
+        int roleId = _userRepo.GetRoleIdByEmail(email);
         return _roleRepo.GetRoleById(roleId);
     }
 

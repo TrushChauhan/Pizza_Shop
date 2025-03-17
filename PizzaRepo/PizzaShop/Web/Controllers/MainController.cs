@@ -9,18 +9,22 @@ using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using Entity.ViewModel;
-namespace backend.Controllers;
+using AspNetCoreGeneratedDocument;
+using Service.Interfaces;
+namespace Web.Controllers;
 public class MainController : Controller
 {
-    private readonly ILogger<MainController> _logger;
 
     private readonly IConfiguration _config;
-    private readonly ApplicationDbContext _dbcontext;
-    public MainController(ILogger<MainController> logger, ApplicationDbContext context,IConfiguration config)
+    private readonly IUserService _userService;
+    private readonly IAuthService _authService;
+    private readonly IEmailService _emailService;
+    public MainController(IUserService userService,IConfiguration config,IAuthService authService,IEmailService emailService)
     {
-        _logger = logger;
-        _dbcontext = context;
         _config=config;
+        _userService=userService;
+        _authService=authService;
+        _emailService=emailService;
     }
     [Authorize]
     public IActionResult Users()
@@ -30,45 +34,13 @@ public class MainController : Controller
     }
     public IActionResult ShowUsers(string searchTerm = null, int page = 1, int pageSize = 2)
     {
-        var query = _dbcontext.Userdetails
-            .Include(ud => ud.User)
-            .Include(ud => ud.Role)
-            .Where(ud => !ud.Isdeleted);
-
-        if (!string.IsNullOrEmpty(searchTerm))
-        {
-            searchTerm = searchTerm.ToLower();
-            query = query.Where(ud =>
-                (ud.Firstname + " " + ud.Lastname).ToLower().Contains(searchTerm) ||
-                ud.User.Email.ToLower().Contains(searchTerm) ||
-                ud.Phonenumber.Contains(searchTerm) ||
-                ud.Role.Rolename.ToLower().Contains(searchTerm)
-            );
-        }
-
-        var totalItems = query.Count();
+        var (users,totalItems)=_userService.GetUsers(searchTerm,page,pageSize);
         var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-
-        var users = query
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(ud => new UserTable
-            {
-                UserId = ud.Userid,
-                Name = $"{ud.Firstname} {ud.Lastname}",
-                Email = ud.User.Email,
-                Phone = ud.Phonenumber,
-                Role = ud.Role.Rolename,
-                Status = ud.Status ? "active" : "inactive",
-                ProfileImage = ud.Profileimage
-            })
-            .ToList();
         ViewBag.CurrentPage = page;
         ViewBag.PageSize = pageSize;
         ViewBag.TotalPages = totalPages;
         ViewBag.TotalItems = totalItems;
         ViewBag.SearchTerm = searchTerm;
-
         return View("Users", users);
     }
 
@@ -81,117 +53,48 @@ public class MainController : Controller
         }
         return RedirectToAction("Index", "Home");
     }
-//     public IActionResult ChangePassword()
-//     {
-//         return View();
-//     }
-//     [HttpPost]
-//     public IActionResult DoChangePassword(ChangePassword model)
-//     {
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult DoChangePassword(ChangePasswordModel model)
+    {
 
-//         string userEmailString = User.Identity.Name;
+        string userEmail = User.Identity.Name;
 
-//         if (userEmailString == null)
-//         {
-//             Logout();
-//         }
-//         var user = _dbcontext.Userlogins.FirstOrDefault(u => u.Email == userEmailString);
+        if (userEmail == null)
+        {
+            Logout();
+        }
+        bool isCorrectPassword = _authService.IsCorrectPassword(userEmail,model.CurrentPassword);
 
-//         if (encryptPassword(model.CurrentPassword) == user.Password)
-//         {
-//             user.Password = encryptPassword(model.NewPassword);
-//             _dbcontext.SaveChanges();
-//         }
-//         else
-//         {
-//             TempData["Message"] = "Invalid Password";
-//             return RedirectToAction("ChangePassword", "Main");
-//         }
-//         return RedirectToAction("Index", "Home");
-//     }
-//     public IActionResult AddNewUser()
-//     {
-//         return View();
-//     }
+        if (isCorrectPassword)
+        {    
+            _authService.ResetPassword(userEmail,model.ConfirmNewPassword);
+        }
+        else
+        {
+            TempData["Message"] = "Invalid Password";
+            return RedirectToAction("ChangePassword", "Main");
+        }
+        return RedirectToAction("Index", "Home");
+    }
+    public IActionResult AddNewUser()
+    {
+        return View();
+    }
 
-//     [HttpPost]
-//     public IActionResult AddNewUser(AddUserDetail model)
-//     {
-//         if(!ModelState.IsValid){
-//             return View();
-//         }
-//         var nextUserId = _dbcontext.Userdetails.Count() + 1;
-//         Userdetail userdetail = new Userdetail();
-//         Userlogin userlogin= new Userlogin();
-//         DateTime now = DateTime.Now;
-//         userlogin.Userid=nextUserId;
-//         userlogin.Email=model.Email;
-//         userlogin.Password=encryptPassword(model.Password);
-//         userlogin.Roleid=model.Roleid;
-//         userdetail.Userid = nextUserId;
-//         userdetail.Firstname = model.Firstname;
-//         userdetail.Lastname = model.Lastname;
-//         userdetail.Username = model.Username;
-//         userdetail.Address = model.Address;
-//         userdetail.Cityid = model.Cityid;
-//         userdetail.Countryid = model.Countryid;
-//         userdetail.Stateid=model.Stateid;
-//         userdetail.Roleid=model.Roleid;
-//         userdetail.Zipcode=model.Zipcode;
-//         userdetail.Phonenumber=model.Phonenumber;
-//         userdetail.Status=true;
-//         userdetail.Createddate=now;
-//         userdetail.Isdeleted=false;
-//         _dbcontext.Userlogins.Add(userlogin);
-//         _dbcontext.Userdetails.Add(userdetail);
-//         _dbcontext.SaveChanges();
-//         sendEmailToNewUser(model.Email,model.Password);
-//         return RedirectToAction("Content");
-
-//         // return View(model);
-//     }
-//     public void sendEmailToNewUser(string email,string Password){
-//         try
-//         {
-//             string emailBody = $@"
-//             <h>Login Details</h>
-//             <div>useremail = {email} </div>
-//             <div> Temporary Password = {Password}";
-//             string smtpEmail = _config.GetValue<string>("SMTPCredentials:Email");
-//             string smtpappPass = _config.GetValue<string>("SMTPCredentials:AppPass");
-
-//             SmtpClient smtpclient = new SmtpClient("mail.etatvasoft.com")
-//             {
-//                 Port = 587,
-//                 Credentials = new NetworkCredential(smtpEmail, smtpappPass),
-//                 EnableSsl = true,
-//             };
-
-//             MailMessage mail = new MailMessage
-//             {
-//                 From = new MailAddress(smtpEmail),
-//                 Subject = "Login Details for PizzaShop",
-//                 Body = emailBody,
-//                 IsBodyHtml = true,
-
-//             };
-//             mail.IsBodyHtml = true;
-//             mail.To.Add(email);
-//             smtpclient.Send(mail);
-//             return;
-//         }
-//         catch (Exception ex)
-//         {
-//             throw (ex);
-//         }
-//     }
-//     public string encryptPassword(string pass)
-//     {
-//         byte[] encode = new byte[pass.Length];
-//         encode = System.Text.Encoding.UTF8.GetBytes(pass);
-//         string encodedData = Convert.ToBase64String(encode);
-//         return encodedData;
-//     }
+    [HttpPost]
+    public IActionResult AddNewUser(AddUserDetail model)
+    {
+        if(!ModelState.IsValid){
+            return View(model);
+        }
+        _userService.AddNewUser(model);
+        _emailService.SendEmailToNewUser(model.Email,model.Password);
+        return RedirectToAction("Users");
+    }
 
 
 //     [HttpPost]
@@ -224,44 +127,38 @@ public class MainController : Controller
 //         }
 //     }
 
-//     [HttpGet]
-//     public async Task<ActionResult> LoadCountry()
-//     {
-//         var countries = await _dbcontext.Countries
-//             .Where(c => !c.Isdeleted)
-//             .Select(c => new { countryid = c.Countryid, name = c.Name })
-//             .ToListAsync();
-//         return Ok(countries);
-//     }
+    [HttpGet]
+public async Task<ActionResult> LoadCountry()
+{
+    var countries = await _userService.GetCountriesAsync();
+    var result = countries.Select(c => new { countryid = c.Countryid, name = c.Name });
+    return Ok(result);
+}
 
-//     [HttpGet]
-//     public async Task<ActionResult> GetState(int countryId)
-//     {
-//         var states = await _dbcontext.States
-//             .Where(s => s.Countryid == countryId && !s.Isdeleted)
-//             .Select(s => new { stateid = s.Stateid, name = s.Name })
-//             .ToListAsync();
-//         return Ok(states);
-//     }
+[HttpGet]
+public async Task<ActionResult> GetState(int countryId)
+{
+    var states = await _userService.GetStatesByCountryAsync(countryId);
+    var result = states.Select(s => new { stateid = s.Stateid, name = s.Name });
+    return Ok(result);
+}
 
-//     [HttpGet]
-//     public async Task<ActionResult> GetCity(int stateId)
-//     {
-//         var cities = await _dbcontext.Cities
-//             .Where(c => c.Stateid == stateId && !c.Isdeleted)
-//             .Select(c => new { cityid = c.Cityid, name = c.Name })
-//             .ToListAsync();
-//         return Ok(cities);
-//     }
-//     [HttpGet]
-//     public async Task<ActionResult> LoadRoles()
-//     {
-//         var roles = await _dbcontext.Userroles
-//             .Where(c => !c.Isdeleted)
-//             .Select(c => new { roleid = c.Roleid, name = c.Rolename })
-//             .ToListAsync();
-//         return Ok(roles);
-//     }
+[HttpGet]
+public async Task<ActionResult> GetCity(int stateId)
+{
+    var cities = await _userService.GetCitiesByStateAsync(stateId);
+    var result = cities.Select(c => new { cityid = c.Cityid, name = c.Name });
+    return Ok(result);
+}
+
+
+    [HttpGet]
+    public async Task<ActionResult> LoadRoles()
+    {
+        var roles = await _userService.GetRolesAsync();
+        var result = roles.Select(c => new { roleid = c.Roleid, name = c.Rolename });
+        return Ok(roles);
+    }
     
 //     [Authorize(policy: "AdminOnly")]
 //     public IActionResult Dashboard()
@@ -346,6 +243,6 @@ public class MainController : Controller
 //     {
 //         _logger.LogError(ex, "Error updating permissions");
 //         return StatusCode(500, new { success = false });
-    // }
+//     }
 // }
 }

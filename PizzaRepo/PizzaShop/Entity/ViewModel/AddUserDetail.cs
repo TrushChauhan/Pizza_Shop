@@ -17,7 +17,7 @@ public class AddUserDetail
     public string Email { get; set; } = null!;
     [Required(ErrorMessage = "password name is required")]
     public string Password { get; set; } = null!;
-    public string Profileimage { get; set; } = null!;
+    public string Profileimage { get; set; }
     [Required(ErrorMessage = "Phone number is required")]
     public string Phonenumber { get; set; } = null!;
     [Required(ErrorMessage = "Address is required")]
