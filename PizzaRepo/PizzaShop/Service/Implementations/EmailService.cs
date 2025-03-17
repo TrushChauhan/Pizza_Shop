@@ -1,23 +1,26 @@
 
-using System.Net;
-using System.Net.Mail;
+using MimeKit;
 using Microsoft.Extensions.Configuration;
 using Service.Interfaces;
+using System.Net;
+using System.Net.Mail;
 
-namespace Service.Implementations;
-
-public class EmailService : IEmailService
+namespace Service.Implementations
 {
-    private readonly IConfiguration _config;
-
-    public EmailService(IConfiguration config)
+    public class EmailService : IEmailService
     {
-        _config = config;
-    }
+        private readonly IConfiguration _config;
 
-    public void SendPasswordResetEmail(string email)
-    {
-        try{   string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(email)}'>Reset Password</a>";
+        public EmailService(IConfiguration config)
+        {
+            _config = config;
+        }
+
+        public void SendPasswordResetEmail(string email)
+        {
+            try
+        {
+            string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(email)}'>Reset Password</a>";
             string smtpEmail = "test.dotnet@etatvasoft.com";
             string smtpappPass = "P}N^{z-]7Ilp";
 
@@ -41,8 +44,10 @@ public class EmailService : IEmailService
             smtpclient.Send(mail);
             return;
         }
-        catch(Exception ex){
-            throw(ex);
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
         }
     }
 }

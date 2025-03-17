@@ -9,7 +9,7 @@
     var searchTerm = ViewBag.SearchTerm;
 }
 
-<form method="get" action="/Main/Users">
+<form method="get" action="/Main/ShowUsers">
     <div class="row-11 d-flex my-2 mx-2">
         <div class="col-2 text-Users-title fs-2">
             Users
@@ -82,7 +82,7 @@
                     @if (currentPage > 1)
                     {
                         <a class="btn btn-outline-primary mx-1"
-                            href="/Main/Users?page=@(currentPage - 1)&pageSize=@pageSize&searchTerm=@searchTerm">
+                            href="/Main/ShowUsers?page=@(currentPage - 1)&pageSize=@pageSize&searchTerm=@searchTerm">
                             <i class="fas fa-chevron-left"></i>
                         </a>
                     }
@@ -95,7 +95,7 @@
                     @if (currentPage < totalPages)
                     {
                         <a class="btn btn-outline-primary mx-1"
-                            href="/Main/Users?page=@(currentPage + 1)&pageSize=@pageSize&searchTerm=@searchTerm">
+                            href="/Main/ShowUsers?page=@(currentPage + 1)&pageSize=@pageSize&searchTerm=@searchTerm">
                             <i class="fas fa-chevron-right"></i>
                         </a>
                     }
@@ -133,7 +133,7 @@
         e.preventDefault();
         const searchTerm = document.querySelector('input[name="searchTerm"]').value;
         const pageSize = document.querySelector('select[name="pageSize"]').value;
-        window.location.href = `/Main/Users?page=1&pageSize=${pageSize}&searchTerm=${encodeURIComponent(searchTerm)}`;
+        window.location.href = `/Main/ShowUsers?page=1&pageSize=${pageSize}&searchTerm=${encodeURIComponent(searchTerm)}`;
     });
 
     document.querySelectorAll('.pagination-container a').forEach(link => {

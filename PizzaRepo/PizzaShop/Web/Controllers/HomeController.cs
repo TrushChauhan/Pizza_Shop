@@ -25,7 +25,7 @@ public class HomeController : Controller
     {
         if (Request.Cookies["Email"] != null)
         {
-            return RedirectToAction("Content", "Main");
+            return RedirectToAction("Users", "Main");
         }
         return View();
     }
@@ -93,7 +93,7 @@ public class HomeController : Controller
                     IsPersistent = model.IsRemember,
                     ExpiresUtc = model.IsRemember ? DateTime.UtcNow.AddDays(30) : null
                 });
-            return RedirectToAction("Content", "Main");
+            return RedirectToAction("Users", "Main");
         }
         
         TempData["Message"] = "Invalid credentials";
@@ -105,8 +105,8 @@ public class HomeController : Controller
     }
     public IActionResult ForgotPassword(string email)
     {
-        var user = _authService.IsUserExists(email);
-        if (user == null)
+        var userExists = _authService.IsUserExists(email);
+        if (!userExists)
         {
             TempData["Message"] = "Enter right Email Address";
             return RedirectToAction("Index", "Home");
@@ -139,7 +139,7 @@ public class HomeController : Controller
         }
 
         var user = _authService.IsUserExists(model.Email);
-        if (user == null)
+        if (!user)
         {
             return RedirectToAction("Index", "Home");
         }
