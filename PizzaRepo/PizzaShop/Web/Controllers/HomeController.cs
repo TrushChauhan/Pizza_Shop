@@ -99,19 +99,54 @@ public class HomeController : Controller
         TempData["Message"] = "Invalid credentials";
         return RedirectToAction("Index");
     }
-
-    private string GenerateJwtToken(string email)
+     public IActionResult AccessDenied()
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        
-        var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: creds
-        );
-        
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return View();
     }
+    public IActionResult ForgotPassword(string email)
+    {
+        var user = _authService.IsUserExists(email);
+        if (user == null)
+        {
+            TempData["Message"] = "Enter right Email Address";
+            return RedirectToAction("Index", "Home");
+        }
+        var vm = new userEmail(email);
+        return View(vm);
+    }
+    [HttpPost]
+    public IActionResult SendEmailLink(userEmail model)
+    {
+        string toemail = model.Email;
+        SendEmail(toemail);
+        return RedirectToAction("Index", "Home");
+    }
+    public void SendEmail(string toemail)
+    {
+        _authService.SendPasswordResetEmail(toemail);
+    }
+    [HttpGet]
+    public IActionResult ResetPassword(string email)
+    {
+        return View(new ResetPasswordModel { Email = email });
+    }
+    [HttpPost]
+    public IActionResult ResetPassword(ResetPasswordModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = _authService.IsUserExists(model.Email);
+        if (user == null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        _authService.ResetPassword(model.Email, model.NewPassword);
+        
+        return RedirectToAction("Index", "Home");
+    }
+
 }

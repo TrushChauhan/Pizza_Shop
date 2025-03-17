@@ -17,32 +17,32 @@ public class EmailService : IEmailService
 
     public void SendPasswordResetEmail(string email)
     {
-        var smtpSettings = _config.GetSection("SMTP");
-        using var client = new SmtpClient(smtpSettings["Host"])
-        {
-            Port = int.Parse(smtpSettings["Port"]),
-            Credentials = new NetworkCredential(
-                smtpSettings["Username"], 
-                smtpSettings["Password"]
-            ),
-            EnableSsl = true
-        };
+        try{   string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(email)}'>Reset Password</a>";
+            string smtpEmail = "test.dotnet@etatvasoft.com";
+            string smtpappPass = "P}N^{z-]7Ilp";
 
-        var mail = new MailMessage(
-            from: smtpSettings["From"],
-            to: email)
-        {
-            Subject = "Password Reset",
-            Body = GenerateResetEmailBody(email),
-            IsBodyHtml = true
-        };
+            SmtpClient smtpclient = new SmtpClient("mail.etatvasoft.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(smtpEmail, smtpappPass),
+                EnableSsl = true,
+            };
 
-        client.Send(mail);
-    }
+            MailMessage mail = new MailMessage
+            {
+                From = new MailAddress(smtpEmail),
+                Subject = "Reset Password for PizzaShop",
+                Body = emailBody,
+                IsBodyHtml = true,
 
-    private string GenerateResetEmailBody(string email)
-    {
-        return $@"<a href='{_config["BaseUrl"]}/Home/ResetPassword?email={
-            WebUtility.UrlEncode(email)}'>Reset Password</a>";
+            };
+            mail.IsBodyHtml = true;
+            mail.To.Add(email);
+            smtpclient.Send(mail);
+            return;
+        }
+        catch(Exception ex){
+            throw(ex);
+        }
     }
 }

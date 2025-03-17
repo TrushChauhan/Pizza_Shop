@@ -1036,11 +1036,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\PizzaShop\\Entity\\Entity.csproj",
+      "projectUniqueName": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj",
       "projectName": "Entity",
-      "projectPath": "d:\\PizzaShop\\Entity\\Entity.csproj",
+      "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj",
       "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
-      "outputPath": "d:\\PizzaShop\\Entity\\obj\\",
+      "outputPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"

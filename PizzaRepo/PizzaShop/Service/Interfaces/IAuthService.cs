@@ -6,6 +6,6 @@ public interface IAuthService
     void SendPasswordResetEmail(string email);
     void ResetPassword(string email, string newPassword);
     string EncryptPassword(string password);
-
+    bool IsUserExists(string email);
     string GetRoleByEmail(string email);
 }

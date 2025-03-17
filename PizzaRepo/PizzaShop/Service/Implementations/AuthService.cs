@@ -29,14 +29,16 @@ public class AuthService : IAuthService
         return user?.Password == encryptedPass;
     }
 
-    public void SendPasswordResetEmail(string email)
+    public async void SendPasswordResetEmail(string email)
     {
-        if (_userRepo.UserExists(email))
+        if (_userRepo.IsUserExists(email))
         {
             _emailService.SendPasswordResetEmail(email);
         }
     }
-
+        public bool IsUserExists(string email){
+            return _userRepo.IsUserExists(email);
+        }
     public void ResetPassword(string email, string newPassword)
     {
         var user = _userRepo.GetUserByEmail(email);

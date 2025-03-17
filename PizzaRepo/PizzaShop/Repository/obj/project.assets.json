@@ -737,11 +737,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\PizzaShop\\Repository\\Repository.csproj",
+      "projectUniqueName": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\Repository.csproj",
       "projectName": "Repository",
-      "projectPath": "D:\\PizzaShop\\Repository\\Repository.csproj",
+      "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\Repository.csproj",
       "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
-      "outputPath": "D:\\PizzaShop\\Repository\\obj\\",
+      "outputPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -756,8 +756,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\PizzaShop\\Entity\\Entity.csproj": {
-              "projectPath": "D:\\PizzaShop\\Entity\\Entity.csproj"
+            "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj": {
+              "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj"
             }
           }
         }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PizzaShop\\Web\\Web.csproj": {}
+    "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\Web.csproj": {}
   },
   "projects": {
-    "D:\\PizzaShop\\Entity\\Entity.csproj": {
+    "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PizzaShop\\Entity\\Entity.csproj",
+        "projectUniqueName": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj",
         "projectName": "Entity",
-        "projectPath": "D:\\PizzaShop\\Entity\\Entity.csproj",
+        "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj",
         "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
-        "outputPath": "D:\\PizzaShop\\Entity\\obj\\",
+        "outputPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -69,14 +69,14 @@
         }
       }
     },
-    "D:\\PizzaShop\\Repository\\Repository.csproj": {
+    "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PizzaShop\\Repository\\Repository.csproj",
+        "projectUniqueName": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\Repository.csproj",
         "projectName": "Repository",
-        "projectPath": "D:\\PizzaShop\\Repository\\Repository.csproj",
+        "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\Repository.csproj",
         "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
-        "outputPath": "D:\\PizzaShop\\Repository\\obj\\",
+        "outputPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -91,8 +91,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\PizzaShop\\Entity\\Entity.csproj": {
-                "projectPath": "D:\\PizzaShop\\Entity\\Entity.csproj"
+              "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj": {
+                "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj"
               }
             }
           }
@@ -126,14 +126,14 @@
         }
       }
     },
-    "D:\\PizzaShop\\Service\\Service.csproj": {
+    "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PizzaShop\\Service\\Service.csproj",
+        "projectUniqueName": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Service\\Service.csproj",
         "projectName": "Service",
-        "projectPath": "D:\\PizzaShop\\Service\\Service.csproj",
+        "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Service\\Service.csproj",
         "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
-        "outputPath": "D:\\PizzaShop\\Service\\obj\\",
+        "outputPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Service\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -148,71 +148,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\PizzaShop\\Entity\\Entity.csproj": {
-                "projectPath": "D:\\PizzaShop\\Entity\\Entity.csproj"
+              "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj": {
+                "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj"
               },
-              "D:\\PizzaShop\\Repository\\Repository.csproj": {
-                "projectPath": "D:\\PizzaShop\\Repository\\Repository.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.410\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "D:\\PizzaShop\\Web\\Web.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\PizzaShop\\Web\\Web.csproj",
-        "projectName": "Web",
-        "projectPath": "D:\\PizzaShop\\Web\\Web.csproj",
-        "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
-        "outputPath": "D:\\PizzaShop\\Web\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net7.0"
-        ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
-            "projectReferences": {
-              "D:\\PizzaShop\\Entity\\Entity.csproj": {
-                "projectPath": "D:\\PizzaShop\\Entity\\Entity.csproj"
-              },
-              "D:\\PizzaShop\\Service\\Service.csproj": {
-                "projectPath": "D:\\PizzaShop\\Service\\Service.csproj"
+              "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\Repository.csproj": {
+                "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Repository\\Repository.csproj"
               }
             }
           }
@@ -227,6 +167,84 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.11.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.7, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.11.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.410\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\Web.csproj",
+        "projectName": "Web",
+        "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\Web.csproj",
+        "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj": {
+                "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Entity\\Entity.csproj"
+              },
+              "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Service\\Service.csproj": {
+                "projectPath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Service\\Service.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.11.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[7.0.7, )"
@@ -234,6 +252,14 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.7, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.11.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

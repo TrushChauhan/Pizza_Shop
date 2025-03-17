@@ -29,7 +29,7 @@ public class UserRepository : IUserRepository
         _context.SaveChanges();
     }
 
-    public bool UserExists(string email)
+    public bool IsUserExists(string email)
     {
         return _context.Userlogins.Any(u => u.Email == email);
     }

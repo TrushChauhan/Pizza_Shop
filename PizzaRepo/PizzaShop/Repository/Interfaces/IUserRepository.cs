@@ -5,7 +5,7 @@ public interface IUserRepository
 {
    public Userlogin GetUserByEmail(string email);
     void UpdateUser(Userlogin user);
-   bool UserExists(string email);
+   bool IsUserExists(string email);
 
    int GetRoleIdByEmail(string email);
 }
