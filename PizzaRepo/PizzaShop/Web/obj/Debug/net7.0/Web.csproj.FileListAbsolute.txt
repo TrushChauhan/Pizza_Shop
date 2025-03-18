@@ -69,6 +69,10 @@ D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.AspNetC
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.Extensions.ObjectPool.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
@@ -78,13 +82,11 @@ D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.OpenApi
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\MimeKit.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Npgsql.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
-D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
-D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\System.Formats.Asn1.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\System.Text.Encodings.Web.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Entity.dll
@@ -118,3 +120,7 @@ D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\obj\Debug\net7.0\refint\Web.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\obj\Debug\net7.0\Web.pdb
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\obj\Debug\net7.0\Web.genruntimeconfig.cache
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\obj\Debug\net7.0\ref\Web.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll
