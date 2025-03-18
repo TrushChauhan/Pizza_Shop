@@ -12,10 +12,11 @@ public interface IUserRepository
    bool IsCorrectPassword(string email,string Password);
    (List<UserTable> Users, int TotalItems) GetUsers(string searchTerm, int page, int pageSize);
 
-   void AddNewUser(AddUserDetail userDetail);
+    void AddNewUser(AddUserDetail userDetail);
     Task<IEnumerable<Country>> GetCountriesAsync();
     Task<IEnumerable<State>> GetStatesByCountryAsync(int countryId);
     Task<IEnumerable<City>> GetCitiesByStateAsync(int stateId);
-    Task<IEnumerable<Userrole>> GetRolesAsync();
+    List<Userrole> GetRoles();
+    bool DeleteUserById(int id);
 }
 

@@ -19,7 +19,8 @@ public class UserRepository : IUserRepository
             .Include(u => u.Role)
             .FirstOrDefault(u => u.Email == email);
     }
-    public bool IsCorrectPassword(string email,string Password){
+    public bool IsCorrectPassword(string email, string Password)
+    {
         var user = _context.Userlogins.FirstOrDefault(u => u.Email == email);
 
         if (Password == user.Password)
@@ -28,9 +29,10 @@ public class UserRepository : IUserRepository
         }
         return false;
     }
-    public int GetRoleIdByEmail(string email){
+    public int GetRoleIdByEmail(string email)
+    {
         var user = _context.Userlogins
-                .FirstOrDefault(u => u.Email ==email);
+                .FirstOrDefault(u => u.Email == email);
         return user.Roleid;
     }
     public void UpdateUser(Userlogin user)
@@ -38,7 +40,8 @@ public class UserRepository : IUserRepository
         _context.Userlogins.Update(user);
         _context.SaveChanges();
     }
-    public (List<UserTable> Users, int TotalItems) GetUsers(string searchTerm, int page, int pageSize){
+    public (List<UserTable> Users, int TotalItems) GetUsers(string searchTerm, int page, int pageSize)
+    {
         var query = _context.Userdetails
             .Include(ud => ud.User)
             .Include(ud => ud.Role)
@@ -72,13 +75,14 @@ public class UserRepository : IUserRepository
                 ProfileImage = ud.Profileimage
             })
             .ToList();
-            return (users,totalItems);
+        return (users, totalItems);
     }
     public bool IsUserExists(string email)
     {
         return _context.Userlogins.Any(u => u.Email == email);
     }
-    public void AddNewUser(AddUserDetail model){
+    public void AddNewUser(AddUserDetail model)
+    {
         var nextUserId = _context.Userdetails.Count() + 1;
         DateTime now = DateTime.Now;
 
@@ -102,6 +106,7 @@ public class UserRepository : IUserRepository
             Stateid = model.Stateid,
             Roleid = model.Roleid,
             Zipcode = model.Zipcode,
+            Profileimage=model.ProfileimagePath,
             Phonenumber = model.Phonenumber,
             Status = true,
             Createddate = now,
@@ -112,7 +117,23 @@ public class UserRepository : IUserRepository
         _context.Userdetails.Add(userdetail);
         _context.SaveChanges();
     }
-     public async Task<IEnumerable<Country>> GetCountriesAsync()
+    public bool DeleteUserById(int id)
+    {
+        var userDetail = _context.Userdetails.FirstOrDefault(u => u.Userid == id);
+        var userLogin = _context.Userlogins.FirstOrDefault(u => u.Userid == id);
+
+        if (userDetail != null && userLogin != null)
+        {
+            userDetail.Isdeleted = true;
+            userLogin.Isdeleted = true;
+
+            _context.SaveChanges();
+            return true;
+        }
+
+        return false;
+    }
+    public async Task<IEnumerable<Country>> GetCountriesAsync()
     {
         return await _context.Countries
             .Where(c => !c.Isdeleted)
@@ -132,11 +153,11 @@ public class UserRepository : IUserRepository
             .Where(c => c.Stateid == stateId && !c.Isdeleted)
             .ToListAsync();
     }
-    public async Task<IEnumerable<Userrole>> GetRolesAsync()
+    public List<Userrole> GetRoles()
     {
-        return await _context.Userroles
+        return _context.Userroles
             .Where(r => !r.Isdeleted)
-            .ToListAsync();
+            .ToList();
     }
 
 }

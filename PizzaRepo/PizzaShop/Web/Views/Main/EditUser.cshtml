@@ -17,7 +17,7 @@
     <div class="add-user-frame">
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" asp-for="Firstname" id="firstName" placeholder="First Name">
+                <input type="text" class="form-control" asp-for="Firstname" id="firstName" placeholder="First Name" >
                 <span class="text-danger" asp-validation-for="Firstname"></span>
                 <label for="firstName">First Name</label>
             </div>
@@ -28,11 +28,10 @@
             </div>
         </div>
 
-
+    
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <input type="text" class="form-control" asp-for="Username" id="userName" placeholder="User Name">
-                <span class="text-danger" asp-validation-for="Username"></span>
                 <label for="userName">User Name</label>
             </div>
             <div class="col form-floating m-2 p-0">
@@ -42,34 +41,31 @@
                     <option value="2">Account Manager</option>
                     <option value="3">Chef</option>
                 </select>
-                <span class="text-danger" asp-validation-for="Roleid"></span>
                 <label for="roles">Role</label>
             </div>
         </div>
 
-
+      
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="email" class="form-control" asp-for="Email" id="email" placeholder="Email">
+                <input type="email" class="form-control" asp-for="Email" id="email"  placeholder="Email">
                 <label for="email">Email</label>
             </div>
             <div class="col form-floating m-2 p-0">
-                <input type="password" class="form-control icon-password" asp-for="Password" id="password"
-                    placeholder="Password">
+                <input type="password" class="form-control icon-password" asp-for="Password" id="password" placeholder="Password" >
                 <label for="password">Password</label>
             </div>
         </div>
 
-
+        
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="file" class="form-control" id="profileImage" asp-for="ProfileImageFile" accept="image/*">
+                <input type="file" class="form-control" id="profileImage" asp-for="ProfileImageFile" placeholder="Profile Image">
                 <label for="profileImage">Profile Image</label>
-                <span asp-validation-for="ProfileImageFile" class="text-danger"></span>
             </div>
         </div>
 
-
+        
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <select class="form-select" id="ddlCountry" asp-for="Countryid">
@@ -119,11 +115,11 @@
     </div>
 </form>
 <script>
-
+    
     $(document).ready(function () {
         var ddlCountry = $('#ddlCountry');
         ddlCountry.append($("<option></option>").val('').html('Please Select Country'));
-
+        
         $.ajax({
             url: '@Url.Action("LoadCountry", "Main")',
             type: 'GET',
@@ -192,5 +188,4 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>

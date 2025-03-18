@@ -44,7 +44,7 @@
                 {
                     <tr data-user-id="@user.UserId">
                         <td>
-                            <img src="@user.ProfileImage" alt="Profile" width="30px" class="mx-2">
+                            <img src="@user.ProfileImage" alt="" width="40px" height="35px" class="mx-2 rounded-circle ">
                             @user.Name
                         </td>
                         <td>@user.Email</td>
@@ -54,8 +54,8 @@
                             <span class="status-active">@user.Status</span>
                         </td>
                         <td>
-                            <i class="material-icons" onclick="editUser(@user.UserId)">edit</i>
-                            <i class="material-icons delete-user" data-user-id="@user.UserId" data-bs-toggle="modal"
+                            <i class="material-icons">edit</i>
+                            <i class="material-icons delete-user"y data-user-id="@user.UserId" data-bs-toggle="modal"
                                 data-bs-target="#confirmmodal">delete</i>
                         </td>
                     </tr>

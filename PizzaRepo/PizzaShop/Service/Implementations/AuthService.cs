@@ -57,7 +57,9 @@ public class AuthService : IAuthService
         int roleId = _userRepo.GetRoleIdByEmail(email);
         return _roleRepo.GetRoleById(roleId);
     }
-
+    public string GetRoleById(int roleid){
+        return _roleRepo.GetRoleById(roleid);
+    }
     public string EncryptPassword(string pass)
     {
         var encode = Encoding.UTF8.GetBytes(pass);

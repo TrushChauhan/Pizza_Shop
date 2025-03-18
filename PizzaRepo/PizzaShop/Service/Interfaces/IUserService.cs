@@ -10,5 +10,7 @@ public interface IUserService
     Task<IEnumerable<Country>> GetCountriesAsync();
     Task<IEnumerable<State>> GetStatesByCountryAsync(int countryId);
     Task<IEnumerable<City>> GetCitiesByStateAsync(int stateId);
-    Task<IEnumerable<Userrole>> GetRolesAsync();
+    List<Userrole> GetRoles();
+
+    bool DeleteUser(int id);
 }

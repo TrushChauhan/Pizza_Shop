@@ -9,6 +9,7 @@ using Service.Interfaces;
 using Service.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddScoped<IRoleRepository,RoleRepository>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IEmailService,EmailService>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IFileService,FileService>();
+builder.Services.AddScoped<IRolesAndPermissionsService,RolesAndPermissionsService>();
 // Session Configuration
 builder.Services.AddSession(options =>
 {
@@ -30,7 +33,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Combined Authentication Configuration
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

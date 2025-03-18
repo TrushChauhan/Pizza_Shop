@@ -9,4 +9,5 @@ public interface IAuthService
     bool IsUserExists(string email);
     bool IsCorrectPassword(string email,string Password);
     string GetRoleByEmail(string email);
+    string GetRoleById(int roleid);
 }
