@@ -326,6 +326,7 @@
       "Entity/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.3.0",
+          "Microsoft.EntityFrameworkCore": "7.0.7",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "7.0.0"
         },
         "runtime": {

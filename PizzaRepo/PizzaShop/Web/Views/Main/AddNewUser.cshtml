@@ -51,11 +51,13 @@
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <input type="email" class="form-control" asp-for="Email" id="email" placeholder="Email">
+                <span class="text-danger" asp-validation-for="Email"></span>
                 <label for="email">Email</label>
             </div>
             <div class="col form-floating m-2 p-0">
                 <input type="password" class="form-control icon-password" asp-for="Password" id="password"
                     placeholder="Password">
+                <span class="text-danger" asp-validation-for="Password"></span>
                 <label for="password">Password</label>
             </div>
         </div>
@@ -64,8 +66,8 @@
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <input type="file" class="form-control" id="profileImage" asp-for="ProfileImageFile" accept="image/*">
-                <label for="profileImage">Profile Image</label>
                 <span asp-validation-for="ProfileImageFile" class="text-danger"></span>
+                <label for="profileImage">Profile Image</label>
             </div>
         </div>
 
@@ -75,18 +77,21 @@
                 <select class="form-select" id="ddlCountry" asp-for="Countryid">
                     <option value="" selected disabled>Select Country</option>
                 </select>
+                <span asp-validation-for="Countryid" class="text-danger"></span>
                 <label for="ddlCountry">Country</label>
             </div>
             <div class="col form-floating m-2 p-0">
                 <select class="form-select" id="ddlState" asp-for="Stateid">
                     <option value="" selected disabled>Select State</option>
                 </select>
+                <span asp-validation-for="Stateid" class="text-danger"></span>
                 <label for="ddlState">State</label>
             </div>
             <div class="col form-floating m-2 p-0">
                 <select class="form-select" id="ddlCity" asp-for="Cityid">
                     <option value="" selected disabled>Select City</option>
                 </select>
+                <span asp-validation-for="Cityid" class="text-danger"></span>
                 <label for="ddlCity">City</label>
             </div>
         </div>
@@ -94,14 +99,17 @@
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" asp-for="Zipcode">
+                <span asp-validation-for="Zipcode" class="text-danger"></span>
                 <label for="zipcode">Zipcode</label>
             </div>
             <div class="col form-floating m-2 p-0">
                 <input type="text" class="form-control" id="address" placeholder="Address" asp-for="Address">
+                <span asp-validation-for="Address" class="text-danger"></span>
                 <label for="address">Address</label>
             </div>
             <div class="col form-floating m-2 p-0">
                 <input type="text" class="form-control" id="phone" placeholder="Phone" asp-for="Phonenumber">
+                <span asp-validation-for="Phonenumber" class="text-danger"></span>
                 <label for="phone">Phone</label>
             </div>
         </div>

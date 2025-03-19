@@ -18,7 +18,7 @@ public class AddUserDetail
     [Required(ErrorMessage = "Email is required")]
     public string Email { get; set; } = null!;
 
-    [Required(ErrorMessage = "password name is required")]
+    [Required(ErrorMessage = "password is required")]
     public string Password { get; set; } = null!;
     public IFormFile ProfileImageFile{get; set; }
     public string ProfileimagePath { get; set; }
@@ -30,10 +30,10 @@ public class AddUserDetail
     [Required(ErrorMessage = "Zipcode is required")]
     public string Zipcode { get; set; } = null!;
     public bool Status { get; set; }
-    [Required(ErrorMessage = "Country name is required")]
+    [Required(ErrorMessage = "Country is required")]
     public int Countryid { get; set; }
-    [Required(ErrorMessage = "State name is required")]
+    [Required(ErrorMessage = "State is required")]
     public int Stateid { get; set; }
-    [Required(ErrorMessage = "City name is required")]
+    [Required(ErrorMessage = "City is required")]
     public int Cityid { get; set; }
 }

@@ -1,3 +1,6 @@
+@{
+    var user = ViewBag.User;
+}
 <!DOCTYPE html>
 <html>
 
@@ -18,9 +21,6 @@
 </head>
 
 <body>
-    @{
-        var user = ViewBag.User;
-    }
     <div class="container-fluid">
         <div class="row">
             <!-- Main Sidebar -->
@@ -48,7 +48,7 @@
                             </li>
                             <li class="sidebar-item m-2">
                                 <i class="fas fa-pizza-slice me-2"></i>
-                                <span><a href="menu.html" class="text-decoration-none">Menu</a></span>
+                                <span><a asp-controller="Main" asp-action="Menu" class="text-decoration-none">Menu</a></span>
                             </li>
                             <li class="sidebar-item m-2">
                                 <i class="fas fa-table me-2"></i>
@@ -90,7 +90,7 @@
                                     <img src="~/images/Default_pfp.svg.png" alt="Profile" class="rounded-circle"
                                         height="50">
                                     <div class="ms-3">
-                                        <h6 class="mb-0">John Doe</h6>
+                                        <h6 class="mb-0" id="user-name"></h6>
                                     </div>
                                 </li>
                                 <li>
@@ -167,3 +167,17 @@
 
 
 </body>
+<script>
+$(document).ready(function () {
+    $.ajax({
+        url: '/Home/GetUserName',
+        type: 'GET',
+        success: function (data) {
+            $('#user-name').text(data.name);
+        },
+        error: function () {
+            console.log("Error fetching user name");
+        }
+    });
+});
+</script>

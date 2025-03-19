@@ -138,6 +138,9 @@ a{
 th{
   color: gray;
 }
+.delete-user{
+  cursor: pointer;
+}
 .pagination-container {
   padding: 15px 0;
   border-top: 1px solid #dee2e6;

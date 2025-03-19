@@ -22,7 +22,7 @@ public class AuthService : IAuthService
         _emailService = emailService;
     }
 
-    public async Task<bool> LoginAsync(string email, string password, bool rememberMe)
+    public async Task<bool> LoginAsync(string email, string password)
     {
         var encryptedPass = EncryptPassword(password);
         var user = _userRepo.GetUserByEmail(email);
@@ -51,6 +51,10 @@ public class AuthService : IAuthService
             user.Password = EncryptPassword(newPassword);
             _userRepo.UpdateUser(user);
         }
+    }
+    public string GetUserNameByEmail(string email){
+         return _userRepo.GetUserNameByEmail(email);
+
     }
     public string GetRoleByEmail(string email)
     {

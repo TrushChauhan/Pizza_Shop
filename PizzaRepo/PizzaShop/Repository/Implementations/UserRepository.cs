@@ -29,6 +29,11 @@ public class UserRepository : IUserRepository
         }
         return false;
     }
+    public string GetUserNameByEmail(string email){
+        var user = GetUserByEmail(email);
+        var userdetail=_context.Userdetails.FirstOrDefault(u=>u.Userid == user.Userid);
+        return userdetail.Username;
+    }
     public int GetRoleIdByEmail(string email)
     {
         var user = _context.Userlogins
@@ -106,7 +111,7 @@ public class UserRepository : IUserRepository
             Stateid = model.Stateid,
             Roleid = model.Roleid,
             Zipcode = model.Zipcode,
-            Profileimage=model.ProfileimagePath,
+            Profileimage = model.ProfileimagePath,
             Phonenumber = model.Phonenumber,
             Status = true,
             Createddate = now,
@@ -115,6 +120,23 @@ public class UserRepository : IUserRepository
 
         _context.Userlogins.Add(userlogin);
         _context.Userdetails.Add(userdetail);
+        _context.SaveChanges();
+    }
+    public Userdetail GetUserById(int userId)
+    {
+        return _context.Userdetails
+            .Include(ud => ud.User)
+            .Include(ud => ud.Role)
+            .FirstOrDefault(ud => ud.Userid == userId);
+    }
+    public Userlogin GetUserloginDetails(int UserId){
+        return _context.Userlogins.Find(UserId);
+    }
+
+    public void UpdateUser(Userlogin user, Userdetail detail)
+    {
+        _context.Userlogins.Update(user);
+        _context.Userdetails.Update(detail);
         _context.SaveChanges();
     }
     public bool DeleteUserById(int id)

@@ -11,6 +11,7 @@ using System.Net.Mail;
 using Entity.ViewModel;
 using AspNetCoreGeneratedDocument;
 using Service.Interfaces;
+using Services.Implementations;
 namespace Web.Controllers;
 public class MainController : Controller
 {
@@ -20,13 +21,15 @@ public class MainController : Controller
     private readonly IAuthService _authService;
     private readonly IEmailService _emailService;
     private readonly IRolesAndPermissionsService _rolesPermissionsService;
-    public MainController(IUserService userService, IConfiguration config, IAuthService authService, IEmailService emailService,IRolesAndPermissionsService rolesAndPermissionsService)
+    private readonly IFileService _fileService;
+    public MainController(IUserService userService, IConfiguration config, IAuthService authService, IEmailService emailService, IRolesAndPermissionsService rolesAndPermissionsService,IFileService fileService)
     {
         _config = config;
         _userService = userService;
         _authService = authService;
         _emailService = emailService;
-        _rolesPermissionsService= rolesAndPermissionsService;
+        _rolesPermissionsService = rolesAndPermissionsService;
+        _fileService=fileService;
     }
     [Authorize]
     public IActionResult Users()
@@ -82,21 +85,52 @@ public class MainController : Controller
         }
         return RedirectToAction("Index", "Home");
     }
+    [Authorize(policy: "AdminOnly")]
     public IActionResult AddNewUser()
     {
         return View();
     }
 
     [HttpPost]
+    [Authorize(policy: "AdminOnly")]
     public IActionResult AddNewUser(AddUserDetail model)
     {
         _emailService.SendEmailToNewUser(model.Email, model.Password);
         _userService.AddNewUser(model);
         return RedirectToAction("Users");
     }
+    [HttpGet]
+    [Authorize(policy: "AdminOnly")]
+    public IActionResult EditUser(int id)
+    {
+        var user = _userService.GetUserForEdit(id);
+        return View(user);
+    }
+    [Authorize(policy: "AdminOnly")]
+    [HttpPost]
+    public IActionResult EditUser(EditUserDetail model)
+    {
 
+        try
+        {
+            var imagePath = model.ExistingProfileImage;
+            if (model.ProfileImageFile != null)
+            {
+                imagePath = _fileService.SaveProfileImage(model.ProfileImageFile).Result;
+            }
+
+            _userService.UpdateUser(model, imagePath);
+            return RedirectToAction("Users");
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error updating user: " + ex.Message);
+            return View(model);
+        }
+    }
 
     [HttpPost]
+    [Authorize(policy: "AdminOnly")]
     public IActionResult Delete(int id)
     {
         bool Isdeleted = _userService.DeleteUser(id);
@@ -150,8 +184,8 @@ public class MainController : Controller
     [Authorize(policy: "AdminOnly")]
     public IActionResult Permissions(int roleId)
     {
-        var permissions=_rolesPermissionsService.GetPermissionsByRole(roleId);
-        var role= _authService.GetRoleById(roleId);
+        var permissions = _rolesPermissionsService.GetPermissionsByRole(roleId);
+        var role = _authService.GetRoleById(roleId);
 
         ViewBag.RoleName = role;
         ViewBag.RoleId = roleId;
@@ -163,8 +197,11 @@ public class MainController : Controller
     [Authorize(policy: "AdminOnly")]
     public IActionResult UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions)
     {
-        _rolesPermissionsService.UpdatePermissions(roleId,permissions);    
+        _rolesPermissionsService.UpdatePermissions(roleId, permissions);
         return Ok(new { success = true });
-        
+
+    }
+    public IActionResult Menu(){
+        return View();
     }
 }

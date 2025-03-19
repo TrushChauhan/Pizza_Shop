@@ -23,9 +23,6 @@ namespace Services.Implementations
                 return null;
 
             var uploadsFolder = Path.Combine(_environment.WebRootPath, "images", "profiles");
-            if (!Directory.Exists(uploadsFolder))
-                Directory.CreateDirectory(uploadsFolder);
-
             var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(file.FileName)}";
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
@@ -33,7 +30,6 @@ namespace Services.Implementations
             {
                 await file.CopyToAsync(fileStream);
             }
-
             return $"/images/profiles/{uniqueFileName}";
         }
     }

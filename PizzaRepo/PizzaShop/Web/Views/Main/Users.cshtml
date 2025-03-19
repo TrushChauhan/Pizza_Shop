@@ -51,11 +51,11 @@
                         <td>@user.Phone</td>
                         <td>@user.Role</td>
                         <td>
-                            <span class="status-active">@user.Status</span>
+                            <span class="status px-4 py-1" >@user.Status</span>
                         </td>
                         <td>
-                            <i class="material-icons">edit</i>
-                            <i class="material-icons delete-user"y data-user-id="@user.UserId" data-bs-toggle="modal"
+                            <a asp-action="EditUser" asp-route-id="@user.UserId"><i class="material-icons" >edit</i></a>
+                            <i class="material-icons delete-user" data-user-id="@user.UserId" data-bs-toggle="modal"
                                 data-bs-target="#confirmmodal">delete</i>
                         </td>
                     </tr>
@@ -67,14 +67,14 @@
             <div class="col-md-8 d-flex align-items-center justify-content-end">
                 <div class="row mx-2">
                     <select class="form-select" name="pageSize" onchange="this.form.submit()">
-                        <option type="submit" value="1" selected=@(pageSize == 1)>1</option>
-                        <option type="submit" value="2" selected=@(pageSize == 2)>2</option>
-                        <option type="submit" value="3" selected=@(pageSize == 3)>3</option>
+                        <option value="1" selected=@(pageSize == 1)>1</option>
+                        <option value="2" selected=@(pageSize == 2)>2</option>
+                        <option value="3" selected=@(pageSize == 3)>3</option>
                     </select>
                 </div>
                 <div>
                     <span class="text-muted">
-                        Showing @((currentPage - 1) * pageSize + 1) - @Math.Min(currentPage * pageSize, totalItems) of
+                        Showing @Math.Min((currentPage - 1) * pageSize + 1,totalItems) - @Math.Min(currentPage * pageSize, totalItems) of
                         @totalItems
                     </span>
                 </div>
@@ -183,6 +183,19 @@
             }
         });
     }
-
+    
+    const statusElements = document.querySelectorAll('.status');
+    
+    statusElements.forEach(element => {
+        const status = element.innerHTML;
+        
+        if (status === "inactive") {
+            element.classList.add('status-inactive');
+            element.classList.remove('status-active');
+        } else {
+            element.classList.add('status-active');
+            element.classList.remove('status-inactive');
+        }
+});
     initializeDeleteButtons();
 </script>

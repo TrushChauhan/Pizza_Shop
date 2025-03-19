@@ -29,16 +29,21 @@ public class HomeController : Controller
         }
         return View();
     }
-
+    [HttpGet]
+public IActionResult GetUserName()
+{
+    var userName = _authService.GetUserNameByEmail(Request.Cookies["Email"]);
+    return Json(new { name = userName });
+}
     [HttpPost]
     public async Task<IActionResult> Login(UserDemo model)
     {
-        var success = await _authService.LoginAsync(model.Email, model.Password, model.IsRemember);
+        var success = await _authService.LoginAsync(model.Email, model.Password);
         if (success)
-        {   
+        {
             var userRole = _authService.GetRoleByEmail(model.Email);
+            string UserName = _authService.GetUserNameByEmail(model.Email);
 
-            ViewBag.User = model;
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
 
@@ -64,16 +69,15 @@ public class HomeController : Controller
             HttpContext.Session.SetString("Token", tokenString);
             HttpContext.Session.SetString("Email", model.Email);
             HttpContext.Session.SetString("Role", userRole);
-
+            CookieOptions cookie = new CookieOptions()
+            {
+                Expires = DateTime.Now.AddDays(30)
+            };
+            Response.Cookies.Append("Jwt", tokenString, cookie);
             if (model.IsRemember)
             {
-                CookieOptions cookie = new CookieOptions()
-                {
-                    Expires = DateTime.Now.AddDays(30)
-                };
-                Response.Cookies.Append("Token", tokenString, cookie);
+
                 Response.Cookies.Append("Email", model.Email, cookie);
-                Response.Cookies.Append("Jwt", tokenString, cookie);
             }
 
             var claims = new List<Claim>
@@ -95,11 +99,11 @@ public class HomeController : Controller
                 });
             return RedirectToAction("Users", "Main");
         }
-        
+
         TempData["Message"] = "Invalid credentials";
         return RedirectToAction("Index");
     }
-     public IActionResult AccessDenied()
+    public IActionResult AccessDenied()
     {
         return View();
     }
@@ -145,7 +149,7 @@ public class HomeController : Controller
         }
 
         _authService.ResetPassword(model.Email, model.NewPassword);
-        
+
         return RedirectToAction("Index", "Home");
     }
 

@@ -44,14 +44,24 @@ public class RoleRepository : IRoleRepository
         .ToList();
         return permissions;
     }
-   public void UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions){
-        var existingPermissions = _context.Roleandpermissions
-            .Where(rp => rp.Roleid == roleId)
-            .ToList();
+public void UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions)
+{
+    var existingPermissions = _context.Roleandpermissions
+        .Where(rp => rp.Roleid == roleId)
+        .ToList();
 
-        _context.Roleandpermissions.RemoveRange(existingPermissions);
+    foreach (var perm in permissions)
+    {
+        var existing = existingPermissions
+            .FirstOrDefault(rp => rp.Permissionid == perm.PermissionId);
 
-        foreach (var perm in permissions)
+        if (existing != null)
+        {
+            existing.Canview = perm.CanView;
+            existing.Canaddedit = perm.CanAddEdit;
+            existing.Candelete = perm.CanDelete;
+        }
+        else
         {
             _context.Roleandpermissions.Add(new Roleandpermission
             {
@@ -63,8 +73,8 @@ public class RoleRepository : IRoleRepository
                 Createddate = DateTime.Now,
             });
         }
-        _context.SaveChanges();
+    }
 
-   }
-
+    _context.SaveChanges();
+}
 }
