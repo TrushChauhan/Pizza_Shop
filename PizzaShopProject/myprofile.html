@@ -73,7 +73,7 @@
           </button>
           <img class="col my-2 mx-2" src="images/Default_pfp.svg.png" alt="" height="30px">
         </div>
-        <div class="row d-flex my-2">
+        <div class="row d-flex m-4 box shadow">
           <div class="col-12 text-Users-title fs-2">
             My Profile
           </div>
@@ -81,12 +81,90 @@
             <div class="row">
               <img class="" src="images/profile_div_bg.jpg" alt="" height="50px">
             </div>
-            <div class="row mb-5">
-              <div class="col-6 ml-3">
-                <img src="images/Default_pfp.svg.png" class="rounded-circle w-25 position-relative bottom-50 mt-5">
+            <div class="row p-0 ">
+              <div class="col mt-4 d-flex">
+                <img src="images/Default_pfp.svg.png" class="rounded-circle w-25 position-relative bottom-50 mt-5 mx-4 p-0">
+                <div class="row d-flex flex-column">
+                  <div class="d-flex col">
+                    <p class="Firstname fs-4 fw-bold">Admin</p>
+                    <p class="Lastname fs-4 fw-bold mx-2">admin</p>
+                  </div>
+                  <div class="col">
+                    <p class="Username fs-5">admin</p>
+                  </div>
+                </div>
               </div>
-              <div class="col-6">
-                
+              <div class="col text-align-right mt-4">
+                <p class="Email mx-2">admin@gmail.com</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" asp-for="Firstname" id="firstName" placeholder="First Name">
+                <span class="text-danger" asp-validation-for="Firstname"></span>
+                <label for="firstName">First Name</label>
+              </div>
+              <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" asp-for="Lastname" id="lastName" placeholder="Last Name">
+                <span class="text-danger" asp-validation-for="Lastname"></span>
+                <label for="lastName">Last Name</label>
+              </div>
+            </div>
+            <div class="row ">
+              <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" asp-for="Username" id="userName" placeholder="User Name">
+                <span class="text-danger" asp-validation-for="Username"></span>
+                <label for="userName">User Name</label>
+              </div>
+              <div class="col form-floating m-2 p-0">
+                <input type="text" class="form-control" id="phone" placeholder="Phone" asp-for="Phonenumber">
+                <span asp-validation-for="Phonenumber" class="text-danger"></span>
+                <label for="phone">Phone</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlCountry" asp-for="Countryid">
+                  <option value="" selected disabled>Select Country</option>
+                </select>
+                <span asp-validation-for="Countryid" class="text-danger"></span>
+                <label for="ddlCountry">Country</label>
+              </div>
+              <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlState" asp-for="Stateid">
+                  <option value="" selected disabled>Select State</option>
+                </select>
+                <span asp-validation-for="Stateid" class="text-danger"></span>
+                <label for="ddlState">State</label>
+              </div>
+              <div class="col form-floating m-2 p-0">
+                <select class="form-select" id="ddlCity" asp-for="Cityid">
+                  <option value="" selected disabled>Select City</option>
+                </select>
+                <span asp-validation-for="Cityid" class="text-danger"></span>
+                <label for="ddlCity">City</label>
+              </div>
+            </div>
+            <div class="row ">
+              <div class="col-8 form-floating">
+                <input type="text" class="form-control" id="address" placeholder="Address" asp-for="Address">
+                <span asp-validation-for="Address" class="text-danger"></span>
+                <label for="address">Address</label>
+              </div>
+              <div class="col-4 form-floating ">
+                <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" asp-for="Zipcode">
+                <span asp-validation-for="Zipcode" class="text-danger"></span>
+                <label for="zipcode">Zipcode</label>
+              </div>
+            </div>
+            <div class="row m-2 my-3 text-align-right">
+              <div class="col my-2">
+                <button type="submit" class="create-user-button p-2">
+                  Update
+                </button>
+                <a asp-controller="Main" asp-action="Users" class="cancel-user-button text-decoration-none p-2">
+                  Cancel
+                </a>
               </div>
             </div>
           </div>

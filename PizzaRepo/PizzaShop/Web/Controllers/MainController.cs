@@ -168,6 +168,9 @@ public class MainController : Controller
         var result = cities.Select(c => new { cityid = c.Cityid, name = c.Name });
         return Ok(result);
     }
+    public IActionResult MyProfile(){
+        return View();
+    }
 
     [Authorize(policy: "AdminOnly")]
     public IActionResult Dashboard()
