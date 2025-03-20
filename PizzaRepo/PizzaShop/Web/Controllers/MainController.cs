@@ -12,6 +12,7 @@ using Entity.ViewModel;
 using AspNetCoreGeneratedDocument;
 using Service.Interfaces;
 using Services.Implementations;
+using System.Security.Claims;
 namespace Web.Controllers;
 public class MainController : Controller
 {
@@ -32,6 +33,41 @@ public class MainController : Controller
         _fileService=fileService;
     }
     [Authorize]
+    public IActionResult GetUserName()
+{
+    string email= User.FindFirst(ClaimTypes.Name)?.Value;
+    int userId=_authService.GetUserIdByEmail(email);
+    var user=_userService.GetUserForEdit(userId);
+    return Json(new { name = user.Username,imagePath= user.ExistingProfileImage});
+}
+    public IActionResult MyProfile()
+    {
+        string email= User.FindFirst(ClaimTypes.Name)?.Value;
+        int userId=_authService.GetUserIdByEmail(email);
+        var Profile=_userService.GetProfileForUpdate(userId);
+        return View(Profile);
+    }
+    [HttpPost]
+    public IActionResult UpdateUserProfile(MyProfile model)
+    {
+
+        try
+        {
+            var imagePath = model.ExistingProfileImage;
+            if (model.ProfileImageFile != null)
+            {
+                imagePath = _fileService.SaveProfileImage(model.ProfileImageFile).Result;
+            }
+
+           _userService.UpdateUserProfile(model, imagePath);
+            return RedirectToAction("Users");
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error updating user: " + ex.Message);
+            return View(model);
+        }
+    }
     public IActionResult Users()
     {
         ShowUsers();
@@ -48,6 +84,7 @@ public class MainController : Controller
         ViewBag.SearchTerm = searchTerm;
         return View("Users", users);
     }
+
 
     public IActionResult Logout()
     {
@@ -168,9 +205,6 @@ public class MainController : Controller
         var result = cities.Select(c => new { cityid = c.Cityid, name = c.Name });
         return Ok(result);
     }
-    public IActionResult MyProfile(){
-        return View();
-    }
 
     [Authorize(policy: "AdminOnly")]
     public IActionResult Dashboard()
@@ -183,7 +217,7 @@ public class MainController : Controller
         var roles = _userService.GetRoles();
         return View(roles);
     }
-
+    
     [Authorize(policy: "AdminOnly")]
     public IActionResult Permissions(int roleId)
     {

@@ -26,6 +26,44 @@ public class UserService : IUserService
         var query = _userRepo.GetUsers(SearchTerm, page, PageSize);
         return query;
     }
+    public MyProfile GetProfileForUpdate(int userId){
+        var userDetail = _userRepo.GetUserById(userId);
+        return new MyProfile
+        {
+            UserId = userDetail.Userid,
+            Firstname = userDetail.Firstname,
+            Lastname = userDetail.Lastname,
+            Username = userDetail.Username,
+            Email = userDetail.User.Email,
+            Roleid = userDetail.Roleid,
+            Countryid = userDetail.Countryid,
+            Stateid = userDetail.Stateid,
+            Cityid = userDetail.Cityid,
+            Address = userDetail.Address,
+            Zipcode = userDetail.Zipcode,
+            Status= (userDetail.Status == true)? "1":"2",
+            Phonenumber = userDetail.Phonenumber,
+            ExistingProfileImage = userDetail.Profileimage
+        };
+    }
+    public void UpdateUserProfile(MyProfile model, string profileImagePath)
+    {
+        var user = _userRepo.GetUserById(model.UserId);
+        var userLogin = _userRepo.GetUserloginDetails(model.UserId);
+        user.Firstname = model.Firstname;
+        user.Lastname = model.Lastname;
+        user.Username = model.Username;
+        user.Address = model.Address;
+        user.Countryid = model.Countryid;
+        user.Stateid = model.Stateid;
+        user.Cityid = model.Cityid;
+        user.Zipcode = model.Zipcode;
+        user.Phonenumber = model.Phonenumber;
+        user.Profileimage = profileImagePath ?? user.Profileimage;
+        user.Status=(model.Status=="1")?true: false;
+        user.Modifieddate=DateTime.Now;
+        _userRepo.UpdateUser(userLogin, user);
+    }
     public void AddNewUser(AddUserDetail user)
     {
         var imagePath = _fileService.SaveProfileImage(user.ProfileImageFile).Result;
@@ -54,6 +92,7 @@ public class UserService : IUserService
             ExistingProfileImage = userDetail.Profileimage
         };
     }
+
 
     public void UpdateUser(EditUserDetail model, string profileImagePath)
     {

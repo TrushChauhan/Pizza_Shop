@@ -29,6 +29,11 @@ public class UserRepository : IUserRepository
         }
         return false;
     }
+    public int GetUserIdByEmail(string email){
+         var user = _context.Userlogins
+                .FirstOrDefault(u => u.Email == email);
+        return user.Userid;
+    }
     public string GetUserNameByEmail(string email){
         var user = GetUserByEmail(email);
         var userdetail=_context.Userdetails.FirstOrDefault(u=>u.Userid == user.Userid);

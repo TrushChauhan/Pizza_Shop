@@ -21,5 +21,6 @@ public interface IUserRepository
     List<Userrole> GetRoles();
     bool DeleteUserById(int id);
     string GetUserNameByEmail(string email);
+    int GetUserIdByEmail(string email);
 }
 

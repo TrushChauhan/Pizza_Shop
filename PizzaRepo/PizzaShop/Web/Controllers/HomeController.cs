@@ -30,11 +30,7 @@ public class HomeController : Controller
         return View();
     }
     [HttpGet]
-public IActionResult GetUserName()
-{
-    var userName = _authService.GetUserNameByEmail(Request.Cookies["Email"]);
-    return Json(new { name = userName });
-}
+
     [HttpPost]
     public async Task<IActionResult> Login(UserDemo model)
     {

@@ -69,4 +69,7 @@ public class AuthService : IAuthService
         var encode = Encoding.UTF8.GetBytes(pass);
         return Convert.ToBase64String(encode);
     }
+    public int GetUserIdByEmail(string email){
+        return _userRepo.GetUserIdByEmail(email);
+    }
 }

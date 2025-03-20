@@ -11,4 +11,5 @@ public interface IAuthService
     string GetRoleByEmail(string email);
     string GetUserNameByEmail(string email);
     string GetRoleById(int roleid);
+    int GetUserIdByEmail(string email);
 }
