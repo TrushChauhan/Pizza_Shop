@@ -16,15 +16,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // Database Context
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection")));
-builder.Services.AddScoped<IUserRepository,UserRepository>();
-builder.Services.AddScoped<IRoleRepository,RoleRepository>();
-builder.Services.AddScoped<IAuthService,AuthService>();
-builder.Services.AddScoped<IEmailService,EmailService>();
-builder.Services.AddScoped<IUserService,UserService>();
-builder.Services.AddScoped<IFileService,FileService>();
-builder.Services.AddScoped<IRolesAndPermissionsService,RolesAndPermissionsService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IRolesAndPermissionsService, RolesAndPermissionsService>();
 // Session Configuration
 builder.Services.AddSession(options =>
 {
@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
 
@@ -82,7 +82,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession();  
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -90,7 +90,10 @@
                 body: JSON.stringify(permissions)
             })
             .then(response => {
-                if (response.ok) {
+                if(permissions==null){
+                    alert('permissio');
+                }
+                else if (response.ok) {
                     alert('Permissions updated successfully!');
                     window.location.reload();
                 } else {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj": {}
+    "d:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj": {}
   },
   "projects": {
-    "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj": {
+    "d:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj",
+        "projectUniqueName": "d:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj",
+        "projectPath": "d:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\backend.csproj",
         "packagesPath": "C:\\Users\\pci203\\.nuget\\packages\\",
-        "outputPath": "D:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\obj\\",
+        "outputPath": "d:\\Project\\Pizza_Shop\\PizzaShopProject\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pci203\\AppData\\Roaming\\NuGet\\NuGet.Config"

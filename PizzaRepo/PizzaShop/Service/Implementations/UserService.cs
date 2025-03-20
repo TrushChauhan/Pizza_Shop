@@ -112,7 +112,7 @@ public class UserService : IUserService
         user.Zipcode = model.Zipcode;
         user.Phonenumber = model.Phonenumber;
         user.Profileimage = profileImagePath ?? user.Profileimage;
-        user.Status=(model.Status=="1")?true: false;
+        user.Status= model.Status=="1";
         _userRepo.UpdateUser(userLogin, user);
     }
     public bool DeleteUser(int id)

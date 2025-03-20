@@ -29,7 +29,6 @@ public class HomeController : Controller
         }
         return View();
     }
-    [HttpGet]
 
     [HttpPost]
     public async Task<IActionResult> Login(UserDemo model)

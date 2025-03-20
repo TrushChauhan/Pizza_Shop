@@ -157,7 +157,6 @@ public class UserRepository : IUserRepository
             _context.SaveChanges();
             return true;
         }
-
         return false;
     }
     public async Task<IEnumerable<Country>> GetCountriesAsync()

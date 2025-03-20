@@ -180,8 +180,6 @@ public class MainController : Controller
         return NotFound(new { success = false, message = "User not found" });
     }
 
-
-
     [HttpGet]
     public async Task<ActionResult> LoadCountry()
     {
@@ -232,11 +230,10 @@ public class MainController : Controller
 
     [HttpPost]
     [Authorize(policy: "AdminOnly")]
-    public IActionResult UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions)
+    public IActionResult UpdatePermissions(int roleId,[FromBody]  List<PermissionUpdateModel> permissions)
     {
         _rolesPermissionsService.UpdatePermissions(roleId, permissions);
         return Ok(new { success = true });
-
     }
     public IActionResult Menu(){
         return View();

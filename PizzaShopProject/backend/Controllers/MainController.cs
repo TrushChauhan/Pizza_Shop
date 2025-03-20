@@ -324,7 +324,7 @@ public IActionResult UpdatePermissions(int roleId, [FromBody] List<PermissionUpd
             .Where(rp => rp.Roleid == roleId)
             .ToList();
 
-        _dbcontext.Roleandpermissions.RemoveRange(existingPermissions);
+        // _dbcontext.Roleandpermissions.RemoveRange(existingPermissions);
 
         foreach (var perm in permissions)
         {

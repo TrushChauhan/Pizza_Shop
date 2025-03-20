@@ -32,7 +32,7 @@ public class AuthService : IAuthService
     {
         return _userRepo.IsCorrectPassword(email, EncryptPassword(Password));
     }
-    public async void SendPasswordResetEmail(string email)
+    public void SendPasswordResetEmail(string email)
     {
         if (_userRepo.IsUserExists(email))
         {
@@ -53,8 +53,7 @@ public class AuthService : IAuthService
         }
     }
     public string GetUserNameByEmail(string email){
-         return _userRepo.GetUserNameByEmail(email);
-
+        return _userRepo.GetUserNameByEmail(email);
     }
     public string GetRoleByEmail(string email)
     {
