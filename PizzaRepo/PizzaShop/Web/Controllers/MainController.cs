@@ -251,8 +251,4 @@ public class MainController : Controller
         _rolesPermissionsService.UpdatePermissions(roleId, permissions);
         return Ok(new { success = true });
     }
-    public IActionResult Menu()
-    {
-        return View();
-    }
 }
