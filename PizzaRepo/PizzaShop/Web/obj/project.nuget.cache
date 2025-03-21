@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "o4/JR5csyi5B7/cev772H4+mtNYmv73OApVoJT8XuRebLSR/CYPS6qI5wTobN7DTZjS78Dvsj9ZaUx5etXQcqw==",
+  "dgSpecHash": "a/4Zb+a6dvg31wHJVbDvCvqDMEhepAJbPIid6YJAgUQ0WET2a7eJJA6DAf2pZOSgEm05DzYpG15wR9P/VjaCKg==",
   "success": true,
   "projectFilePath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\Web.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\pci203\\.nuget\\packages\\aspnetcorehero.toastnotification\\1.1.0\\aspnetcorehero.toastnotification.1.1.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\mailkit\\4.11.0\\mailkit.4.11.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.7\\microsoft.aspnetcore.authentication.jwtbearer.7.0.7.nupkg.sha512",
@@ -36,6 +37,7 @@
     "C:\\Users\\pci203\\.nuget\\packages\\microsoft.net.http.headers\\2.3.0\\microsoft.net.http.headers.2.3.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\mimekit\\4.11.0\\mimekit.4.11.0.nupkg.sha512",
+    "C:\\Users\\pci203\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\npgsql\\7.0.0\\npgsql.7.0.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.0\\npgsql.entityframeworkcore.postgresql.7.0.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",

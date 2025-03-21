@@ -55,13 +55,13 @@ public class AuthService : IAuthService
     public string GetUserNameByEmail(string email){
         return _userRepo.GetUserNameByEmail(email);
     }
-    public string GetRoleByEmail(string email)
+    public async Task<string> GetRoleByEmail(string email)
     {
         int roleId = _userRepo.GetRoleIdByEmail(email);
-        return _roleRepo.GetRoleById(roleId);
+        return await _roleRepo.GetRoleById(roleId);
     }
-    public string GetRoleById(int roleid){
-        return _roleRepo.GetRoleById(roleid);
+    public async Task<string> GetRoleById(int roleid){
+        return await _roleRepo.GetRoleById(roleid);
     }
     public string EncryptPassword(string pass)
     {

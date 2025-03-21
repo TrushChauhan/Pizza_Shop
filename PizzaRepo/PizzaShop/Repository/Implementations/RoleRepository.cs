@@ -13,43 +13,45 @@ public class RoleRepository : IRoleRepository
     {
         _context = context;
     }
-    public string GetRoleById(int id){
-        var userRole = _context.Userroles
-                .FirstOrDefault(u => u.Roleid == id);
-        return userRole.Rolename;
+    public async Task<string> GetRoleById(int id)
+    {
+        Userrole user = await _context.Userroles
+                .FirstOrDefaultAsync(u => u.Roleid == id);
+        return user.Rolename;
     }
-    public List<PermissionViewModel>  GetPermissionsByRole(int roleId){
+    public List<PermissionViewModel> GetPermissionsByRole(int roleId)
+    {
         var role = _context.Userroles
         .Include(r => r.Roleandpermissions)
         .FirstOrDefault(r => r.Roleid == roleId && !r.Isdeleted);
 
-    var rolePermissions = role.Roleandpermissions
-        .ToDictionary(rp => rp.Permissionid);
+        var rolePermissions = role.Roleandpermissions
+            .ToDictionary(rp => rp.Permissionid);
 
-    var permissions = _context.Userpermissions
-        .Where(p => !p.Isdeleted)
-        .AsEnumerable() 
-        .Select(p => 
-        {
-            rolePermissions.TryGetValue(p.Permissionid, out var rp);
-            return new PermissionViewModel
+        var permissions = _context.Userpermissions
+            .Where(p => !p.Isdeleted)
+            .AsEnumerable()
+            .Select(p =>
             {
-                PermissionId = p.Permissionid,
-                PermissionName = p.Permissionname,
-                CanView = rp?.Canview ?? true,
-                CanAddEdit = rp?.Canaddedit ?? true,
-                CanDelete = rp?.Candelete ?? true
-            };
-        })
-        .ToList();
-      
+                rolePermissions.TryGetValue(p.Permissionid, out var rp);
+                return new PermissionViewModel
+                {
+                    PermissionId = p.Permissionid,
+                    PermissionName = p.Permissionname,
+                    CanView = rp?.Canview ?? true,
+                    CanAddEdit = rp?.Canaddedit ?? true,
+                    CanDelete = rp?.Candelete ?? true
+                };
+            })
+            .ToList();
+
         return permissions;
     }
-public void UpdatePermissions(int roleId,List<PermissionUpdateModel> permissions)
-{
-    var existingPermissions = _context.Roleandpermissions
-            .Where(rp => rp.Roleid == roleId)
-            .ToList();
+    public void UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions)
+    {
+        var existingPermissions = _context.Roleandpermissions
+                .Where(rp => rp.Roleid == roleId)
+                .ToList();
 
         foreach (var perm in permissions)
         {
@@ -65,6 +67,6 @@ public void UpdatePermissions(int roleId,List<PermissionUpdateModel> permissions
         }
 
         _context.SaveChanges();
-    
-}
+
+    }
 }

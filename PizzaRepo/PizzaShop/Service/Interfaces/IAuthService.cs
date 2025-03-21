@@ -8,8 +8,8 @@ public interface IAuthService
     string EncryptPassword(string password);
     bool IsUserExists(string email);
     bool IsCorrectPassword(string email,string Password);
-    string GetRoleByEmail(string email);
+    Task<string> GetRoleByEmail(string email);
     string GetUserNameByEmail(string email);
-    string GetRoleById(int roleid);
+    Task<string> GetRoleById(int roleid);
     int GetUserIdByEmail(string email);
 }

@@ -36,7 +36,7 @@ public class HomeController : Controller
         var success = await _authService.LoginAsync(model.Email, model.Password);
         if (success)
         {
-            var userRole = _authService.GetRoleByEmail(model.Email);
+            var userRole = await _authService.GetRoleByEmail(model.Email);
             string UserName = _authService.GetUserNameByEmail(model.Email);
 
             var tokenHandler = new JwtSecurityTokenHandler();

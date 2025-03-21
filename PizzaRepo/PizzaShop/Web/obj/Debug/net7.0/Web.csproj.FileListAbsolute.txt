@@ -62,6 +62,8 @@ D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Web.deps.json
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Web.runtimeconfig.json
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Web.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Web.pdb
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\AspNetCoreHero.ToastNotification.Views.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\AspNetCoreHero.ToastNotification.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\MailKit.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
@@ -80,6 +82,7 @@ D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.Identit
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.OpenApi.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\MimeKit.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Newtonsoft.Json.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Npgsql.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll

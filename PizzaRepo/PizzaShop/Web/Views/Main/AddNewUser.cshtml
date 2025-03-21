@@ -130,8 +130,9 @@
 
     $(document).ready(function () {
         var ddlCountry = $('#ddlCountry');
-        ddlCountry.append($("<option></option>").val('').html('Please Select Country'));
-
+        var ddlState = $('#ddlState');
+        var ddlCity = $('#ddlCity');
+        // Load Country (already present)
         $.ajax({
             url: '@Url.Action("LoadCountry", "Main")',
             type: 'GET',
@@ -145,13 +146,11 @@
                 alert('Error loading countries!');
             }
         });
-
-        $("#ddlCountry").change(function () {
+        // Country -> State change
+        ddlCountry.change(function () {
             var countryId = parseInt($(this).val());
             if (!isNaN(countryId)) {
-                var ddlState = $('#ddlState');
                 ddlState.empty();
-
                 $.ajax({
                     url: '@Url.Action("GetState", "Main")',
                     type: 'GET',
@@ -170,14 +169,25 @@
                 });
             }
         });
-
-        $("#ddlState").change(function () {
+        // Prevent State selection before Country
+        ddlState.focus(function () {
+            if (ddlCountry.val() === '' || ddlCountry.val() === null) {
+                toastr.warning('Please select Country first!');
+                ddlCountry.focus();
+            }
+        });
+        // Prevent City selection before State
+        ddlCity.focus(function () {
+            if (ddlState.val() === '' || ddlState.val() === null) {
+                toastr.warning('Please select State first!');
+                ddlState.focus();
+            }
+        });
+        // State -> City change
+        ddlState.change(function () {
             var stateId = parseInt($(this).val());
             if (!isNaN(stateId)) {
-                var ddlCity = $('#ddlCity');
                 ddlCity.empty();
-                ddlCity.append($("<option></option>").val('').html('Please wait ...'));
-
                 $.ajax({
                     url: '@Url.Action("GetCity", "Main")',
                     type: 'GET',
@@ -197,8 +207,10 @@
             }
         });
     });
+
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+@await Component.InvokeAsync("Notyf")

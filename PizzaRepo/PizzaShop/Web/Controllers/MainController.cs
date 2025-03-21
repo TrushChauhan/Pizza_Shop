@@ -13,6 +13,7 @@ using AspNetCoreGeneratedDocument;
 using Service.Interfaces;
 using Services.Implementations;
 using System.Security.Claims;
+using AspNetCoreHero.ToastNotification.Abstractions;
 namespace Web.Controllers;
 public class MainController : Controller
 {
@@ -23,28 +24,32 @@ public class MainController : Controller
     private readonly IEmailService _emailService;
     private readonly IRolesAndPermissionsService _rolesPermissionsService;
     private readonly IFileService _fileService;
-    public MainController(IUserService userService, IConfiguration config, IAuthService authService, IEmailService emailService, IRolesAndPermissionsService rolesAndPermissionsService,IFileService fileService)
+    private readonly INotyfService _notify;
+    public MainController(IUserService userService, IConfiguration config, IAuthService authService, IEmailService emailService,
+     IRolesAndPermissionsService rolesAndPermissionsService, IFileService fileService, INotyfService notyfService)
     {
         _config = config;
         _userService = userService;
         _authService = authService;
         _emailService = emailService;
         _rolesPermissionsService = rolesAndPermissionsService;
-        _fileService=fileService;
+        _fileService = fileService;
+        _notify = notyfService;
     }
     [Authorize]
     public IActionResult GetUserName()
-{
-    string email= User.FindFirst(ClaimTypes.Name)?.Value;
-    int userId=_authService.GetUserIdByEmail(email);
-    var user=_userService.GetUserForEdit(userId);
-    return Json(new { name = user.Username,imagePath= user.ExistingProfileImage});
-}
+    {
+        string email = User.FindFirst(ClaimTypes.Name)?.Value;
+        int userId = _authService.GetUserIdByEmail(email);
+        var user = _userService.GetUserForEdit(userId);
+        return Json(new { name = user.Username, imagePath = user.ExistingProfileImage });
+    }
     public IActionResult MyProfile()
     {
-        string email= User.FindFirst(ClaimTypes.Name)?.Value;
-        int userId=_authService.GetUserIdByEmail(email);
-        var Profile=_userService.GetProfileForUpdate(userId);
+
+        string email = User.FindFirst(ClaimTypes.Name)?.Value;
+        int userId = _authService.GetUserIdByEmail(email);
+        var Profile = _userService.GetProfileForUpdate(userId);
         return View(Profile);
     }
     [HttpPost]
@@ -59,7 +64,8 @@ public class MainController : Controller
                 imagePath = _fileService.SaveProfileImage(model.ProfileImageFile).Result;
             }
 
-           _userService.UpdateUserProfile(model, imagePath);
+            _userService.UpdateUserProfile(model, imagePath);
+            _notify.Custom("Profile Updated Successfully", 5, "Green", "fa-solid fa-check");
             return RedirectToAction("Users");
         }
         catch (Exception ex)
@@ -132,9 +138,18 @@ public class MainController : Controller
     [Authorize(policy: "AdminOnly")]
     public IActionResult AddNewUser(AddUserDetail model)
     {
-        _emailService.SendEmailToNewUser(model.Email, model.Password);
-        _userService.AddNewUser(model);
-        return RedirectToAction("Users");
+        try
+        {
+            _emailService.SendEmailToNewUser(model.Email, model.Password);
+            _userService.AddNewUser(model);
+            _notify.Custom("User Added Successfully", 5, "green", "fa-regular fa-check");
+            return RedirectToAction("Users");
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error adding user: " + ex.Message);
+            return View(model);
+        }
     }
     [HttpGet]
     [Authorize(policy: "AdminOnly")]
@@ -157,6 +172,7 @@ public class MainController : Controller
             }
 
             _userService.UpdateUser(model, imagePath);
+            _notify.Custom("User Added Successfully", 5, "Green", "fa-regular fa-check");
             return RedirectToAction("Users");
         }
         catch (Exception ex)
@@ -215,7 +231,7 @@ public class MainController : Controller
         var roles = _userService.GetRoles();
         return View(roles);
     }
-    
+
     [Authorize(policy: "AdminOnly")]
     public IActionResult Permissions(int roleId)
     {
@@ -230,12 +246,13 @@ public class MainController : Controller
 
     [HttpPost]
     [Authorize(policy: "AdminOnly")]
-    public IActionResult UpdatePermissions(int roleId,[FromBody]  List<PermissionUpdateModel> permissions)
+    public IActionResult UpdatePermissions(int roleId, [FromBody] List<PermissionUpdateModel> permissions)
     {
         _rolesPermissionsService.UpdatePermissions(roleId, permissions);
         return Ok(new { success = true });
     }
-    public IActionResult Menu(){
+    public IActionResult Menu()
+    {
         return View();
     }
 }

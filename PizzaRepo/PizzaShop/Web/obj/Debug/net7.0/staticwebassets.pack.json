@@ -45,6 +45,10 @@
       "PackagePath": "staticwebassets\\images\\icons\\dinner-table.svg"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\icons\\icons8-search.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\icons8-search.svg"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\icons\\non-veg-icon.svg",
       "PackagePath": "staticwebassets\\images\\icons\\non-veg-icon.svg"
     },
@@ -145,6 +149,10 @@
       "PackagePath": "staticwebassets\\images\\profiles\\747fa3ae-c572-4892-a812-0e3c2903fab8_Default_pfp.svg.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\933ed4ed-dbd1-4924-97e7-d7daf7a645a7_icons8-github-48.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\933ed4ed-dbd1-4924-97e7-d7daf7a645a7_icons8-github-48.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\96a081da-5c43-48b2-91ec-e083e264c239_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\96a081da-5c43-48b2-91ec-e083e264c239_Default_pfp.svg.png"
     },
@@ -163,6 +171,14 @@
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\c21b170d-5e1b-45cf-961b-76c6c392298c_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\c21b170d-5e1b-45cf-961b-76c6c392298c_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\cb0c8702-b825-4888-aca1-db403cb77337_transperent-pizza.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\cb0c8702-b825-4888-aca1-db403cb77337_transperent-pizza.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\d015ba24-7cd1-41d7-b55d-2ddc8e44d7b1_Screenshot (2).png",
+      "PackagePath": "staticwebassets\\images\\profiles\\d015ba24-7cd1-41d7-b55d-2ddc8e44d7b1_Screenshot (2).png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\d04265f7-83b3-452b-a4ca-fa4c67330983_Default_pfp.svg.png",
