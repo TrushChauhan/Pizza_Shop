@@ -22,7 +22,7 @@ public int Quantity { get; set; }
 public bool Available { get; set; }
 [StringLength(5, ErrorMessage = "Shortcode cannot exceed 5 characters")]
 public string? Shortcode { get; set; }
-[StringLength(50, ErrorMessage = "Image URL cannot exceed 50 characters")]
+[StringLength(500, ErrorMessage = "Image URL cannot exceed 50 characters")]
 public string? ItemImage { get; set; }
 [StringLength(100, ErrorMessage = "Description cannot exceed 100 characters")]
 public string? Description { get; set; }

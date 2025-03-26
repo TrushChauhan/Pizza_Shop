@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "iZlgh/2TIDS2qRjpYZrzxyA6QwEDrLbv3ukhf7IPZ8E=",
+  "Hash": "+rldXR05Vd0ybe3KUUz6f9QWHXkcoS7DeMrN7cQebXE=",
   "Source": "Web",
   "BasePath": "_content/Web",
   "Mode": "Default",
@@ -168,6 +168,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\danger.png",
+      "SourceId": "Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\",
+      "BasePath": "_content/Web",
+      "RelativePath": "images/danger.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\danger.png"
     },
     {
       "Identity": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\Default_pfp.svg.png",
@@ -967,23 +984,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\QR.png"
-    },
-    {
-      "Identity": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\toppng.com-warning-icon-2400x2400.png",
-      "SourceId": "Web",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\",
-      "BasePath": "_content/Web",
-      "RelativePath": "images/toppng.com-warning-icon-2400x2400.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\toppng.com-warning-icon-2400x2400.png"
     },
     {
       "Identity": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\transperent-pizza.png",

@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\images\\QR.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\danger.png",
+      "PackagePath": "staticwebassets\\images\\danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\delete-icon.png",
       "PackagePath": "staticwebassets\\images\\delete-icon.png"
     },
@@ -203,10 +207,6 @@
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\qr-code.png",
       "PackagePath": "staticwebassets\\images\\qr-code.png"
-    },
-    {
-      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\toppng.com-warning-icon-2400x2400.png",
-      "PackagePath": "staticwebassets\\images\\toppng.com-warning-icon-2400x2400.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\transperent-pizza.png",

@@ -39,10 +39,9 @@ public class MenuController : Controller
     [HttpPost]
     public IActionResult AddCategory([FromBody] MenuCategoryViewModel model)
     {
-        if (ModelState.IsValid)
-        {
             var category = new Menucategory
             {
+                Categoryid= model.CategoryId,
                 Categoryname = model.CategoryName,
                 Description = model.Description,
                 Createddate = DateTime.Now,
@@ -51,8 +50,6 @@ public class MenuController : Controller
             _context.Menucategories.Add(category);
             _context.SaveChanges();
             return Ok();
-        }
-        return BadRequest(ModelState);
     }
     // POST: Menu/AddItem
     [HttpPost]
@@ -92,38 +89,66 @@ public class MenuController : Controller
     }
     public IActionResult GetModifierGroups()
     {
-        var modifierGroups = _context.Modifiergroups
-        .Where(mg => !mg.Isdeleted)
-        .Select(mg => new ModifierGroupViewModel
-        {
-            ModifierGroupId = mg.Modifiergroupid,
-            ModifierGroupName = mg.Modifiergroupname,
-            Description = mg.Description,
-            MinSelect = mg.Minselect,
-            MaxSelect = mg.Maxselect,
-            CreatedDate = mg.Createddate,
-            ModifiedDate = mg.Modifieddate,
-            IsDeleted = mg.Isdeleted,
-            Modifiers = mg.Modifiergroupandmodifiers
-        .Where(mgm => !mgm.Isdeleted)
-        .Select(mgm => new ModifierViewModel
-        {
-            ModifierId = mgm.Modifier.Modifierid,
-            ModifierName = mgm.Modifier.Modifiername,
-            Unit = mgm.Modifier.Unit,
-            Rate = mgm.Modifier.Rate,
-            Quantity = mgm.Modifier.Quantity,
-            Description = mgm.Modifier.Description,
-            CreatedDate = mgm.Modifier.Createddate,
-            ModifiedDate = mgm.Modifier.Modifieddate,
-            IsDeleted = mgm.Modifier.Isdeleted
-        })
-        .ToList()
-        })
-        .ToList();
-        return Json(modifierGroups);
+        var groups = _context.Modifiergroups
+            .Where(g => !g.Isdeleted)
+            .ToList();
+            
+        var viewModels = groups.Select(g => _mappingService.ModifierToViewModel(g)).ToList();
+        return Json(viewModels);
     }
+
+    // GET: Menu/GetModifiers?modifierGroupId=1
+    public IActionResult GetModifiers(int modifierGroupId)
+    {
+        var group = _context.Modifiergroups.Find(modifierGroupId);
+        if (group == null) return NotFound();
+
+        var modifiers = _context.Modifiergroupandmodifiers
+            .Where(m => m.Modifiergroupid == modifierGroupId && !m.Isdeleted)
+            .Select(m => m.Modifier)
+            .ToList();
+
+        var viewModels = modifiers.Select(m => 
+            _mappingService.MapToViewModifier(m, modifierGroupId)).ToList();
+            
+        return Json(viewModels);
+    }
+
     [HttpPost]
+    public IActionResult AddModifier([FromBody] ModifierViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            // Create modifier
+            var modifier = new Modifier
+            {
+                Modifiername = model.ModifierName,
+                Unit = model.Unit,
+                Rate = model.Rate,
+                Quantity = model.Quantity,
+                Description = model.Description,
+                Createddate = DateTime.Now,
+                Isdeleted = false
+            };
+            _context.Modifiers.Add(modifier);
+            _context.SaveChanges();
+
+            // Create junction entry
+            var junction = new Modifiergroupandmodifier
+            {
+                Modifiergroupid = model.ModifierGroupId,
+                Modifierid = modifier.Modifierid,
+                Createdat = DateTime.Now,
+                Isdeleted = false
+            };
+            _context.Modifiergroupandmodifiers.Add(junction);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+        return BadRequest(ModelState);
+    }
+[HttpPost]
 public IActionResult AddModifierGroup([FromBody] ModifierGroupViewModel model)
 {
     if (ModelState.IsValid)
@@ -139,29 +164,97 @@ public IActionResult AddModifierGroup([FromBody] ModifierGroupViewModel model)
         };
         _context.Modifiergroups.Add(modifierGroup);
         _context.SaveChanges();
-        return Ok();
+        
+        return Json(new { modifierGroupId = modifierGroup.Modifiergroupid });
     }
     return BadRequest(ModelState);
-} 
-[HttpPost]
-public IActionResult AddModifier([FromBody] ModifierViewModel model)
+}
+[HttpGet]
+public IActionResult GetAllModifiers(int page = 1, int pageSize = 10, string search = "")
 {
-    if (ModelState.IsValid)
+    var query = _context.Modifiers.Where(m => !m.Isdeleted);
+    
+    if (!string.IsNullOrEmpty(search))
     {
-        var modifier = new Modifier
+        query = query.Where(m => m.Modifiername.Contains(search));
+    }
+    
+    var totalItems = query.Count();
+    var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+    
+    var modifiers = query
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+    
+    return Json(new {
+        modifiers = modifiers.Select(m => new {
+            modifierId = m.Modifierid,
+            modifierName = m.Modifiername,
+            unit = m.Unit,
+            rate = m.Rate,
+            quantity = m.Quantity
+        }),
+        totalPages = totalPages
+    });
+}
+
+[HttpPost]
+public IActionResult AddModifiersToGroup([FromBody] AddModifiersToGroupRequest request)
+{
+   
+        foreach (var modifierId in request.ModifierIds)
         {
-            Modifiername = model.ModifierName,
-            Unit = model.Unit,
-            Rate = model.Rate,
-            Quantity = model.Quantity,
-            Description = model.Description,
-            Createddate = DateTime.Now,
-            Isdeleted = false
-        };
-        _context.Modifiers.Add(modifier);
-        _context.SaveChanges();
+            if (!_context.Modifiergroupandmodifiers.Any(m => 
+                m.Modifiergroupid == request.ModifierGroupId && 
+                m.Modifierid == modifierId))
+            {
+                _context.Modifiergroupandmodifiers.Add(new Modifiergroupandmodifier
+                {
+                    Mandmid=_context.Modifiergroupandmodifiers.Count()+1,
+                    Modifiergroupid = request.ModifierGroupId,
+                    Modifierid = modifierId,
+                    Createdat = DateTime.Now,
+                    Isdeleted = false
+                });
+                _context.SaveChanges();
+            }
+        }
+        return Ok();
+}
+
+[HttpPost]
+public IActionResult RemoveModifierFromGroup([FromBody] RemoveModifierRequest request)
+{
+    try
+    {
+        var junction = _context.Modifiergroupandmodifiers
+            .FirstOrDefault(m => m.Modifiergroupid == request.ModifierGroupId 
+                            && m.Modifierid == request.ModifierId);
+                            
+        if (junction != null)
+        {
+            junction.Isdeleted = true;
+            _context.SaveChanges();
+        }
+        
         return Ok();
     }
-    return BadRequest(ModelState);
-} 
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Error removing modifier: {ex.Message}");
+    }
+}
+
+public class RemoveModifierRequest
+{
+    public int ModifierGroupId { get; set; }
+    public int ModifierId { get; set; }
+}
+
+public class AddModifiersToGroupRequest
+{
+    public int ModifierGroupId { get; set; }
+    public List<int> ModifierIds { get; set; }
+}
 }

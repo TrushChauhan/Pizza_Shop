@@ -387,6 +387,15 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Table).WithMany(p => p.Waitinglists)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("waitinglist_tableid_fkey");
+            modelBuilder.Entity<Modifiergroupandmodifier>()
+   .HasOne(m => m.Modifiergroup)
+   .WithMany(mg => mg.Modifiergroupandmodifiers)
+   .HasForeignKey(m => m.Modifiergroupid);
+
+            modelBuilder.Entity<Modifiergroupandmodifier>()
+                .HasOne(m => m.Modifier)
+                .WithMany(m => m.Modifiergroupandmodifiers)
+                .HasForeignKey(m => m.Modifierid);
         });
 
         OnModelCreatingPartial(modelBuilder);
