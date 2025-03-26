@@ -53,9 +53,8 @@
                     </div>
                     <input type="text" class="form-control col mx-2" id="searchItem" placeholder="Search items">
 
-                    <button class="btn btn-secondary col mx-2" data-bs-toggle="modal"
-                            data-bs-target="#massDeleteItems">
-                        <img src="~/images/delete-icon.png" alt="" height="20px" width="20px" ></button>
+                    <button class="btn btn-secondary col mx-2" data-bs-toggle="modal" data-bs-target="#massDeleteItems">
+                        <img src="~/images/delete-icon.png" alt="" height="20px" width="20px"></button>
 
                     <button class="btn btn-primary col mx-2" data-bs-toggle="modal" data-bs-target="#addItemModal">+ New
                         Item</button>
@@ -110,7 +109,8 @@
                         </div>
                         <input type="text" class="form-control col mx-2" id="searchItem" placeholder="Search ">
 
-                        <button class="btn btn-secondary col mx-2">
+                        <button class="btn btn-secondary col mx-2" data-bs-toggle="modal"
+                            data-bs-target="#massDeleteModifiers">
                             <img src="~/images/delete-icon.png" alt="" height="20px" width="20px"></button>
 
                         <button class="btn btn-primary col mx-2" data-bs-toggle="modal" data-bs-target="#addItemModal">+
@@ -343,32 +343,115 @@
         </div>
     </div>
 </div>
+<!-- Single Item Delete Confirmation Modal -->
+<div id="singleItemDeleteModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="~/images/danger.png" width="50" height="50" alt="Warning">
+                <p class="mt-3">Are you sure you want to delete this item?</p>
+                <input type="hidden" id="itemToDeleteId">
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" id="confirmSingleItemDelete">Yes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Single Modifier Delete Confirmation Modal -->
+<div id="singleModifierDeleteModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="~/images/danger.png" width="50" height="50" alt="Warning">
+                <p class="mt-3">Are you sure you want to delete this modifier from the group?</p>
+                <input type="hidden" id="modifierToDeleteId">
+                <input type="hidden" id="modifierGroupId">
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" id="confirmSingleModifierDelete">Yes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Mass Delete Items Modal -->
 <div id="massDeleteItems" class="modal m-2" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class=" row modal-content w-100 border border-dark">
+        <div class="row modal-content w-100 border border-dark">
             <div class="modal-header d-flex row">
-                <h5 class="modal-title col-10 m-3">Delete Confirmation</h5>
+                <h5 class="modal-title col-10 m-3">Delete Items Confirmation</h5>
                 <button type="button" class="btn-close col-2 m-9" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex flex-column align-items-center justify-content-center">
                 <img src="~/images/danger.png" width="50px" height="50px" alt="">
-                <p class=" m-3">Are you sure want to delete these Items.</p>
+                <p class="m-3">Are you sure you want to delete the selected items?</p>
             </div>
-            <div class=" modal-footer m-3 d-flex align-items-center justify-content-center">
+            <div class="modal-footer m-3 d-flex align-items-center justify-content-center">
                 <button type="button" class="btn btn-primary col m-3" data-bs-dismiss="modal"
-                    id="confirmDelete">Yes</button>
-                <button type="button" class=" no-button col m-3" data-bs-dismiss="modal">No</button>
+                    id="confirmDeleteItems">Yes</button>
+                <button type="button" class="no-button col m-3" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mass Delete Modifiers Modal -->
+<div id="massDeleteModifiers" class="modal m-2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="row modal-content w-100 border border-dark">
+            <div class="modal-header d-flex row">
+                <h5 class="modal-title col-10 m-3">Delete Modifiers Confirmation</h5>
+                <button type="button" class="btn-close col-2 m-9" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center">
+                <img src="~/images/danger.png" width="50px" height="50px" alt="">
+                <p class="m-3">Are you sure you want to delete the selected modifiers?</p>
+            </div>
+            <div class="modal-footer m-3 d-flex align-items-center justify-content-center">
+                <button type="button" class="btn btn-primary col m-3" data-bs-dismiss="modal"
+                    id="confirmDeleteModifiers">Yes</button>
+                <button type="button" class="no-button col m-3" data-bs-dismiss="modal">No</button>
             </div>
         </div>
     </div>
 </div>
 <script>
-    // Load items when a category is clicked
-    document.querySelectorAll('.category-item').forEach(category => {
-        category.addEventListener('click', () => {
-            const categoryId = category.dataset.categoryId;
+    document.addEventListener('DOMContentLoaded', function () {
+        const firstCategory = document.querySelector('#categoryList .list-group-item');
+        if (firstCategory) {
+            firstCategory.classList.add('active-category');
+            const categoryId = firstCategory.dataset.categoryId;
             loadItems(categoryId);
-        });
+        }
+    });
+
+    // Category click handler
+    document.getElementById('categoryList').addEventListener('click', function (e) {
+        const categoryItem = e.target.closest('.category-item');
+        if (categoryItem) {
+            // Remove active class from all categories
+            document.querySelectorAll('#categoryList .category-item').forEach(item => {
+                item.classList.remove('active-category');
+            });
+
+            // Add active class to clicked category
+            categoryItem.classList.add('active-category');
+
+            // Load items for this category
+            const categoryId = categoryItem.dataset.categoryId;
+            loadItems(categoryId);
+        }
     });
     // Function to load items
     function loadItems(categoryId) {
@@ -379,23 +462,23 @@
                 tbody.innerHTML = '';
                 data.forEach(item => {
                     const row = `
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value="" id="${item.itemId}"></td>
-                                <td>${item.ItemImage}${item.itemName}</td>
-                                <td>${item.itemType}</td>
-                                <td>${item.rate}</td>
-                                <td>${item.quantity}</td>
-                                <td>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" ${item.available ? 'checked' : ''}>
-                                    </div>
-                                </td>
-                                <td>
-                                    <i class="material-icons" onclick="editItem(${item.itemId})">edit</i>
-                                    <i class="material-icons" onclick="deleteItem(${item.itemId})">delete</i>
-                                </td>
-                            </tr>
-                        `;
+    <tr>
+        <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${item.itemId}"></td>
+        <td>${item.ItemImage}${item.itemName}</td>
+        <td>${item.itemType}</td>
+        <td>${item.rate}</td>
+        <td>${item.quantity}</td>
+        <td>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" ${item.available ? 'checked' : ''}>
+            </div>
+        </td>
+        <td>
+            <i class="material-icons" onclick="editItem(${item.itemId})">edit</i>
+            <i class="material-icons" onclick="deleteItem(${item.itemId})">delete</i>
+        </td>
+    </tr>
+`;
                     tbody.insertAdjacentHTML('beforeend', row);
                 });
             });
@@ -422,21 +505,6 @@
                 }
             });
     });
-
-    function deleteItem(itemId) {
-        if (confirm('Are you sure you want to delete this item?')) {
-            fetch(`/Menu/DeleteItem/${itemId}`, {
-                method: 'POST'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Failed to delete item');
-                    }
-                });
-        }
-    }
     // Load modifier groups when modal opens
     document.getElementById('addModifierModal').addEventListener('shown.bs.modal', function () {
         fetch('/Menu/GetModifierGroups')
@@ -636,51 +704,30 @@
 
                 if (data.length === 0) {
                     tbody.innerHTML = `
-                        <tr>
-                            <td colspan="5" class="text-center">No modifiers found for this group</td>
-                        </tr>
-                    `;
+                    <tr>
+                        <td colspan="6" class="text-center">No modifiers found for this group</td>
+                    </tr>
+                `;
                     return;
                 }
 
                 data.forEach(modifier => {
                     const row = `
-                        <tr data-modifier-id="${modifier.modifierId}">
-                        <td><input class="form-check-input" type="checkbox" value="" id="${modifier.modifierId}"></td>
-                            <td>${modifier.modifierName}</td>
-                            <td>${modifier.unit}</td>
-                            <td>${modifier.rate}</td>
-                            <td>${modifier.quantity}</td>
-                            <td>
-                                <i class="material-icons" onclick="editModifier(${modifier.modifierId})">edit</i>
-                                <i class="material-icons" onclick="removeModifierFromGroup(${modifier.modifierId}, ${modifierGroupId})">delete</i>
-                            </td>
-                        </tr>
-                    `;
+    <tr data-modifier-id="${modifier.modifierId}">
+        <td><input class="form-check-input modifier-checkbox" type="checkbox" data-modifier-id="${modifier.modifierId}"></td>
+        <td>${modifier.modifierName}</td>
+        <td>${modifier.unit}</td>
+        <td>${modifier.rate}</td>
+        <td>${modifier.quantity}</td>
+        <td>
+            <i class="material-icons" onclick="editModifier(${modifier.modifierId})">edit</i>
+            <i class="material-icons" onclick="removeModifierFromGroup(${modifier.modifierId}, ${modifierGroupId})">delete</i>
+        </td>
+    </tr>
+`;
                     tbody.insertAdjacentHTML('beforeend', row);
                 });
             });
-    }
-
-    // Add function to remove modifier from group
-    function removeModifierFromGroup(modifierId, groupId) {
-        if (confirm('Are you sure you want to remove this modifier from the group?')) {
-            fetch(`/Menu/RemoveModifierFromGroup`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    modifierGroupId: groupId,
-                    modifierId: modifierId
-                })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        loadModifiers(groupId);
-                    } else {
-                        alert('Failed to remove modifier from group');
-                    }
-                });
-        }
     }
 
     let tempModifierGroupData = null;
@@ -790,7 +837,130 @@
             })
             .catch(error => alert(error.message));
     });
+    // Initialize modals
+    const singleItemDeleteModal = new bootstrap.Modal(document.getElementById('singleItemDeleteModal'));
+    const singleModifierDeleteModal = new bootstrap.Modal(document.getElementById('singleModifierDeleteModal'));
 
+    // Single Item Delete
+    function deleteItem(itemId) {
+        document.getElementById('itemToDeleteId').value = itemId;
+        singleItemDeleteModal.show();
+    }
+
+    document.getElementById('confirmSingleItemDelete').addEventListener('click', function () {
+        const itemId = document.getElementById('itemToDeleteId').value;
+
+        fetch(`/Menu/DeleteItem/${itemId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Get the current active category to reload items
+                    window.location.reload();
+                    const activeCategory = document.querySelector('#categoryList .list-group-item.active');
+                    if (activeCategory) {
+                        const categoryId = activeCategory.dataset.categoryId;
+                        loadItems(categoryId);
+                    }
+                } else {
+                    alert('Failed to delete item');
+                }
+            })
+            .finally(() => {
+                singleItemDeleteModal.hide();
+            });
+    });
+
+    // Single Modifier Delete
+    function removeModifierFromGroup(modifierId, groupId) {
+        document.getElementById('modifierToDeleteId').value = modifierId;
+        document.getElementById('modifierGroupId').value = groupId;
+        singleModifierDeleteModal.show();
+    }
+
+    document.getElementById('confirmSingleModifierDelete').addEventListener('click', function () {
+        const modifierId = document.getElementById('modifierToDeleteId').value;
+        const groupId = document.getElementById('modifierGroupId').value;
+
+        fetch('/Menu/RemoveModifierFromGroup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                modifierGroupId: groupId,
+                modifierId: modifierId
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    loadModifiers(groupId);
+                } else {
+                    alert('Failed to remove modifier from group');
+                }
+            })
+            .finally(() => {
+                singleModifierDeleteModal.hide();
+            });
+    });
+    // Mass Delete Items
+    document.getElementById('confirmDeleteItems').addEventListener('click', function () {
+        const selectedItems = Array.from(document.querySelectorAll('#itemsTable .item-checkbox:checked'))
+            .map(checkbox => parseInt(checkbox.dataset.itemId));
+
+        if (selectedItems.length === 0) {
+            alert('Please select at least one item to delete.');
+            return;
+        }
+
+        fetch('/Menu/DeleteItems', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(selectedItems)
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Failed to delete items');
+            }
+        });
+    });
+
+    // Mass Delete Modifiers
+    document.getElementById('confirmDeleteModifiers').addEventListener('click', function () {
+        const selectedModifiers = Array.from(document.querySelectorAll('#modifiersTable .modifier-checkbox:checked'))
+            .map(checkbox => parseInt(checkbox.dataset.modifierId));
+
+        if (selectedModifiers.length === 0) {
+            alert('Please select at least one modifier to delete.');
+            return;
+        }
+
+        // Get the current modifier group ID from the active tab
+        const activeGroup = document.querySelector('#modifierGroupList .modifier-group-item.active');
+        if (!activeGroup) {
+            alert('No modifier group selected');
+            return;
+        }
+        const modifierGroupId = parseInt(activeGroup.dataset.modifierGroupId);
+
+        // Create payload with both modifier group ID and modifier IDs
+        const payload = {
+            modifierGroupId: modifierGroupId,
+            modifierIds: selectedModifiers
+        };
+
+        fetch('/Menu/DeleteModifiersFromGroup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(response => {
+            if (response.ok) {
+                // Reload just the modifiers for this group
+                loadModifiers(modifierGroupId);
+            } else {
+                alert('Failed to delete modifiers');
+            }
+        });
+    });
     function closeAllModals() {
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');
