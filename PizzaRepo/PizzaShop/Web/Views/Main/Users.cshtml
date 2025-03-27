@@ -9,7 +9,7 @@
     var searchTerm = ViewBag.SearchTerm;
 }
 
-<form method="get" action="/Main/ShowUsers">
+<form method="get" action="/Main/Users">
     <div class="row-11 d-flex my-2 mx-2">
         <div class="col-2 text-Users-title fs-2">
             Users
@@ -31,10 +31,18 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col" class="text-black-50">Name</th>
+                    <th scope="col" class="text-black-50">
+                        Name 
+                        <i class="fa-solid fa-arrow-up"></i> 
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </th>
                     <th scope="col" class="text-black-50">Email</th>
                     <th scope="col" class="text-black-50">Phone</th>
-                    <th scope="col" class="text-black-50">Role</th>
+                    <th scope="col" class="text-black-50">
+                        Role
+                        <i class="fa-solid fa-arrow-up"></i> 
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </th>
                     <th scope="col" class="text-black-50">Status</th>
                     <th scope="col" class="text-black-50">Action</th>
                 </tr>
@@ -82,7 +90,7 @@
                     @if (currentPage > 1)
                     {
                         <a class="btn btn-outline-primary mx-1"
-                            href="/Main/ShowUsers?page=@(currentPage - 1)&pageSize=@pageSize&searchTerm=@searchTerm">
+                            href="/Main/Users?page=@(currentPage - 1)&pageSize=@pageSize&searchTerm=@searchTerm">
                             <i class="fas fa-chevron-left"></i>
                         </a>
                     }
@@ -95,7 +103,7 @@
                     @if (currentPage < totalPages)
                     {
                         <a class="btn btn-outline-primary mx-1"
-                            href="/Main/ShowUsers?page=@(currentPage + 1)&pageSize=@pageSize&searchTerm=@searchTerm">
+                            href="/Main/Users?page=@(currentPage + 1)&pageSize=@pageSize&searchTerm=@searchTerm">
                             <i class="fas fa-chevron-right"></i>
                         </a>
                     }
@@ -134,7 +142,7 @@
         e.preventDefault();
         const searchTerm = document.querySelector('input[name="searchTerm"]').value;
         const pageSize = document.querySelector('select[name="pageSize"]').value;
-        window.location.href = `/Main/ShowUsers?page=1&pageSize=${pageSize}&searchTerm=${encodeURIComponent(searchTerm)}`;
+        window.location.href = `/Main/Users?page=1&pageSize=${pageSize}&searchTerm=${encodeURIComponent(searchTerm)}`;
     });
 
     document.querySelectorAll('.pagination-container a').forEach(link => {

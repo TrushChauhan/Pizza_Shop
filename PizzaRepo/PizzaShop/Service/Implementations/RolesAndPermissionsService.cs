@@ -11,10 +11,10 @@ public class RolesAndPermissionsService : IRolesAndPermissionsService
     {
         _roleRepo = roleRepo;
     }
-    public List<PermissionViewModel>  GetPermissionsByRole(int roleId){
-        return _roleRepo.GetPermissionsByRole(roleId);
+    public async Task<List<PermissionViewModel>>  GetPermissionsByRoleAsync(int roleId){
+        return await _roleRepo.GetPermissionsByRoleAsync(roleId);
     }
-    public void UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions){
-        _roleRepo.UpdatePermissions(roleId,permissions);
+    public async Task UpdatePermissionsAsync(int roleId, List<PermissionUpdateModel> permissions){
+       await _roleRepo.UpdatePermissionsAsync(roleId,permissions);
     }
 }

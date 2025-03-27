@@ -117,16 +117,36 @@
       "PackagePath": "staticwebassets\\images\\profiles\\0029de43-bf9d-44c1-adaf-fa6ae3e362ec_Screenshot (2).png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\024391c2-cc90-4583-95e1-120e310443e0_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\024391c2-cc90-4583-95e1-120e310443e0_danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\0a66bdb3-8879-45cd-8c1e-818d0dd08db5_pizzashop_logo.png",
       "PackagePath": "staticwebassets\\images\\profiles\\0a66bdb3-8879-45cd-8c1e-818d0dd08db5_pizzashop_logo.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\17d80a08-d6f8-4cf9-bbd9-d9c4f3027e65_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\17d80a08-d6f8-4cf9-bbd9-d9c4f3027e65_Default_pfp.svg.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\1c8e898c-1bb5-43d2-ab79-f077995d18b6_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\1c8e898c-1bb5-43d2-ab79-f077995d18b6_Default_pfp.svg.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\23d1fb73-50c0-4dad-8fe1-2405ba6c2931_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\23d1fb73-50c0-4dad-8fe1-2405ba6c2931_danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\26cd50ce-5d77-49ac-85a1-694eaefcc5c5_transperent-pizza.png",
       "PackagePath": "staticwebassets\\images\\profiles\\26cd50ce-5d77-49ac-85a1-694eaefcc5c5_transperent-pizza.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\2b6249a0-c861-4701-860f-95f78bd8cab2_transperent-pizza.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\2b6249a0-c861-4701-860f-95f78bd8cab2_transperent-pizza.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\31a2ebaa-8c1a-453a-ac91-843671c315d7_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\31a2ebaa-8c1a-453a-ac91-843671c315d7_danger.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\3489e19b-a73e-4e6f-b9c1-b9e3790b3f52_icons8-google-48.png",
@@ -137,12 +157,32 @@
       "PackagePath": "staticwebassets\\images\\profiles\\35c5190f-0059-4ffe-89f4-6d1b41cdf1f6_Screenshot (1).png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\49c8c1c7-77d1-473d-93d9-110524f5fdf0_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\49c8c1c7-77d1-473d-93d9-110524f5fdf0_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\4c34347c-9ad8-4a47-bd8a-669b0b1ea846_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\4c34347c-9ad8-4a47-bd8a-669b0b1ea846_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\4ffdc111-d29f-406c-b1b4-deede509b3fa_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\4ffdc111-d29f-406c-b1b4-deede509b3fa_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\54acf6fa-7e67-44d6-ac23-63da3b0d8980_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\54acf6fa-7e67-44d6-ac23-63da3b0d8980_Default_pfp.svg.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\579991f7-351e-4677-aceb-00a2a4942b28_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\579991f7-351e-4677-aceb-00a2a4942b28_Default_pfp.svg.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\59681e8a-de58-4ba9-baa3-ded80d929a5b_pizzashop_logo.png",
       "PackagePath": "staticwebassets\\images\\profiles\\59681e8a-de58-4ba9-baa3-ded80d929a5b_pizzashop_logo.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\6234d76c-d5cd-444a-9fa5-9e18c3606047_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\6234d76c-d5cd-444a-9fa5-9e18c3606047_Default_pfp.svg.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\6442fff7-7d94-4f10-b332-46915aee6978_Screenshot (1).png",
@@ -153,8 +193,40 @@
       "PackagePath": "staticwebassets\\images\\profiles\\64661b60-8114-4535-85f3-b97b2b7d9367_Default_pfp.svg.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\6771ddd8-0c1c-4c74-be90-fb5e5d1986db_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\6771ddd8-0c1c-4c74-be90-fb5e5d1986db_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\68328a3c-79a8-42ba-8157-e254efb0d9a2_delete-icon.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\68328a3c-79a8-42ba-8157-e254efb0d9a2_delete-icon.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\7009ff5e-76dd-45c1-a500-1b57a8e67384_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\7009ff5e-76dd-45c1-a500-1b57a8e67384_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\73fe3fd8-c864-489b-bf51-5d4e8bfd3f5b_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\73fe3fd8-c864-489b-bf51-5d4e8bfd3f5b_danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\747fa3ae-c572-4892-a812-0e3c2903fab8_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\747fa3ae-c572-4892-a812-0e3c2903fab8_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\82490477-40c6-46bc-9564-ff80f7d97ef8_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\82490477-40c6-46bc-9564-ff80f7d97ef8_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\8cf1483c-06db-45a5-8a8d-06dbd97bbd54_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\8cf1483c-06db-45a5-8a8d-06dbd97bbd54_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\8ea5d0f5-9496-40a3-8c1a-05b9ff17f05a_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\8ea5d0f5-9496-40a3-8c1a-05b9ff17f05a_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\8ecfd812-6d9d-4134-8c1a-ca276bacb8f8_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\8ecfd812-6d9d-4134-8c1a-ca276bacb8f8_danger.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\933ed4ed-dbd1-4924-97e7-d7daf7a645a7_icons8-github-48.png",
@@ -169,16 +241,52 @@
       "PackagePath": "staticwebassets\\images\\profiles\\9aefd5ff-9007-44d3-b8de-33cfa744c387_Default_pfp.svg.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\9e0b3fb1-097a-4959-a9ed-df2bafcd02d4_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\9e0b3fb1-097a-4959-a9ed-df2bafcd02d4_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\9e267584-d4e9-4b8f-b88e-507f30027fbf_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\9e267584-d4e9-4b8f-b88e-507f30027fbf_danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\9f4c217c-a5ef-4d0c-9a20-a8549042b540_Screenshot (2).png",
       "PackagePath": "staticwebassets\\images\\profiles\\9f4c217c-a5ef-4d0c-9a20-a8549042b540_Screenshot (2).png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\aa0b7044-4a83-44a9-b5f0-8461552b87a2_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\aa0b7044-4a83-44a9-b5f0-8461552b87a2_danger.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\aaa82556-2af3-4395-9c65-4401c8268f66_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\aaa82556-2af3-4395-9c65-4401c8268f66_Default_pfp.svg.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\b7dfc2de-fe79-44e9-944e-25b905d453d9_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\b7dfc2de-fe79-44e9-944e-25b905d453d9_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\c0ad93a8-0030-463a-a79b-d7698878e8ba_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\c0ad93a8-0030-463a-a79b-d7698878e8ba_danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\c21b170d-5e1b-45cf-961b-76c6c392298c_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\c21b170d-5e1b-45cf-961b-76c6c392298c_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\c2818f2e-68ca-43d1-be43-d4fcb96f55b9_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\c2818f2e-68ca-43d1-be43-d4fcb96f55b9_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\c3ab4a2d-21d6-422c-a828-4c4e7a880ff7_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\c3ab4a2d-21d6-422c-a828-4c4e7a880ff7_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\c78931a7-b99c-4cf3-90b6-da659b17c76a_delete-icon.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\c78931a7-b99c-4cf3-90b6-da659b17c76a_delete-icon.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\c994d71b-62c6-436a-b549-39bb553d1d20_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\c994d71b-62c6-436a-b549-39bb553d1d20_danger.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\cb0c8702-b825-4888-aca1-db403cb77337_transperent-pizza.png",
@@ -193,16 +301,48 @@
       "PackagePath": "staticwebassets\\images\\profiles\\d04265f7-83b3-452b-a4ca-fa4c67330983_Default_pfp.svg.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\d318e00c-c26f-4957-8eec-6f52c09405b8_Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\d318e00c-c26f-4957-8eec-6f52c09405b8_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\d865a420-7f1e-43df-ba90-747c749aa274_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\d865a420-7f1e-43df-ba90-747c749aa274_danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\d9dec5b5-bb76-4944-9d6f-62d68eea6f36_Screenshot (1).png",
       "PackagePath": "staticwebassets\\images\\profiles\\d9dec5b5-bb76-4944-9d6f-62d68eea6f36_Screenshot (1).png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\ea46e3e7-7af1-473f-9cf5-c54eb6f04391_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\ea46e3e7-7af1-473f-9cf5-c54eb6f04391_danger.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\ec8f956c-659f-48ce-96bc-7ee269d9cfbd_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\ec8f956c-659f-48ce-96bc-7ee269d9cfbd_Default_pfp.svg.png"
     },
     {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\f83fdedf-5255-4052-8a08-03017427f8e9_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\f83fdedf-5255-4052-8a08-03017427f8e9_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\f9723273-b793-4ca8-8c79-e0bdfdf2883d_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\f9723273-b793-4ca8-8c79-e0bdfdf2883d_danger.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\f987b47b-6517-45a5-be84-3d6aa3bc62d0.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\f987b47b-6517-45a5-be84-3d6aa3bc62d0.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\f9b89095-da0b-4c95-96cb-b867e5a681a8_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\f9b89095-da0b-4c95-96cb-b867e5a681a8_danger.png"
+    },
+    {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\faead1a6-987a-4a33-adef-41b7e2d5df80_Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\images\\profiles\\faead1a6-987a-4a33-adef-41b7e2d5df80_Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\profiles\\fe96e2e6-7c2c-442c-8637-8032f4e35a0d_danger.png",
+      "PackagePath": "staticwebassets\\images\\profiles\\fe96e2e6-7c2c-442c-8637-8032f4e35a0d_danger.png"
     },
     {
       "Id": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\wwwroot\\images\\qr-code.png",

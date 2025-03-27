@@ -2,6 +2,6 @@ namespace Service.Interfaces;
 
 public interface IEmailService
 {
-    void SendPasswordResetEmail(string email);
-    void SendEmailToNewUser(string email,string Password); 
+    Task SendPasswordResetEmailAsync(string email);
+    Task SendEmailToNewUserAsync(string email,string Password); 
 }

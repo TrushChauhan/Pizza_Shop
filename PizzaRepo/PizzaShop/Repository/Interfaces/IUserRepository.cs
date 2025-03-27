@@ -4,23 +4,23 @@ namespace Repository.Interfaces;
 
 public interface IUserRepository
 {
-   public Userlogin GetUserByEmail(string email);
-   void UpdateUser(Userlogin user);
-   bool IsUserExists(string email);
-
-   int GetRoleIdByEmail(string email);
-   bool IsCorrectPassword(string email,string Password);
-   (List<UserTable> Users, int TotalItems) GetUsers(string searchTerm, int page, int pageSize);
-    Userdetail GetUserById(int userId);
-    void AddNewUser(AddUserDetail userDetail);
-    void UpdateUser(Userlogin user, Userdetail detail);
-    Userlogin GetUserloginDetails(int UserId);
+    Task<Userlogin> GetUserByEmailAsync(string email);
+    Task<bool> IsCorrectPasswordAsync(string email, string password);
+    Task<int> GetUserIdByEmailAsync(string email);
+    Task<string> GetUserNameByEmailAsync(string email);
+    Task<int> GetRoleIdByEmailAsync(string email);
+    Task UpdateUserLoginAsync(Userlogin user);
+    Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize);
+    Task<bool> IsUserExistsAsync(string email);
+    Task AddNewUserAsync(AddUserDetail model);
+    Task<Userdetail> GetUserByIdAsync(int userId);
+    Task<Userlogin> GetUserloginDetailsAsync(int userId);
+    Task UpdateUserDetailAsync( EditUserDetail detail, string profileImagePath);
+    Task UpdateUserProfileAsync(MyProfile model, string profileImagePath);
+    Task<bool> DeleteUserByIdAsync(int id);
     Task<IEnumerable<Country>> GetCountriesAsync();
     Task<IEnumerable<State>> GetStatesByCountryAsync(int countryId);
     Task<IEnumerable<City>> GetCitiesByStateAsync(int stateId);
-    List<Userrole> GetRoles();
-    bool DeleteUserById(int id);
-    string GetUserNameByEmail(string email);
-    int GetUserIdByEmail(string email);
+    Task<List<Userrole>> GetRolesAsync();
 }
 

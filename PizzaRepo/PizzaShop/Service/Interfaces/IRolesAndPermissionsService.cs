@@ -4,6 +4,6 @@ namespace Service.Interfaces;
 
 public interface IRolesAndPermissionsService
 {
-  List<PermissionViewModel>  GetPermissionsByRole(int roleId);
-  void UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions);
+  Task<List<PermissionViewModel>>  GetPermissionsByRoleAsync(int roleId);
+  Task UpdatePermissionsAsync(int roleId, List<PermissionUpdateModel> permissions);
 }

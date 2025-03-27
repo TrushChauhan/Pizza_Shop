@@ -5,7 +5,7 @@ namespace Repository.Interfaces;
 
 public interface IRoleRepository
 {
-    public Task<string> GetRoleById(int id);
-    List<PermissionViewModel>  GetPermissionsByRole(int roleId);
-    void UpdatePermissions(int roleId, List<PermissionUpdateModel> permissions);
+    public Task<string> GetRoleByIdAsync(int id);
+    public Task<List<PermissionViewModel>>  GetPermissionsByRoleAsync(int roleId);
+    public Task UpdatePermissionsAsync(int roleId, List<PermissionUpdateModel> permissions);
 }

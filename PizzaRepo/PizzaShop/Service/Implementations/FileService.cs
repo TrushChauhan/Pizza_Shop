@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Service.Interfaces;
 
-namespace Services.Implementations
+namespace Service.Implementations
 {
 
     public class FileService : IFileService
@@ -17,7 +17,7 @@ namespace Services.Implementations
             _environment = environment;
         }
 
-        public async Task<string> SaveProfileImage(IFormFile file)
+        public async Task<string> SaveProfileImageAsync(IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return null;

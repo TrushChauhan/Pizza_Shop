@@ -2,17 +2,21 @@ using Microsoft.Extensions.Configuration;
 using Service.Interfaces;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
+
 namespace Service.Implementations
 {
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _config;
         private readonly SmtpClient _smtpClient;
+
         public EmailService(IConfiguration config)
         {
             _config = config;
             _smtpClient = InitializeSmtpClient();
         }
+
         private SmtpClient InitializeSmtpClient()
         {
             var smtpSettings = _config.GetSection("SmtpSettings");
@@ -23,42 +27,43 @@ namespace Service.Implementations
                 EnableSsl = bool.Parse(smtpSettings["EnableSsl"])
             };
         }
+
         private MailMessage CreateMailMessage(string toEmail, string subject, string body)
         {
             var smtpSettings = _config.GetSection("SmtpSettings");
-            var mail = new MailMessage
+            return new MailMessage
             {
                 From = new MailAddress(smtpSettings["Email"]),
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = true
-            };
-            mail.To.Add(toEmail);
-            return mail;
+            }.Also(msg => msg.To.Add(toEmail));
         }
-        public void SendPasswordResetEmail(string email)
+
+        public async Task SendPasswordResetEmailAsync(string email)
         {
             try
             {
                 string emailBody = $@"<a href='http://localhost:5150/Home/ResetPassword?email={WebUtility.UrlEncode(email)}'>Reset Password</a>";
-                var mail = CreateMailMessage(email, "Reset Password for PizzaShop", emailBody);
-                _smtpClient.Send(mail); 
+                using var mail = CreateMailMessage(email, "Reset Password for PizzaShop", emailBody);
+                await _smtpClient.SendMailAsync(mail);
             }
             catch (Exception ex)
             {
                 throw new Exception("Failed to send password reset email.", ex);
             }
         }
-        public void SendEmailToNewUser(string email, string password)
+
+        public async Task SendEmailToNewUserAsync(string email, string password)
         {
             try
             {
                 string emailBody = $@"  
-                <h>Login Details</h>  
-                <div>useremail = {email} </div>  
-                <div> Temporary Password = {password}";
-                var mail = CreateMailMessage(email, "Login Details for PizzaShop", emailBody);
-                _smtpClient.Send(mail); 
+                <h1>Login Details</h1>  
+                <div>Email: {email}</div>  
+                <div>Temporary Password: {password}</div>";
+                using var mail = CreateMailMessage(email, "Login Details for PizzaShop", emailBody);
+                await _smtpClient.SendMailAsync(mail);
             }
             catch (Exception ex)
             {
@@ -66,4 +71,13 @@ namespace Service.Implementations
             }
         }
     }
-} 
+
+    public static class ObjectExtensions
+    {
+        public static T Also<T>(this T obj, Action<T> action)
+        {
+            action(obj);
+            return obj;
+        }
+    }
+}

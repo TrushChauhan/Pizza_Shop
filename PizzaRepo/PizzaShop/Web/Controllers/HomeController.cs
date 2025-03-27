@@ -9,35 +9,42 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
-namespace Web.Controllers;
+using System.Threading.Tasks;
 
-public class HomeController : Controller
+namespace Web.Controllers
 {
-    private readonly IAuthService _authService;
-    private readonly IConfiguration _config;
+    public class HomeController : Controller
+    {
+        private readonly IAuthService _authService;
+        private readonly IConfiguration _config;
 
-    public HomeController(IAuthService authService, IConfiguration config)
-    {
-        _authService = authService;
-        _config = config;
-    }
-    public IActionResult Index()
-    {
-        if (Request.Cookies["Email"] != null)
+        public HomeController(IAuthService authService, IConfiguration config)
         {
-            return RedirectToAction("Users", "Main");
+            _authService = authService;
+            _config = config;
         }
-        return View();
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> Login(UserDemo model)
-    {
-        var success = await _authService.LoginAsync(model.Email, model.Password);
-        if (success)
+        public IActionResult Index()
         {
-            var userRole = await _authService.GetRoleByEmail(model.Email);
-            string UserName = _authService.GetUserNameByEmail(model.Email);
+            if (Request.Cookies["Email"] != null)
+            {
+                return RedirectToAction("Users", "Main");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(UserDemo model)
+        {
+            var success = await _authService.LoginAsync(model.Email, model.Password);
+            if (!success)
+            {
+                TempData["Message"] = "Invalid credentials";
+                return RedirectToAction("Index");
+            }
+
+            var userRole = await _authService.GetRoleByEmailAsync(model.Email);
+            string userName = await _authService.GetUserNameByEmailAsync(model.Email);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
@@ -46,9 +53,9 @@ public class HomeController : Controller
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.Name, model.Email),
-                new Claim(ClaimTypes.Email, model.Email),
-                new Claim(ClaimTypes.Role, userRole)
+                    new Claim(ClaimTypes.Name, model.Email),
+                    new Claim(ClaimTypes.Email, model.Email),
+                    new Claim(ClaimTypes.Role, userRole)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = _config["Jwt:Issuer"],
@@ -64,88 +71,97 @@ public class HomeController : Controller
             HttpContext.Session.SetString("Token", tokenString);
             HttpContext.Session.SetString("Email", model.Email);
             HttpContext.Session.SetString("Role", userRole);
-            CookieOptions cookie = new CookieOptions()
+
+            var cookieOptions = new CookieOptions()
             {
-                Expires = DateTime.Now.AddDays(30)
+                Expires = DateTime.Now.AddDays(30),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
             };
-            Response.Cookies.Append("Jwt", tokenString, cookie);
+
+            Response.Cookies.Append("Jwt", tokenString, cookieOptions);
+            
             if (model.IsRemember)
             {
-
-                Response.Cookies.Append("Email", model.Email, cookie);
+                Response.Cookies.Append("Email", model.Email, cookieOptions);
             }
 
             var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, model.Email),
-            new Claim(ClaimTypes.Role, userRole)
-        };
+            {
+                new Claim(ClaimTypes.Name, model.Email),
+                new Claim(ClaimTypes.Role, userRole)
+            };
 
-            var identity = new ClaimsIdentity(claims, "Cookies");
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(
-                "Cookies",
+                CookieAuthenticationDefaults.AuthenticationScheme,
                 principal,
                 new AuthenticationProperties
                 {
                     IsPersistent = model.IsRemember,
                     ExpiresUtc = model.IsRemember ? DateTime.UtcNow.AddDays(30) : null
                 });
+
             return RedirectToAction("Users", "Main");
         }
 
-        TempData["Message"] = "Invalid credentials";
-        return RedirectToAction("Index");
-    }
-    public IActionResult AccessDenied()
-    {
-        return View();
-    }
-    public IActionResult ForgotPassword(string email)
-    {
-        var userExists = _authService.IsUserExists(email);
-        if (!userExists)
+        public IActionResult AccessDenied()
         {
-            TempData["Message"] = "Enter right Email Address";
-            return RedirectToAction("Index", "Home");
-        }
-        var vm = new userEmail(email);
-        return View(vm);
-    }
-    [HttpPost]
-    public IActionResult SendEmailLink(userEmail model)
-    {
-        string toemail = model.Email;
-        SendEmail(toemail);
-        return RedirectToAction("Index", "Home");
-    }
-    public void SendEmail(string toemail)
-    {
-        _authService.SendPasswordResetEmail(toemail);
-    }
-    [HttpGet]
-    public IActionResult ResetPassword(string email)
-    {
-        return View(new ResetPasswordModel { Email = email });
-    }
-    [HttpPost]
-    public IActionResult ResetPassword(ResetPasswordModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
+            return View();
         }
 
-        var user = _authService.IsUserExists(model.Email);
-        if (!user)
+        public async Task<IActionResult> ForgotPassword(string email)
         {
+            var userExists = await _authService.IsUserExistsAsync(email);
+            if (!userExists)
+            {
+                TempData["Message"] = "Enter right Email Address";
+                return RedirectToAction("Index", "Home");
+            }
+            
+            var vm = new userEmail(email);
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendEmailLink(userEmail model)
+        {
+            string toEmail = model.Email;
+            await SendEmailAsync(toEmail);
             return RedirectToAction("Index", "Home");
         }
 
-        _authService.ResetPassword(model.Email, model.NewPassword);
+        private async Task SendEmailAsync(string toEmail)
+        {
+            await _authService.SendPasswordResetEmailAsync(toEmail);
+        }
 
-        return RedirectToAction("Index", "Home");
+        [HttpGet]
+        public IActionResult ResetPassword(string email)
+        {
+            return View(new ResetPasswordModel { Email = email });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userExists = await _authService.IsUserExistsAsync(model.Email);
+            if (!userExists)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            await _authService.ResetPasswordAsync(model.Email, model.NewPassword);
+
+            return RedirectToAction("Index", "Home");
+        }
     }
-
 }

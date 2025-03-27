@@ -2,73 +2,89 @@ using Microsoft.Extensions.Configuration;
 using Repository.Interfaces;
 using Service.Interfaces;
 using System.Text;
-namespace Service.Implementations;
-public class AuthService : IAuthService
+using System.Threading.Tasks;
+
+namespace Service.Implementations
 {
-    private readonly IUserRepository _userRepo;
-    private readonly IRoleRepository _roleRepo;
-    private readonly IConfiguration _config;
-    private readonly IEmailService _emailService;
+    public class AuthService : IAuthService
+    {
+        private readonly IUserRepository _userRepo;
+        private readonly IRoleRepository _roleRepo;
+        private readonly IConfiguration _config;
+        private readonly IEmailService _emailService;
 
-    public AuthService(
-        IUserRepository userRepo,
-        IRoleRepository roleRepo,
-        IConfiguration config,
-        IEmailService emailService)
-    {
-        _roleRepo = roleRepo;
-        _userRepo = userRepo;
-        _config = config;
-        _emailService = emailService;
-    }
+        public AuthService(
+            IUserRepository userRepo,
+            IRoleRepository roleRepo,
+            IConfiguration config,
+            IEmailService emailService)
+        {
+            _roleRepo = roleRepo;
+            _userRepo = userRepo;
+            _config = config;
+            _emailService = emailService;
+        }
 
-    public async Task<bool> LoginAsync(string email, string password)
-    {
-        var encryptedPass = EncryptPassword(password);
-        var user = _userRepo.GetUserByEmail(email);
-        return user?.Password == encryptedPass;
-    }
-    public bool IsCorrectPassword(string email, string Password)
-    {
-        return _userRepo.IsCorrectPassword(email, EncryptPassword(Password));
-    }
-    public void SendPasswordResetEmail(string email)
-    {
-        if (_userRepo.IsUserExists(email))
+        public async Task<bool> LoginAsync(string email, string password)
         {
-            _emailService.SendPasswordResetEmail(email);
+            var encryptedPass = EncryptPassword(password);
+            var user = await _userRepo.GetUserByEmailAsync(email);
+            return user?.Password == encryptedPass;
         }
-    }
-    public bool IsUserExists(string email)
-    {
-        return _userRepo.IsUserExists(email);
-    }
-    public void ResetPassword(string email, string newPassword)
-    {
-        var user = _userRepo.GetUserByEmail(email);
-        if (user != null)
+
+        public async Task<bool> IsCorrectPasswordAsync(string email, string password)
         {
-            user.Password = EncryptPassword(newPassword);
-            _userRepo.UpdateUser(user);
+            return await _userRepo.IsCorrectPasswordAsync(email, EncryptPassword(password));
         }
-    }
-    public string GetUserNameByEmail(string email){
-        return _userRepo.GetUserNameByEmail(email);
-    }
-    public async Task<string> GetRoleByEmail(string email)
-    {
-        int roleId = _userRepo.GetRoleIdByEmail(email);
-        return await _roleRepo.GetRoleById(roleId);
-    }
-    public async Task<string> GetRoleById(int roleid){
-        return await _roleRepo.GetRoleById(roleid);
-    }
-    public string EncryptPassword(string pass)
-    {
-        var encode = Encoding.UTF8.GetBytes(pass);
-        return Convert.ToBase64String(encode);
-    }
-    public int GetUserIdByEmail(string email){
-        return _userRepo.GetUserIdByEmail(email);
+
+        public async Task SendPasswordResetEmailAsync(string email)
+        {
+            if (await _userRepo.IsUserExistsAsync(email))
+            {
+                await _emailService.SendPasswordResetEmailAsync(email);
+            }
+        }
+
+        public async Task<bool> IsUserExistsAsync(string email)
+        {
+            return await _userRepo.IsUserExistsAsync(email);
+        }
+
+        public async Task ResetPasswordAsync(string email, string newPassword)
+        {
+            var user = await _userRepo.GetUserByEmailAsync(email);
+            if (user != null)
+            {
+                user.Password = EncryptPassword(newPassword);
+                await _userRepo.UpdateUserLoginAsync(user);
+            }
+        }
+
+        public async Task<string> GetUserNameByEmailAsync(string email)
+        {
+            return await _userRepo.GetUserNameByEmailAsync(email);
+        }
+
+        public async Task<string> GetRoleByEmailAsync(string email)
+        {
+            int roleId = await _userRepo.GetRoleIdByEmailAsync(email);
+            return await _roleRepo.GetRoleByIdAsync(roleId);
+        }
+
+        public async Task<string> GetRoleByIdAsync(int roleId)
+        {
+            return await _roleRepo.GetRoleByIdAsync(roleId);
+        }
+
+        public string EncryptPassword(string pass)
+        {
+            var encode = Encoding.UTF8.GetBytes(pass);
+            return Convert.ToBase64String(encode);
+        }
+
+        public async Task<int> GetUserIdByEmailAsync(string email)
+        {
+            return await _userRepo.GetUserIdByEmailAsync(email);
+        }
     }
 }
