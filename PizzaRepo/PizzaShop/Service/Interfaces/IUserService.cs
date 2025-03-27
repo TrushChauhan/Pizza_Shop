@@ -5,7 +5,7 @@ namespace Service.Interfaces;
 
 public interface IUserService
 {
-    Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize);
+    Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize,string sortField,string sortDirection);
     Task<MyProfile> GetProfileForUpdateAsync(int userId);
     Task UpdateUserProfileAsync(MyProfile model, string profileImagePath);
     Task AddNewUserAsync(AddUserDetail user);

@@ -10,7 +10,7 @@ public interface IUserRepository
     Task<string> GetUserNameByEmailAsync(string email);
     Task<int> GetRoleIdByEmailAsync(string email);
     Task UpdateUserLoginAsync(Userlogin user);
-    Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize);
+    Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize,string sortField,string sortDirection);
     Task<bool> IsUserExistsAsync(string email);
     Task AddNewUserAsync(AddUserDetail model);
     Task<Userdetail> GetUserByIdAsync(int userId);

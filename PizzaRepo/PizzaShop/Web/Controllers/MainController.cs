@@ -81,19 +81,30 @@ public async Task<IActionResult> UpdateUserProfile(MyProfile model)
     }
 }
 
-        public async Task<IActionResult> Users(string searchTerm = null, int page = 1, int pageSize = 2)
-        {
-            var (users, totalItems) = await _userService.GetUsersAsync(searchTerm, page, pageSize);
-            var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-            
-            ViewBag.CurrentPage = page;
-            ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = totalPages;
-            ViewBag.TotalItems = totalItems;
-            ViewBag.SearchTerm = searchTerm;
-            
-            return View("Users", users);
-        }
+        public async Task<IActionResult> Users(
+    string searchTerm = null, 
+    int page = 1, 
+    int pageSize = 2,
+    string sortField = "Name",
+    string sortDirection = "asc")
+{
+    var (users, totalItems) = await _userService.GetUsersAsync(
+        searchTerm, 
+        page, 
+        pageSize,
+        sortField,
+        sortDirection);
+    
+    ViewBag.CurrentPage = page;
+    ViewBag.PageSize = pageSize;
+    ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+    ViewBag.TotalItems = totalItems;
+    ViewBag.SearchTerm = searchTerm;
+    ViewBag.SortField = sortField;
+    ViewBag.SortDirection = sortDirection;
+    
+    return View(users);
+}
 
         public IActionResult Logout()
         {

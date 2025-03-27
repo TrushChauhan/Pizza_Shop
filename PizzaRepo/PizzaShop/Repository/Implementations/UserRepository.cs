@@ -71,7 +71,11 @@ namespace Repository.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize)
+        public async Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(
+    string searchTerm,
+    int page,
+    int pageSize,
+    string sortField = "Name",string sortDirection = "asc")
         {
             var query = _context.Userdetails
                 .Include(ud => ud.User)
@@ -82,7 +86,7 @@ namespace Repository.Implementations
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 searchTerm = searchTerm.ToLower();
-                searchTerm= await RemoveWhitespace(searchTerm);
+                searchTerm = await RemoveWhitespace(searchTerm);
                 query = query.Where(ud =>
                     (ud.Firstname + " " + ud.Lastname).ToLower().Contains(searchTerm) ||
                     ud.User.Email.ToLower().Contains(searchTerm) ||
@@ -90,9 +94,19 @@ namespace Repository.Implementations
                 );
             }
 
+            query = sortField switch
+            {
+                "Name" => sortDirection == "asc"
+                    ? query.OrderBy(ud => ud.Firstname).ThenBy(ud => ud.Lastname)
+                    : query.OrderByDescending(ud => ud.Firstname).ThenByDescending(ud => ud.Lastname),
+                "Role" => sortDirection == "asc"
+                    ? query.OrderBy(ud => ud.Role.Rolename)
+                    : query.OrderByDescending(ud => ud.Role.Rolename),
+                _ => query.OrderBy(ud => ud.Userid)
+            };
+
             var totalItems = await query.CountAsync();
             var users = await query
-                .OrderBy(ud => ud.Userid)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(ud => new UserTable

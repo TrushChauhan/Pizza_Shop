@@ -27,9 +27,9 @@ namespace Service.Implementations
             _fileService = fileService;
         }
 
-        public async Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize)
+        public async Task<(List<UserTable> Users, int TotalItems)> GetUsersAsync(string searchTerm, int page, int pageSize,string sortField,string sortDirection)
         {
-            return await _userRepo.GetUsersAsync(searchTerm, page, pageSize);
+            return await _userRepo.GetUsersAsync(searchTerm, page, pageSize,sortField,sortDirection);
         }
 
         public async Task<MyProfile> GetProfileForUpdateAsync(int userId)

@@ -8,6 +8,24 @@
     var totalItems = ViewBag.TotalItems;
     var searchTerm = ViewBag.SearchTerm;
 }
+@functions {
+    public string GetSortUrl(string field)
+    {
+        var direction = "asc";
+        if (ViewBag.SortField == field)
+        {
+            direction = ViewBag.SortDirection == "asc" ? "desc" : "asc";
+        }
+        
+        return Url.Action("Users", "Main", new { 
+            page = ViewBag.CurrentPage,
+            pageSize = ViewBag.PageSize,
+            searchTerm = ViewBag.SearchTerm,
+            sortField = field,
+            sortDirection = direction
+        });
+    }
+}
 
 <form method="get" action="/Main/Users">
     <div class="row-11 d-flex my-2 mx-2">
@@ -32,16 +50,32 @@
             <thead>
                 <tr>
                     <th scope="col" class="text-black-50">
-                        Name 
-                        <i class="fa-solid fa-arrow-up"></i> 
-                        <i class="fa-solid fa-arrow-down"></i>
+                        <a href="@GetSortUrl("Name")" class="text-decoration-none text-black-50">
+                            Name
+                            @if (ViewBag.SortField == "Name")
+                            {
+                                <i class="fa-solid @(ViewBag.SortDirection == "asc" ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-arrows-up-down" style="opacity: 0.5;"></i>
+                            }
+                        </a>
                     </th>
                     <th scope="col" class="text-black-50">Email</th>
                     <th scope="col" class="text-black-50">Phone</th>
                     <th scope="col" class="text-black-50">
-                        Role
-                        <i class="fa-solid fa-arrow-up"></i> 
-                        <i class="fa-solid fa-arrow-down"></i>
+                        <a href="@GetSortUrl("Role")" class="text-decoration-none text-black-50">
+                            Role
+                            @if (ViewBag.SortField == "Role")
+                            {
+                                <i class="fa-solid @(ViewBag.SortDirection == "asc" ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-arrows-up-down" style="opacity: 0.5;"></i>
+                            }
+                        </a>
                     </th>
                     <th scope="col" class="text-black-50">Status</th>
                     <th scope="col" class="text-black-50">Action</th>
@@ -59,10 +93,10 @@
                         <td>@user.Phone</td>
                         <td>@user.Role</td>
                         <td>
-                            <span class="status px-4 py-1" >@user.Status</span>
+                            <span class="status px-4 py-1">@user.Status</span>
                         </td>
                         <td>
-                            <a asp-action="EditUser" asp-route-id="@user.UserId"><i class="material-icons" >edit</i></a>
+                            <a asp-action="EditUser" asp-route-id="@user.UserId"><i class="material-icons">edit</i></a>
                             <i class="material-icons delete-user" data-user-id="@user.UserId" data-bs-toggle="modal"
                                 data-bs-target="#confirmmodal">delete</i>
                         </td>
@@ -82,7 +116,8 @@
                 </div>
                 <div>
                     <span class="text-muted">
-                        Showing @Math.Min((currentPage - 1) * pageSize + 1,totalItems) - @Math.Min(currentPage * pageSize, totalItems) of
+                        Showing @Math.Min((currentPage - 1) * pageSize + 1, totalItems) - @Math.Min(currentPage *
+                        pageSize, totalItems) of
                         @totalItems
                     </span>
                 </div>
@@ -109,8 +144,7 @@
                     }
                     else
                     {
-                        <span class="btn btn-outline-secondary mx-1 disabled"> <i
-                                class="fas fa-chevron-right"></i></span>
+                        <span class="btn btn-outline-secondary mx-1 disabled"> <i class="fas fa-chevron-right"></i></span>
                     }
                 </div>
             </div>
@@ -138,6 +172,26 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sortField = '@ViewBag.SortField';
+    const sortDirection = '@ViewBag.SortDirection';
+    
+    if (sortField) {
+        const headers = document.querySelectorAll('th a');
+        headers.forEach(header => {
+            if (header.textContent.trim().includes(sortField)) {
+                header.classList.add('active-sort');
+                const icon = header.querySelector('i');
+                if (icon) {
+                    icon.className = sortDirection === 'asc' 
+                        ? 'fa-solid fa-arrow-up' 
+                        : 'fa-solid fa-arrow-down';
+                }
+            }
+        });
+    }
+});
+
     document.querySelector('form').addEventListener('submit', function (e) {
         e.preventDefault();
         const searchTerm = document.querySelector('input[name="searchTerm"]').value;
@@ -192,12 +246,12 @@
             }
         });
     }
-    
+
     const statusElements = document.querySelectorAll('.status');
-    
+
     statusElements.forEach(element => {
         const status = element.innerHTML;
-        
+
         if (status === "inactive") {
             element.classList.add('status-inactive');
             element.classList.remove('status-active');
@@ -205,6 +259,6 @@
             element.classList.add('status-active');
             element.classList.remove('status-inactive');
         }
-});
+    });
     initializeDeleteButtons();
 </script>
