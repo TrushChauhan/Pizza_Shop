@@ -35,10 +35,16 @@
                 <div class="list-group" id="categoryList">
                     @foreach (var category in Model)
                     {
+                        <div>
                         <a href="#" class="list-group-item list-group-item-action category-item"
                             data-category-id="@category.CategoryId">
                             @category.CategoryName
+                        
+                        
+                        <i class="material-icons" onclick="editCategory(@category.CategoryId)">edit</i>
+                            <i class="material-icons" onclick="deleteCategory(@category.CategoryId)">delete</i>
                         </a>
+                        </div>
                     }
                 </div>
             </div>
@@ -363,7 +369,26 @@
         </div>
     </div>
 </div>
-
+<!-- Category Delete Modal-->
+<div id="categoryDeleteModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="~/images/danger.png" width="50" height="50" alt="Warning">
+                <p class="mt-3">Are you sure you want to delete this category?</p>
+                <input type="hidden" id="categoryToDelete">
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" id="confirmCategoryDelete">Yes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Single Modifier Delete Confirmation Modal -->
 <div id="singleModifierDeleteModal" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -840,7 +865,30 @@
     // Initialize modals
     const singleItemDeleteModal = new bootstrap.Modal(document.getElementById('singleItemDeleteModal'));
     const singleModifierDeleteModal = new bootstrap.Modal(document.getElementById('singleModifierDeleteModal'));
+    const categoryDeleteModal =new bootstrap.Modal(document.getElementById('categoryDeleteModal'));
+    // category delete
+    function deleteCategory(categoryId){
+        document.getElementById('categoryToDelete').value = categoryId;
+        categoryDeleteModal.show();
+    }
 
+    document.getElementById('confirmCategoryDelete').addEventListener('click', function () {
+        const categoryId = document.getElementById('categoryToDelete').value;
+
+        fetch(`/Menu/DeleteCategory/${categoryId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete category');
+                }
+            })
+            .finally(() => {
+                categoryDeleteModal.hide();
+            });
+    });
     // Single Item Delete
     function deleteItem(itemId) {
         document.getElementById('itemToDeleteId').value = itemId;

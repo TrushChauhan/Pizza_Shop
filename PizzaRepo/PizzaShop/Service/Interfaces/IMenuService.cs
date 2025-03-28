@@ -11,6 +11,7 @@ namespace Service.Interfaces
         Task AddCategoryAsync(MenuCategoryViewModel model);
         Task AddItemAsync(MenuItemViewModel model);
         Task DeleteItemAsync(int id);
+        Task DeleteCategoryAsync(int id);
         Task DeleteItemsAsync(List<int> itemIds);
     }
 }

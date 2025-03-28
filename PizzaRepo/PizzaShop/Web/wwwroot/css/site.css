@@ -285,6 +285,10 @@ th{
 .text-align-right{
   text-align: right;
 }
+.active-sort {
+    font-weight: bold;
+    color: #0d6efd !important;
+}
 @media screen and (max-width:576px) {
   .mx-8{
       margin-left: 10px;

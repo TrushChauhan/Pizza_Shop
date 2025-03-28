@@ -36,6 +36,20 @@ namespace Repository.Implementations
             await _context.Menucategories.AddAsync(category);
             await _context.SaveChangesAsync();
         }
+        public async Task DeleteCategoryAsync(int id)
+        {
+            var category = await _context.Menucategories.FindAsync(id);
+            if (category != null)
+            {
+                category.Isdeleted = true;
+                await _context.SaveChangesAsync();
+            }
+            var items = await _context.Menuitems.Where(c=> c.Categoryid == id).ToListAsync();
+            foreach (var item in items){
+                item.Isdeleted=true;
+                await _context.SaveChangesAsync();
+            }
+        }
 
         public async Task AddItemAsync(Menuitem item)
         {

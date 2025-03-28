@@ -59,7 +59,9 @@ namespace Service.Implementations
             };
             await _menuRepository.AddItemAsync(item);
         }
-
+        public async Task DeleteCategoryAsync(int id){
+            await _menuRepository.DeleteCategoryAsync(id);
+        }
         public async Task DeleteItemAsync(int id)
         {
             await _menuRepository.DeleteItemAsync(id);

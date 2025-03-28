@@ -37,6 +37,13 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            await _menuService.DeleteCategoryAsync(id);
+            return Ok();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddItem([FromBody] MenuItemViewModel model)
         {
             if (ModelState.IsValid)
