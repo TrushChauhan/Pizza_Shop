@@ -136,5 +136,22 @@ namespace Repository.Implementations
 
             await _context.SaveChangesAsync();
         }
+        public async Task<Modifiergroup> GetModifierGroupAsync(int id)
+        {
+            return await _context.Modifiergroups
+                .FirstOrDefaultAsync(g => g.Modifiergroupid == id && !g.Isdeleted);
+        }
+
+        public async Task UpdateModifierGroupAsync(Modifiergroup group)
+        {
+            var existing = await _context.Modifiergroups.FindAsync(group.Modifiergroupid);
+            if (existing != null)
+            {
+                existing.Modifiergroupname = group.Modifiergroupname;
+                existing.Description = group.Description;
+                existing.Modifieddate = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

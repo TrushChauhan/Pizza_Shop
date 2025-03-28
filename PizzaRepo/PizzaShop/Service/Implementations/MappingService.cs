@@ -53,8 +53,6 @@ public class MappingService
             ModifierGroupId = group.Modifiergroupid,
             ModifierGroupName = group.Modifiergroupname,
             Description = group.Description,
-            MinSelect = group.Minselect,
-            MaxSelect = group.Maxselect,
             CreatedDate = group.Createddate,
             ModifiedDate = group.Modifieddate,
             IsDeleted = group.Isdeleted

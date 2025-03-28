@@ -13,5 +13,8 @@ namespace Service.Interfaces
         Task DeleteItemAsync(int id);
         Task DeleteCategoryAsync(int id);
         Task DeleteItemsAsync(List<int> itemIds);
+        Task<MenuCategoryViewModel> GetCategoryAsync(int id);
+        Task UpdateCategoryAsync(MenuCategoryViewModel model);
+        
     }
 }

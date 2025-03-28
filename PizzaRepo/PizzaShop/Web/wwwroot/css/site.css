@@ -282,6 +282,40 @@ th{
     background-color: transparent;
     border-color: #dee2e6;
 }
+.category-item .material-icons {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    margin-left: auto; 
+    padding-left: 8px;
+}
+.category-item:hover .material-icons {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modifier-group-item .material-icons {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    margin-left: auto;
+    padding-left: 8px;
+}
+
+.modifier-group-item:hover .material-icons {
+    opacity: 1;
+    visibility: visible;
+}
+
+.list-group-item-action:hover {
+    background-color: #f8f9fa;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .text-align-right{
   text-align: right;
 }

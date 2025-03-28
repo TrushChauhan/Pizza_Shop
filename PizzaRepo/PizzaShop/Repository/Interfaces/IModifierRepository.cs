@@ -13,4 +13,6 @@ public interface IModifierRepository
         Task RemoveModifierFromGroupAsync(int modifierGroupId, int modifierId);
         Task DeleteModifiersFromGroupAsync(int modifierGroupId, List<int> modifierIds);
         Task<int> GetAllModifiersCountAsync(string search="");
+        Task<Modifiergroup> GetModifierGroupAsync(int id);
+        Task UpdateModifierGroupAsync(Modifiergroup group);
 }

@@ -14,6 +14,8 @@ namespace Repository.Interfaces
         Task DeleteItemAsync(int id);
         Task DeleteCategoryAsync(int id);
         Task DeleteItemsAsync(List<int> itemIds);
+        Task<Menucategory> GetCategoryAsync(int id);
+        Task UpdateCategoryAsync(Menucategory category);
     }
 
 }

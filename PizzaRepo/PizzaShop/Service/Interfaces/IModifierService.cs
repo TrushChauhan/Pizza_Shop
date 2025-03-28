@@ -13,4 +13,6 @@ public interface IModifierService
         Task DeleteModifierGroupAsync(int id);
         Task RemoveModifierFromGroupAsync(int modifierGroupId, int modifierId);
         Task DeleteModifiersFromGroupAsync(int modifierGroupId, List<int> modifierIds);
+        Task<ModifierGroupViewModel> GetModifierGroupAsync(int id);
+        Task UpdateModifierGroupAsync(ModifierGroupViewModel model);
     }

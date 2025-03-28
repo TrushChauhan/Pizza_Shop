@@ -81,5 +81,22 @@ namespace Repository.Implementations
 
             await _context.SaveChangesAsync();
         }
+        public async Task<Menucategory> GetCategoryAsync(int id)
+        {
+            return await _context.Menucategories
+                .FirstOrDefaultAsync(c => c.Categoryid == id && !c.Isdeleted);
+        }
+
+        public async Task UpdateCategoryAsync(Menucategory category)
+        {
+            var existing = await _context.Menucategories.FindAsync(category.Categoryid);
+            if (existing != null)
+            {
+                existing.Categoryname = category.Categoryname;
+                existing.Description = category.Description;
+                existing.Modifieddate = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

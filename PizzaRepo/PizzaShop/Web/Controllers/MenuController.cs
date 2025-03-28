@@ -108,6 +108,37 @@ namespace Web.Controllers
             });
         }
 
+        // Get single category endpoint
+        [HttpGet]
+        public async Task<IActionResult> GetCategory(int id)
+        {
+            var category = await _menuService.GetCategoryAsync(id);
+            return Json(category);
+        }
+
+        // Update category endpoint
+        [HttpPost]
+        public async Task<IActionResult> UpdateCategory([FromBody] MenuCategoryViewModel model)
+        {
+            await _menuService.UpdateCategoryAsync(model);
+            return Ok();
+        }
+        // Get single modifier group endpoint
+        [HttpGet]
+        public async Task<IActionResult> GetModifierGroup(int id)
+        {
+            var group = await _modifierService.GetModifierGroupAsync(id);
+            return Json(group);
+        }
+
+        // Update modifier group endpoint
+        [HttpPost]
+        public async Task<IActionResult> UpdateModifierGroup([FromBody] ModifierGroupViewModel model)
+        {
+            await _modifierService.UpdateModifierGroupAsync(model);
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddModifiersToGroup([FromBody] AddModifiersToGroupRequest request)
         {

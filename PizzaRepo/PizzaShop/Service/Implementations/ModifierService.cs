@@ -80,6 +80,33 @@ namespace Service.Implementations
                 TotalPages = totalPages
             };
         }
+
+    public async Task<ModifierGroupViewModel> GetModifierGroupAsync(int id)
+    {
+        var group = await _modifierRepository.GetModifierGroupAsync(id);
+        if (group == null) throw new KeyNotFoundException("Modifier group not found");
+        
+        return new ModifierGroupViewModel
+        {
+            ModifierGroupId = group.Modifiergroupid,
+            ModifierGroupName = group.Modifiergroupname,
+            Description = group.Description,
+        };
+    }
+
+    public async Task UpdateModifierGroupAsync(ModifierGroupViewModel model)
+    {
+        var group = await _modifierRepository.GetModifierGroupAsync(model.ModifierGroupId);
+        if (group == null) throw new KeyNotFoundException("Modifier group not found");
+
+        // Update properties
+        group.Modifiergroupname = model.ModifierGroupName;
+        group.Description=model.Description;
+        group.Modifieddate = DateTime.Now;
+
+        await _modifierRepository.UpdateModifierGroupAsync(group);
+    }
+
         public async Task DeleteModifierGroupAsync(int id){
             await _modifierRepository.DeleteModifierGroupAsync(id);
         }

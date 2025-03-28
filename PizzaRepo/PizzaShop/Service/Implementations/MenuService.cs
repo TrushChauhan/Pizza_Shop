@@ -71,5 +71,31 @@ namespace Service.Implementations
         {
             await _menuRepository.DeleteItemsAsync(itemIds);
         }
+
+    public async Task<MenuCategoryViewModel> GetCategoryAsync(int id)
+    {
+        var category = await _menuRepository.GetCategoryAsync(id);
+        if (category == null) throw new KeyNotFoundException("Category not found");
+        
+        return new MenuCategoryViewModel
+        {
+            CategoryId = category.Categoryid,
+            CategoryName = category.Categoryname,
+            Description = category.Description
+        };
+    }
+
+    public async Task UpdateCategoryAsync(MenuCategoryViewModel model)
+    {
+        var category = await _menuRepository.GetCategoryAsync(model.CategoryId);
+        if (category == null) throw new KeyNotFoundException("Category not found");
+
+        // Update properties
+        category.Categoryname = model.CategoryName;
+        category.Description = model.Description;
+        category.Modifieddate = DateTime.Now;
+
+        await _menuRepository.UpdateCategoryAsync(category);
+    }
     }
 }
