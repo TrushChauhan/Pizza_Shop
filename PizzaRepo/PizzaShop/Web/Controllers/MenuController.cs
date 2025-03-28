@@ -76,12 +76,10 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddModifier([FromBody] ModifierViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+        
                 await _modifierService.AddModifierAsync(model);
                 return Ok();
-            }
-            return BadRequest(ModelState);
+            
         }
 
         [HttpPost]
@@ -145,6 +143,7 @@ namespace Web.Controllers
             await _modifierService.AddModifiersToGroupAsync(request.ModifierGroupId, request.ModifierIds);
             return Ok();
         }
+        
 
         [HttpPost]
         public async Task<IActionResult> RemoveModifierFromGroup([FromBody] RemoveModifierRequest request)

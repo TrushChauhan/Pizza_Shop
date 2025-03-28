@@ -37,6 +37,7 @@ namespace Repository.Implementations
 
         public async Task AddModifierAsync(Modifier modifier, int modifierGroupId)
         {
+            modifier.Modifierid= await _context.Modifiers.CountAsync()+1;
             await _context.Modifiers.AddAsync(modifier);
             await _context.SaveChangesAsync();
 

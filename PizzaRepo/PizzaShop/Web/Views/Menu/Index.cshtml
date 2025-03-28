@@ -301,33 +301,35 @@
                 <h5 class="modal-title">Add New Modifier</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body container">
-                <form id="addModifierForm row">
-                    <div class="mb-3 col-6 form-floating">
-                        <select class="form-control" id="modifierGroup" required>
-                            <option value="">Select a group</option>
-                        </select>
-                        <label for="modifierGroup" class="form-label">Modifier Group</label>
-                    </div>
-                    <div class="mb-3 col-6 form-floating">
-                        <input type="text" class="form-control" id="modifierName" required>
-                        <label for="modifierName" class="form-label">Name*</label>
-                    </div>
-                    <div class="mb-3 col-4 form-floating">
-                        <input type="number" class="form-control" id="modifierRate" required>
-                        <label for="modifierRate" class="form-label">Rate</label>
-                    </div>
-                    <div class="mb-3 col-4 form-floating">
-                        <input type="number" class="form-control" id="modifierQuantity" required>
-                        <label for="modifierQuantity" class="form-label">Quantity</label>
-                    </div>
-                    <div class="mb-3 col-4 form-floating">
-                        <input type="text" class="form-control" id="modifierUnit" required>
-                        <label for="modifierUnit" class="form-label">Unit</label>
-                    </div>
-                    <div class="mb-3 col-12 form-floating">
-                        <textarea class="form-control" id="modifierDescription" rows="3"></textarea>
-                        <label for="modifierDescription" class="form-label">Description</label>
+            <div class="modal-body">
+                <form id="addModifierForm">
+                    <div class="row g-3">
+                        <div class="col-6 form-floating">
+                            <select class="form-select" id="modifierGroup" required>
+                                <option value="">Select a group</option>
+                            </select>
+                            <label for="modifierGroup" class="form-label">Modifier Group*</label>
+                        </div>
+                        <div class="col-md-6 form-floating">
+                            <input type="text" class="form-control" id="modifierName" required>
+                            <label for="modifierName" class="form-label">Name*</label>
+                        </div>
+                        <div class="col-md-4 form-floating">
+                            <input type="text" class="form-control" id="modifierUnit" required>
+                            <label for="modifierUnit" class="form-label">Unit*</label>
+                        </div>
+                        <div class="col-md-4 form-floating">
+                            <input type="number" class="form-control" id="modifierRate" required step="0.01">
+                            <label for="modifierRate" class="form-label">Rate*</label>
+                        </div>
+                        <div class="col-md-4 form-floating">
+                            <input type="number" class="form-control" id="modifierQuantity" required>
+                            <label for="modifierQuantity" class="form-label">Quantity*</label>
+                        </div>
+                        <div class="col-12 form-floating">
+                            <textarea class="form-control" id="modifierDescription" rows="3"></textarea>
+                            <label for="modifierDescription" class="form-label">Description</label>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -388,16 +390,10 @@
                         <label for="editModifierGroupDescription" class="form-label">Description</label>
                     </div>
                     <div class="mb-2">
-                        <a class="primary text-decoration-none" data-bs-toggle="modal"
-                            data-bs-target="#addExistingModifiersModal">+ Add Existing Modifiers</a>
+                        <a class="primary text-decoration-none" onclick="loadAllModifiersForEdit()">+ Add Existing Modifiers</a>
                     </div>
-                    <div class="d-flex row">
-                         <div class=" col-3 d-flex justify-content-center align-items-center">
-                         <p class="">Tomato</p>
-                         <button type="button " class="close border-none" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                         </button>
-                         </div>
+                    <div id="currentModifiersContainer" class="d-flex flex-wrap gap-2 mt-3">
+                        <!-- Modifiers will be loaded here -->
                     </div>
                 </form>
             </div>
@@ -863,18 +859,36 @@
     });
 
     // Single handler for adding selected modifiers
-    document.getElementById('addSelectedModifiers').addEventListener('click', function () {
-        const selectedModifiers = Array.from(document.querySelectorAll('.modifier-check:checked'))
-            .map(checkbox => parseInt(checkbox.dataset.modifierId));
+    document.getElementById('addSelectedModifiers').addEventListener('click', function() {
+    const existingModal = bootstrap.Modal.getInstance(document.getElementById('addExistingModifiersModal'));
+    const editModal = bootstrap.Modal.getInstance(document.getElementById('editModifierGroupModal'));
+    const isEditMode = sessionStorage.getItem('modifierEditMode') === 'true';
+    const selectedModifiers = Array.from(document.querySelectorAll('.modifier-check:checked'))
+        .map(checkbox => parseInt(checkbox.dataset.modifierId));
 
-        if (selectedModifiers.length === 0) {
-            alert('Please select at least one modifier');
-            return;
-        }
-
-        // Create modifier group and add modifiers in one flow
+    if (isEditMode) {
+        // Add to existing group
+        const groupId = currentEditingGroupId;
+        fetch('/Menu/AddModifiersToGroup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                modifierGroupId: groupId,
+                modifierIds: selectedModifiers
+            })
+        }).then(response => {
+            if (response.ok) {
+                loadCurrentModifiers(groupId);
+                existingModal.hide();
+                editModal.show(); // Show the edit modal again
+                sessionStorage.removeItem('modifierEditMode');
+            }
+        });
+    } else {
+        // Original add to new group logic
         createModifierGroupWithModifiers(tempModifierGroupData, selectedModifiers);
-    });
+    }
+});
 
     function createModifierGroupWithModifiers(groupData, modifierIds) {
         // First create the modifier group
@@ -974,19 +988,45 @@
                 }
             });
     });
+    let currentEditingGroupId = null;
 
-    // Edit Modifier Group Functions
-    function editModifierGroup(modifierGroupId) {
-        fetch(`/Menu/GetModifierGroup/${modifierGroupId}`)
-            .then(response => response.json())
-            .then(group => {
-                document.getElementById('editModifierGroupId').value = group.modifierGroupId;
-                document.getElementById('editModifierGroupName').value = group.modifierGroupName;
-                document.getElementById('editModifierGroupDescription').value = group.description;
-                const editModal = new bootstrap.Modal(document.getElementById('editModifierGroupModal'));
-                editModal.show();
-            });
-    }
+function editModifierGroup(modifierGroupId) {
+    currentEditingGroupId = modifierGroupId;
+    
+    fetch(`/Menu/GetModifierGroup/${modifierGroupId}`)
+        .then(response => response.json())
+        .then(group => {
+            document.getElementById('editModifierGroupId').value = group.modifierGroupId;
+            document.getElementById('editModifierGroupName').value = group.modifierGroupName;
+            document.getElementById('editModifierGroupDescription').value = group.description;
+            
+            // Load current modifiers
+            loadCurrentModifiers(group.modifierGroupId);
+            
+            const editModal = new bootstrap.Modal(document.getElementById('editModifierGroupModal'));
+            editModal.show();
+        });
+}
+function loadAllModifiersForEdit() {
+    const editModal = bootstrap.Modal.getInstance(document.getElementById('editModifierGroupModal'));
+    const existingModal = new bootstrap.Modal(document.getElementById('addExistingModifiersModal'), {
+        backdrop: 'static' // Keep both modals visible
+    });
+    
+    // Hide the edit modal temporarily
+    editModal.hide();
+    
+    existingModal.show();
+    
+    // Handle modal hidden event to reshow edit modal
+    document.getElementById('addExistingModifiersModal').addEventListener('hidden.bs.modal', () => {
+        editModal.show();
+    });
+    
+    // Store that we're in edit mode
+    sessionStorage.setItem('modifierEditMode', 'true');
+    loadAllModifiers();
+}
 
     document.getElementById('updateModifierGroup').addEventListener('click', () => {
         const groupData = {
@@ -1039,6 +1079,57 @@
                 categoryDeleteModal.hide();
             });
     });
+    // Save Modifier functionality
+document.getElementById('saveModifier').addEventListener('click', function() {
+    const modifierData = {
+        modifierGroupId: document.getElementById('modifierGroup').value,
+        modifierName: document.getElementById('modifierName').value,
+        unit: document.getElementById('modifierUnit').value,
+        rate: parseFloat(document.getElementById('modifierRate').value),
+        quantity: parseInt(document.getElementById('modifierQuantity').value),
+        description: document.getElementById('modifierDescription').value
+    };
+
+    if (
+        !modifierData.modifierName || 
+        !modifierData.unit || 
+        isNaN(modifierData.rate) || 
+        isNaN(modifierData.quantity)) {
+        alert('Please fill all required fields');
+        return;
+    }
+
+    fetch('/Menu/AddModifier', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(modifierData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Close modal and refresh data
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addModifierModal'));
+            modal.hide();
+            
+            // Refresh relevant data
+            const activeGroup = document.querySelector('#modifierGroupList .modifier-group-item.active');
+            if (activeGroup) {
+                const groupId = activeGroup.dataset.modifierGroupId;
+                loadModifiers(groupId);
+            }
+            
+            // Clear form
+            document.getElementById('addModifierForm').reset();
+        } else {
+            alert('Failed to save modifier');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving');
+    });
+});
 
     // Single Item Delete
     function deleteItem(itemId) {
@@ -1092,12 +1183,41 @@
             });
     });
     // Single Modifier Delete
-    function removeModifierFromGroup(modifierId, groupId) {
-        document.getElementById('modifierToDeleteId').value = modifierId;
-        document.getElementById('modifierGroupId').value = groupId;
-        singleModifierDeleteModal.show();
-    }
-
+   function removeModifierFromGroup(modifierId, groupId) {
+    fetch('/Menu/RemoveModifierFromGroup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            modifierGroupId: groupId,
+            modifierId: modifierId
+        })
+    }).then(response => {
+        if (response.ok) {
+            loadCurrentModifiers(groupId);
+            loadModifiers(groupId); // Refresh the main table if needed
+        }
+    });
+}
+function loadCurrentModifiers(groupId) {
+    fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`)
+        .then(response => response.json())
+        .then(modifiers => {
+            const container = document.getElementById('currentModifiersContainer');
+            container.innerHTML = '';
+            
+            modifiers.forEach(modifier => {
+                const badge = `
+                    <div class="badge badge-pill bg-secondary d-flex align-items-center gap-2">
+                        ${modifier.modifierName}
+                        <button type="button" class="btn-close btn-close-grey" 
+                            onclick="removeModifierFromGroup(${modifier.modifierId}, ${groupId})"
+                            aria-label="Remove"></button>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', badge);
+            });
+        });
+}
     document.getElementById('confirmSingleModifierDelete').addEventListener('click', function () {
         const modifierId = document.getElementById('modifierToDeleteId').value;
         const groupId = document.getElementById('modifierGroupId').value;
