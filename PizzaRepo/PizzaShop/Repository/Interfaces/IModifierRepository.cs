@@ -9,6 +9,7 @@ public interface IModifierRepository
         Task<int> AddModifierGroupAsync(Modifiergroup modifierGroup);
         Task<List<Modifier>> GetAllModifiersAsync(int page = 1, int pageSize = 10, string search = "");
         Task AddModifiersToGroupAsync(int modifierGroupId, List<int> modifierIds);
+        Task DeleteModifierGroupAsync(int id);
         Task RemoveModifierFromGroupAsync(int modifierGroupId, int modifierId);
         Task DeleteModifiersFromGroupAsync(int modifierGroupId, List<int> modifierIds);
         Task<int> GetAllModifiersCountAsync(string search="");

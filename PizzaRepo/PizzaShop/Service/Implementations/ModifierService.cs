@@ -80,7 +80,9 @@ namespace Service.Implementations
                 TotalPages = totalPages
             };
         }
-
+        public async Task DeleteModifierGroupAsync(int id){
+            await _modifierRepository.DeleteModifierGroupAsync(id);
+        }
         public async Task AddModifiersToGroupAsync(int modifierGroupId, List<int> modifierIds)
         {
             await _modifierRepository.AddModifiersToGroupAsync(modifierGroupId, modifierIds);

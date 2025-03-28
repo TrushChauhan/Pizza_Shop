@@ -112,7 +112,14 @@ namespace Repository.Implementations
                 await _context.SaveChangesAsync();
             }
         }
-
+        public async Task DeleteModifierGroupAsync(int id){
+            var modifierGroup = await _context.Modifiergroups.FindAsync(id);
+            if (modifierGroup != null)
+            {
+                modifierGroup.Isdeleted = true;
+                await _context.SaveChangesAsync();
+            }
+        }
         public async Task DeleteModifiersFromGroupAsync(int modifierGroupId, List<int> modifierIds)
         {
             var groupModifiers = await _context.Modifiergroupandmodifiers

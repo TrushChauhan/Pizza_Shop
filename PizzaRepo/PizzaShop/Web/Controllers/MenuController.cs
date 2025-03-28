@@ -92,7 +92,11 @@ namespace Web.Controllers
             return Json(new { modifierGroupId = modifierid });
             
         }
-
+        public async Task<IActionResult> DeleteModifierGroup(int id)
+        {
+            await _modifierService.DeleteModifierGroupAsync(id);
+            return Ok();
+        }
         [HttpGet]
         public async Task<IActionResult> GetAllModifiers(int page = 1, int pageSize = 10, string search = "")
         {
