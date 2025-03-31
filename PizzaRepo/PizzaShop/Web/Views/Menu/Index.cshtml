@@ -308,184 +308,123 @@
                 <h5 class="modal-title" id="addMenuItemModalLabel">Add Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form id="addItemForm" enctype="multipart/form-data">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-md-8 pe-4">
+                            <!-- Categories -->
                             <div class="row mb-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Categories*</label>
-                                    <select class="form-select">
-                                        <option selected>Sandwich</option>
-                                        <option>Burger</option>
-                                        <option>Pizza</option>
+                                <div class="col-md-6 form-floating">
+                                    <select class="form-select" id="categorySelect" name="CategoryId" required>
+                                        <option value="">Loading categories...</option>
                                     </select>
+                                    <label for="categorySelect" class="form-label">Category*</label>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Name*</label>
-                                    <input type="text" class="form-control">
+                                <div class="col-md-6 form-floating">
+                                    <input type="text" class="form-control" id="itemName" name="ItemName" required>
+                                    <label for="itemName" class="form-label">Item Name*</label>
                                 </div>
                             </div>
 
+                            <!-- Item Details -->
                             <div class="row mb-3">
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label">Item Type*</label>
-                                    <select class="form-select">
-                                        <option>Vegetarian</option>
-                                        <option >Non Vegetarian</option>
-                                        <option>Vegan</option>
+                                <div class="col-md-4 form-floating">
+                                    <select class="form-select" id="itemType" name="ItemType" required>
+                                        <option value="Vegetarian">Vegetarian</option>
+                                        <option value="Non Vegetarian">Non Vegetarian</option>
+                                        <option value="Vegan">Vegan</option>
                                     </select>
+                                    <label for="itemType" class="form-label">Item Type*</label>
                                 </div>
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label">Rate*</label>
-                                    <input type="number" class="form-control">
+                                <div class="col-md-4 form-floating">
+                                    <input type="number" class="form-control" id="rate" name="Rate" step="0.01" required>
+                                    <label for="rate" class="form-label">Rate*</label>
                                 </div>
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label">Quantity*</label>
-                                    <input type="number" class="form-control" >
+                                <div class="col-md-4 form-floating">
+                                    <input type="number" class="form-control" id="quantity" name="Quantity" required>
+                                    <label for="quantity" class="form-label">Quantity*</label>
                                 </div>
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label">Unit*</label>
-                                    <select class="form-select">
-                                        <option selected>Pieces</option>
-                                        <option>Grams</option>
+                            </div>
+
+                            <!-- Unit and Tax -->
+                            <div class="row mb-3">
+                                <div class="col-md-4 form-floating">
+                                    <select class="form-select" id="unit" name="Unit" required>
+                                        <option value="Pieces">Pieces</option>
+                                        <option value="Grams">Grams</option>
+                                        <option value="Milliliters">Milliliters</option>
                                     </select>
+                                    <label for="unit" class="form-label">Unit*</label>
+                                </div>
+                                <div class="col-md-4 form-floating">
+                                    <input type="number" class="form-control" id="taxPercentage" name="TaxPercentage">
+                                    <label for="taxPercentage" class="form-label">Tax Percentage</label>
+                                </div>
+                                <div class="col-md-4 form-floating">
+                                    <input type="text" class="form-control" id="shortCode" name="Shortcode">
+                                    <label for="shortCode" class="form-label">Short Code</label>
                                 </div>
                             </div>
 
+                            <!-- Availability and Default Tax -->
                             <div class="row mb-3">
-                                <div class="col-md-3 mb-3 form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="availableSwitch" checked>
-                                    <label class="form-check-label" for="availableSwitch">Available</label>
+                                <div class="col-md-4 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="available" name="Available">
+                                    <label class="form-check-label" for="available">Available</label>
                                 </div>
-                                <div class="col-md-3 mb-3 form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="defaultTaxSwitch" checked>
-                                    <label class="form-check-label" for="defaultTaxSwitch">DefaultTax</label>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label">Tax Percentage</label>
-                                    <input type="number" class="form-control" >
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label class="form-label">Short Code</label>
-                                    <input type="text" class="form-control" placeholder="Short Code">
+                                <div class="col-md-4 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="defaultTax" name="IsDefaultTax">
+                                    <label class="form-check-label" for="defaultTax">Default Tax</label>
                                 </div>
                             </div>
 
+                            <!-- Description -->
                             <div class="row mb-3">
-                                <div class="col-12">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" rows="2"></textarea>
+                                <div class="col-12 form-floating">
+                                    <textarea class="form-control" id="description" name="Description" rows="3"></textarea>
+                                    <label for="description" class="form-label">Description</label>
                                 </div>
                             </div>
 
+                            <!-- Image Upload -->
                             <div class="row mb-3">
                                 <div class="col-12">
                                     <label class="form-label">Upload Image</label>
-                                    <div class="border p-5 text-center bg-light">
-                                        <input type="file" class="form-control d-none" id="fileInput">
-                                        <label for="fileInput" class="d-block">
+                                    <div class="border p-5 text-center bg-light position-relative">
+                                        <input type="file" class="form-control d-none" id="itemImage" name="ItemImage" accept="image/*">
+                                        <label for="itemImage" class="d-block cursor-pointer">
+                                            <div id="imagePreview" class="mb-2"></div>
                                             <p class="mt-2 text-muted">Drag and Drop or Browse files</p>
                                         </label>
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2" 
+                                                id="removeImage" style="display: none;">
+                                            <i class="material-icons">delete</i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Modifier Groups -->
                         <div class="col-md-4">
-                            <div class="mb-3">
-                               <select class="form-select">
-                                        <option>Select Modifier group</option>
-                                        <option>Toppings</option>
-                                        <option >Veggies</option>
+                            <div class="mb-3 form-floating">
+                                <select class="form-select" id="modifierGroupSelect">
+                                    <option value="">Loading modifier groups...</option>
                                 </select>
-                            </div>
-                            
-                            <div class="border p-3 mb-3 bg-light">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <strong>Size Options</strong>
-                                    <div>
-                                        <div class="form-check form-switch d-inline-block">
-                                            <img src="~/images/delete-icon.png" width="20px" height="20px" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <select class="form-select">
-                                        <option selected>0</option>
-                                        <option>1</option>
-                                </select>
-                                <select class="form-select">
-                                        <option selected>0</option>
-                                        <option>1</option>
-                                </select>
-                                </div>
-                                 <ul>
-                                    <li>
-                                        <div class="d-flex justify-content-between">
-                                            <p>Small</p>
-                                            <p>50</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex justify-content-between">
-                                            <p>Medium</p>
-                                            <p>100</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex justify-content-between">
-                                            <p>Large</p>
-                                            <p>150</p>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <label for="modifierGroupSelect" class="form-label">Add Modifier Group</label>
                             </div>
 
-                            <div class="border p-3 bg-light">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <strong>Veggies</strong>
-                                    <div>
-                                        <div class="form-check form-switch d-inline-block">
-                                            <img src="~/images/delete-icon.png" width="20px" height="20px" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <select class="form-select">
-                                        <option selected>0</option>
-                                        <option>1</option>
-                                </select>
-                                <select class="form-select">
-                                        <option selected>0</option>
-                                        <option>1</option>
-                                </select>
-                                </div>
-                                <ul>
-                                    <li>
-                                        <div class="d-flex justify-content-between">
-                                            <p>Onion</p>
-                                            <p>50</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex justify-content-between">
-                                            <p>mushroom</p>
-                                            <p>90</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                
+                            <div id="modifierGroupsContainer" class="border p-3 bg-light">
+                                <!-- Dynamic content will be added here -->
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Save</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Item</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -949,6 +888,126 @@
                 });
             });
     });
+    // Load dynamic data when modal opens
+document.getElementById('addItemModal').addEventListener('shown.bs.modal', function () {
+    loadCategoriesInAddItem();
+    loadModifierGroupsInAddItem();
+});
+
+// Load categories
+function loadCategoriesInAddItem() {
+    fetch('/Menu/GetCategories')
+        .then(response => response.json())
+        .then(categories => {
+            const select = document.getElementById('categorySelect');
+            select.innerHTML = '<option value="">Select Category</option>';
+            categories.forEach(category => {
+                const option = new Option(category.categoryName, category.categoryId);
+                select.add(option);
+            });
+        });
+}
+
+// Load modifier groups
+function loadModifierGroupsInAddItem() {
+    fetch('/Menu/GetModifierGroups')
+        .then(response => response.json())
+        .then(groups => {
+            const select = document.getElementById('modifierGroupSelect');
+            select.innerHTML = '<option value="">Select Modifier Group</option>';
+            groups.forEach(group => {
+                const option = new Option(group.modifierGroupName, group.modifierGroupId);
+                select.add(option);
+            });
+        });
+}
+
+// Handle modifier group selection
+document.getElementById('modifierGroupSelect').addEventListener('change', function() {
+    const groupId = this.value;
+    if (groupId) {
+        addModifierGroupRow(groupId, this.options[this.selectedIndex].text);
+        this.value = ''; // Reset selection
+    }
+});
+
+// Add modifier group row
+function addModifierGroupRow(groupId, groupName) {
+    const container = document.getElementById('modifierGroupsContainer');
+    const existingGroup = container.querySelector(`[data-group-id="${groupId}"]`);
+    if (existingGroup) return;
+
+    const row = document.createElement('div');
+    row.className = 'row mb-2 align-items-center';
+    row.dataset.groupId = groupId;
+    row.innerHTML = `
+        <div class="col-6">
+            <input type="hidden" name="ModifierGroups[][ModifierGroupId]" value="${groupId}">
+            <span>${groupName}</span>
+        </div>
+        <div class="col-6">
+            <button type="button" class="btn btn-sm" onclick="this.parentElement.parentElement.remove()">
+                <i class="material-icons">delete</i>
+            </button>
+        </div>
+        <select class="col-6">
+            <option class="form-control" name="ModifierGroups[][MinSelect]" placeholder="Min" min="0" required>0</option>
+        </select>
+        <select class="col-6">
+            <option type="number" class="form-control" name="ModifierGroups[][MaxSelect]" placeholder="Max" min="0" required>0</option>
+        </select>
+    `;
+    container.appendChild(row);
+}
+
+// Image upload handling
+document.getElementById('itemImage').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('imagePreview').innerHTML = `
+                <img src="${e.target.result}" class="img-thumbnail" style="max-height: 150px;">
+            `;
+            document.getElementById('removeImage').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('removeImage').addEventListener('click', function() {
+    document.getElementById('itemImage').value = '';
+    document.getElementById('imagePreview').innerHTML = '';
+    this.style.display = 'none';
+});
+
+// Form submission
+document.getElementById('addItemForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    formData.available = 
+    fetch('/Menu/AddItem', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            $('#addItemModal').modal('hide');
+            const activeCategory = document.querySelector('#categoryList .active-category');
+            if (activeCategory) {
+                loadItems(activeCategory.dataset.categoryId);
+            }
+            this.reset();
+            document.getElementById('modifierGroupsContainer').innerHTML = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('removeImage').style.display = 'none';
+        } else {
+            alert('Error saving item');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
     // Function to open edit modal for modifier
 function editModifier(modifierId) {
     fetch(`/Menu/GetModifier/${modifierId}`)

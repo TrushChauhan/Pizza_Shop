@@ -52,9 +52,6 @@ public partial class Tax
     [InverseProperty("Tax")]
     public virtual ICollection<Invoice> Invoices { get; } = new List<Invoice>();
 
-    [InverseProperty("Tax")]
-    public virtual ICollection<Menuitem> Menuitems { get; } = new List<Menuitem>();
-
     [ForeignKey("Modifiedby")]
     [InverseProperty("TaxModifiedbyNavigations")]
     public virtual Userlogin? ModifiedbyNavigation { get; set; }

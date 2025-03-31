@@ -66,8 +66,10 @@ public partial class Menuitem
     [Column("isdefaulttax")]
     public bool? Isdefaulttax { get; set; }
 
-    [Column("taxid")]
-    public int Taxid { get; set; }
+    public double? Taxpercentage { get; set; }
+
+    [Column("unit", TypeName = "character varying")]
+    public string? Unit { get; set; }
 
     [ForeignKey("Categoryid")]
     [InverseProperty("Menuitems")]
@@ -89,8 +91,4 @@ public partial class Menuitem
 
     [InverseProperty("Item")]
     public virtual ICollection<Orderdetail> Orderdetails { get; } = new List<Orderdetail>();
-
-    [ForeignKey("Taxid")]
-    [InverseProperty("Menuitems")]
-    public virtual Tax Tax { get; set; } = null!;
 }

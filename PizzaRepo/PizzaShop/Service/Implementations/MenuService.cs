@@ -1,6 +1,7 @@
 // MenuService.cs
 using Entity.Models;
 using Entity.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using Service.Interfaces;
 using System.Collections.Generic;
@@ -13,11 +14,11 @@ namespace Service.Implementations
     {
         private readonly IMenuRepository _menuRepository;
         private readonly MappingService _mappingService;
-
         public MenuService(IMenuRepository menuRepository, MappingService mappingService)
         {
             _menuRepository = menuRepository;
             _mappingService = mappingService;
+            
         }
 
         public async Task<List<MenuCategoryViewModel>> GetCategoriesAsync()
@@ -29,7 +30,7 @@ namespace Service.Implementations
         public async Task<List<MenuItemViewModel>> GetItemsByCategoryAsync(int categoryId)
         {
             var items = await _menuRepository.GetItemsByCategoryAsync(categoryId);
-            return items.Select(i => _mappingService.MapToViewModel(i)).ToList();
+            return items.Select(i => _mappingService.MapToViewItemModel(i)).ToList();
         }
 
         public async Task AddCategoryAsync(MenuCategoryViewModel model)
@@ -44,21 +45,17 @@ namespace Service.Implementations
             await _menuRepository.AddCategoryAsync(category);
         }
 
-        public async Task AddItemAsync(MenuItemViewModel model)
-        {
-            var item = new Menuitem
-            {
-                Categoryid = model.CategoryId,
-                Itemname = model.ItemName,
-                Itemtype = model.ItemType,
-                Rate = model.Rate,
-                Quantity = model.Quantity,
-                Available = model.Available,
-                Createddate = DateTime.Now,
-                Isdeleted = false
-            };
-            await _menuRepository.AddItemAsync(item);
-        }
+        public async Task<int> AddItemAsync(MenuItemViewModel model)
+    {
+        int itemid= await _menuRepository.AddItemAsync(model);
+        return itemid;
+    }
+
+    public async Task AddModifierGroupsToItemAsync(int itemId, List<ModifierGroupSelection> modifierGroups)
+    {
+        await _menuRepository.AddModifierGroupsToItemAsync(itemId,modifierGroups);
+    }
+
         public async Task DeleteCategoryAsync(int id){
             await _menuRepository.DeleteCategoryAsync(id);
         }

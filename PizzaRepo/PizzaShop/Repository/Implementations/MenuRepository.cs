@@ -1,5 +1,6 @@
 
 using Entity.Models;
+using Entity.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System.Collections.Generic;
@@ -51,10 +52,30 @@ namespace Repository.Implementations
             }
         }
 
-        public async Task AddItemAsync(Menuitem item)
+        public async Task<int> AddItemAsync(MenuItemViewModel item)
         {
-            await _context.Menuitems.AddAsync(item);
+            var newItem = new Menuitem{
+                Itemid =await _context.Menuitems.CountAsync()+1,
+                Categoryid = item.CategoryId,
+                Itemname = item.ItemName,
+                Itemtype = item.ItemType,
+                Rate = item.Rate,
+                Unit= item.Unit,
+                Quantity = item.Quantity,
+                Available = item.Available,
+                Shortcode = item.Shortcode,
+                Itemimage = item.ItemImage,
+                Description = item.Description,
+                Createddate = DateTime.Now,
+                Modifieddate = DateTime.Now,
+                Isdeleted = item.IsDeleted,
+                Isfavourite = item.IsFavourite,
+                Isdefaulttax = item.IsDefaultTax,
+                Taxpercentage=item.TaxPercentage
+            };
+            await _context.Menuitems.AddAsync(newItem);
             await _context.SaveChangesAsync();
+            return newItem.Itemid;
         }
 
         public async Task DeleteItemAsync(int id)
@@ -97,6 +118,22 @@ namespace Repository.Implementations
                 existing.Modifieddate = DateTime.Now;
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task AddModifierGroupsToItemAsync(int itemId, List<ModifierGroupSelection> modifierGroups){
+        foreach (var group in modifierGroups)
+        {
+            var mapping = new Itemandmodifiergroup
+            {
+                Itemandmodifiergroupid=await _context.Itemandmodifiergroups.CountAsync()+1,
+                Itemid = itemId,
+                Modifiergroupid = group.ModifierGroupId,
+                Minselect = group.MinSelect,
+                Maxselect = group.MaxSelect,
+                Createddate = DateTime.Now
+            };
+            _context.Itemandmodifiergroups.Add(mapping);
+        }
+        await _context.SaveChangesAsync();
         }
     }
 }

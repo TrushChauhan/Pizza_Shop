@@ -19,6 +19,7 @@ public int Rate { get; set; }
 [Required(ErrorMessage = "Quantity is required")]
 [Range(0, int.MaxValue, ErrorMessage = "Quantity must be a positive number")]
 public int Quantity { get; set; }
+public string Unit{get; set;}
 public bool Available { get; set; }
 [StringLength(5, ErrorMessage = "Shortcode cannot exceed 5 characters")]
 public string? Shortcode { get; set; }
@@ -31,8 +32,7 @@ public DateTime? ModifiedDate { get; set; }
 public bool IsDeleted { get; set; }
 public bool? IsFavourite { get; set; }
 public bool? IsDefaultTax { get; set; }
-[Required(ErrorMessage = "Tax ID is required")]
-public int TaxId { get; set; }
+public double TaxPercentage {get; set;}
 public string? CategoryName { get; set; }
 public string? CreatedBy { get; set; }
 public string? ModifiedBy { get; set; }

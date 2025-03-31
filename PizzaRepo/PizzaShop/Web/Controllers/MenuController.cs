@@ -3,6 +3,7 @@ using Entity.ViewModel;
 using Service.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Service.Implementations;
 
 namespace Web.Controllers
 {
@@ -10,11 +11,13 @@ namespace Web.Controllers
     {
         private readonly IMenuService _menuService;
         private readonly IModifierService _modifierService;
+        private readonly IFileService _fileService;
 
-        public MenuController(IMenuService menuService, IModifierService modifierService)
+        public MenuController(IMenuService menuService, IModifierService modifierService,IFileService fileService)
         {
             _menuService = menuService;
             _modifierService = modifierService;
+            _fileService=fileService;
         }
 
         public async Task<IActionResult> Index()
@@ -41,17 +44,6 @@ namespace Web.Controllers
         {
             await _menuService.DeleteCategoryAsync(id);
             return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddItem([FromBody] MenuItemViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                await _menuService.AddItemAsync(model);
-                return Ok();
-            }
-            return BadRequest(ModelState);
         }
 
         [HttpPost]
@@ -105,7 +97,10 @@ namespace Web.Controllers
                 totalPages = result.TotalPages
             });
         }
-
+        public async Task<IActionResult> GetCategoriesAsync(){
+            var categories = await _menuService.GetCategoriesAsync();
+            return Ok(categories);
+        }
         // Get single category endpoint
         [HttpGet]
         public async Task<IActionResult> GetCategory(int id)
@@ -186,6 +181,38 @@ namespace Web.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> AddItem(
+    [FromForm] MenuItemViewModel model,
+    IFormFile itemImage,
+    [FromForm] List<ModifierGroupSelection> modifierGroups)
+        {
+            try
+            {
+                // Handle image upload
+                if (itemImage != null && itemImage.Length > 0)
+                {
+                    var imagePath = await _fileService.SaveItemImageAsync(itemImage);
+                    model.ItemImage = imagePath;
+                }
+
+                // Add the item
+                var itemId = await _menuService.AddItemAsync(model);
+
+                // Add modifier group mappings
+                if (modifierGroups != null && modifierGroups.Any())
+                {
+                    await _menuService.AddModifierGroupsToItemAsync(itemId, modifierGroups);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         public class RemoveModifierRequest
         {
             public int ModifierGroupId { get; set; }

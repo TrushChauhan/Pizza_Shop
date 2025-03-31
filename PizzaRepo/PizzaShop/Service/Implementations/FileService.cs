@@ -32,5 +32,21 @@ namespace Service.Implementations
             }
             return $"/images/profiles/{uniqueFileName}";
         }
+        public async Task<string> SaveItemImageAsync(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return null;
+
+            var uploadsFolder = Path.Combine(_environment.WebRootPath, "images", "items");
+            var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return $"/images/items/{uniqueFileName}";
+        }
     }
 }

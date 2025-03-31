@@ -23,7 +23,7 @@ public class MappingService
         };
     }
     // Map Menuitem to MenuItemViewModel
-    public MenuItemViewModel MapToViewModel(Menuitem item)
+    public MenuItemViewModel MapToViewItemModel(Menuitem item)
     {
         return new MenuItemViewModel
         {
@@ -32,6 +32,7 @@ public class MappingService
             ItemName = item.Itemname,
             ItemType = item.Itemtype,
             Rate = item.Rate,
+            Unit= item.Unit,
             Quantity = item.Quantity,
             Available = item.Available,
             Shortcode = item.Shortcode,
@@ -42,8 +43,7 @@ public class MappingService
             IsDeleted = item.Isdeleted,
             IsFavourite = item.Isfavourite,
             IsDefaultTax = item.Isdefaulttax,
-            TaxId = item.Taxid,
-            CategoryName = item.Category?.Categoryname // Example
+            CategoryName = item.Category?.Categoryname
         };
     }
     public ModifierGroupViewModel ModifierToViewModel(Modifiergroup group)

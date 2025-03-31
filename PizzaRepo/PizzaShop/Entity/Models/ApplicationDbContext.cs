@@ -219,10 +219,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.CreatedbyNavigation).WithMany(p => p.MenuitemCreatedbyNavigations).HasConstraintName("menuitems_createdby_fkey");
 
             entity.HasOne(d => d.ModifiedbyNavigation).WithMany(p => p.MenuitemModifiedbyNavigations).HasConstraintName("menuitems_modifiedby_fkey");
-
-            entity.HasOne(d => d.Tax).WithMany(p => p.Menuitems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("menuitems_taxid_fkey");
         });
 
         modelBuilder.Entity<Modifier>(entity =>
