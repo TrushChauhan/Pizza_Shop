@@ -337,7 +337,8 @@
                                     <label for="itemType" class="form-label">Item Type*</label>
                                 </div>
                                 <div class="col-md-4 form-floating">
-                                    <input type="number" class="form-control" id="rate" name="Rate" step="0.01" required>
+                                    <input type="number" class="form-control" id="rate" name="Rate" step="0.01"
+                                        required>
                                     <label for="rate" class="form-label">Rate*</label>
                                 </div>
                                 <div class="col-md-4 form-floating">
@@ -381,7 +382,8 @@
                             <!-- Description -->
                             <div class="row mb-3">
                                 <div class="col-12 form-floating">
-                                    <textarea class="form-control" id="description" name="Description" rows="3"></textarea>
+                                    <textarea class="form-control" id="description" name="Description"
+                                        rows="3"></textarea>
                                     <label for="description" class="form-label">Description</label>
                                 </div>
                             </div>
@@ -391,33 +393,35 @@
                                 <div class="col-12">
                                     <label class="form-label">Upload Image</label>
                                     <div class="border p-5 text-center bg-light position-relative">
-                                        <input type="file" class="form-control d-none" id="itemImage" name="ItemImage" accept="image/*">
+                                        <input type="file" class="form-control d-none" id="itemImage" name="ItemImage"
+                                            accept="image/*">
                                         <label for="itemImage" class="d-block cursor-pointer">
                                             <div id="imagePreview" class="mb-2"></div>
                                             <p class="mt-2 text-muted">Drag and Drop or Browse files</p>
                                         </label>
-                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2" 
-                                                id="removeImage" style="display: none;">
+                                        <button type="button"
+                                            class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
+                                            id="removeImage" style="display: none;">
                                             <i class="material-icons">delete</i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!-- Modifier Groups -->
-                        <div class="col-md-4">
-                            <div class="mb-3 form-floating">
-                                <select class="form-select" id="modifierGroupSelect">
-                                    <option value="">Loading modifier groups...</option>
-                                </select>
-                                <label for="modifierGroupSelect" class="form-label">Add Modifier Group</label>
-                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 form-floating">
+                                    <select class="form-select" id="modifierGroupSelect">
+                                        <option value="">Select Modifier Group</option>
+                                    </select>
+                                    <label for="modifierGroupSelect" class="form-label">Add Modifier Group</label>
+                                </div>
 
-                            <div id="modifierGroupsContainer" class="border p-3 bg-light">
-                                <!-- Dynamic content will be added here -->
+                                <div id="modifierGroupsContainer" class="border p-3 bg-light"
+                                    style="max-height: 500px; overflow-y: auto;">
+                                    <!-- Dynamic content will be added here -->
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -823,34 +827,44 @@
     });
     // Function to load items
     function loadItems(categoryId) {
-        fetch(`/Menu/GetItems?categoryId=${categoryId}`)
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector('#itemsTable tbody');
-                tbody.innerHTML = '';
-                data.forEach(item => {
-                    const row = `
-    <tr>
-        <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${item.itemId}"></td>
-        <td>${item.ItemImage}${item.itemName}</td>
-        <td>${item.itemType}</td>
-        <td>${item.rate}</td>
-        <td>${item.quantity}</td>
-        <td>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" ${item.available ? 'checked' : ''}>
-            </div>
-        </td>
-        <td>
-            <i class="material-icons" onclick="editItem(${item.itemId})">edit</i>
-            <i class="material-icons" onclick="deleteItem(${item.itemId})">delete</i>
-        </td>
-    </tr>
-`;
-                    tbody.insertAdjacentHTML('beforeend', row);
-                });
+    fetch(`/Menu/GetItems?categoryId=${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#itemsTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                // Create image HTML if image exists
+                const imageHtml = item.itemImage 
+                    ? `<img src="${item.itemImage}" class="item-thumbnail me-2 rounded-circle" alt="${item.itemName}" style="width: 40px; height: 35px;">`
+                    : '';
+                
+                const row = `
+                    <tr>
+                        <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${item.itemId}"></td>
+                        <td class="align-middle">
+                            <div class="d-flex align-items-center">
+                                ${imageHtml}
+                                <span>${item.itemName}</span>
+                            </div>
+                        </td>
+                        <td class="align-middle">${item.itemType}</td>
+                        <td class="align-middle">${item.rate}</td>
+                        <td class="align-middle">${item.quantity}</td>
+                        <td class="align-middle">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" ${item.available ? 'checked' : ''}>
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <i class="material-icons cursor-pointer" onclick="editItem(${item.itemId})">edit</i>
+                            <i class="material-icons cursor-pointer" onclick="deleteItem(${item.itemId})">delete</i>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
             });
-    }
+        });
+}
     // Save Category
     document.getElementById('saveCategory').addEventListener('click', () => {
         const categoryName = document.getElementById('categoryName').value;
@@ -889,7 +903,7 @@
             });
     });
     // Load dynamic data when modal opens
-document.getElementById('addItemModal').addEventListener('shown.bs.modal', function () {
+   document.getElementById('addItemModal').addEventListener('shown.bs.modal', function () {
     loadCategoriesInAddItem();
     loadModifierGroupsInAddItem();
 });
@@ -923,39 +937,87 @@ function loadModifierGroupsInAddItem() {
 }
 
 // Handle modifier group selection
-document.getElementById('modifierGroupSelect').addEventListener('change', function() {
+document.getElementById('modifierGroupSelect').addEventListener('change', async function() {
     const groupId = this.value;
     if (groupId) {
-        addModifierGroupRow(groupId, this.options[this.selectedIndex].text);
+        // Get modifier group details including modifiers
+        const response = await fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`);
+        const modifiers = await response.json();
+        
+        // Get the group name
+        const groupName = this.options[this.selectedIndex].text;
+        
+        // Add the modifier group row
+        await addModifierGroupRow(groupId, groupName, modifiers.length);
+        
+        // Show modifiers in a list
+        showModifiersForGroup(groupId, modifiers);
+        
         this.value = ''; // Reset selection
     }
 });
 
-// Add modifier group row
-function addModifierGroupRow(groupId, groupName) {
+// Show modifiers for a selected group
+function showModifiersForGroup(groupId, modifiers) {
+    const container = document.getElementById('modifierGroupsContainer');
+    const groupRow = container.querySelector(`[data-group-id="${groupId}"]`);
+    
+    if (!groupRow) return;
+    
+    // Create modifiers list
+    const modifiersList = document.createElement('div');
+    modifiersList.className = 'modifiers-list mt-2';
+    modifiersList.innerHTML = `
+        <h6>Modifiers:</h6>
+        <ul class="list-group">
+            ${modifiers.map(mod => 
+                `<li class="list-group-item py-1">${mod.modifierName}</li>`
+            ).join('')}
+        </ul>
+    `;
+    
+    // Append after the group row
+    groupRow.appendChild(modifiersList);
+}
+
+// Add modifier group row with min/max dropdowns
+function addModifierGroupRow(groupId, groupName, modifierCount) {
     const container = document.getElementById('modifierGroupsContainer');
     const existingGroup = container.querySelector(`[data-group-id="${groupId}"]`);
     if (existingGroup) return;
 
+    // Create min and max options based on modifier count
+    const minOptions = Array.from({length: modifierCount + 1}, (_, i) => 
+        `<option value="${i}">${i}</option>`).join('');
+    
+    const maxOptions = Array.from({length: modifierCount + 1}, (_, i) => 
+        `<option value="${i}" ${i === modifierCount ? 'selected' : ''}>${i}</option>`).join('');
+
     const row = document.createElement('div');
-    row.className = 'row mb-2 align-items-center';
+    row.className = 'row mb-2 align-items-center border-bottom pb-2';
     row.dataset.groupId = groupId;
     row.innerHTML = `
         <div class="col-6">
-            <input type="hidden" name="ModifierGroups[][ModifierGroupId]" value="${groupId}">
-            <span>${groupName}</span>
+            <input type="hidden" name="ModifierGroups[${groupId}].ModifierGroupId" value="${groupId}">
+            <strong>${groupName}</strong>
         </div>
-        <div class="col-6">
-            <button type="button" class="btn btn-sm" onclick="this.parentElement.parentElement.remove()">
+        <div class="col-6 text-end">
+            <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('[data-group-id]').remove()">
                 <i class="material-icons">delete</i>
             </button>
         </div>
-        <select class="col-6">
-            <option class="form-control" name="ModifierGroups[][MinSelect]" placeholder="Min" min="0" required>0</option>
-        </select>
-        <select class="col-6">
-            <option type="number" class="form-control" name="ModifierGroups[][MaxSelect]" placeholder="Max" min="0" required>0</option>
-        </select>
+        <div class="col-md-6 mt-2">
+            <label class="form-label">Min Select</label>
+            <select class="form-select" name="ModifierGroups[${groupId}].MinSelect" required>
+                ${minOptions}
+            </select>
+        </div>
+        <div class="col-md-6 mt-2">
+            <label class="form-label">Max Select</label>
+            <select class="form-select" name="ModifierGroups[${groupId}].MaxSelect" required>
+                ${maxOptions}
+            </select>
+        </div>
     `;
     container.appendChild(row);
 }
@@ -982,118 +1044,134 @@ document.getElementById('removeImage').addEventListener('click', function() {
 });
 
 // Form submission
-document.getElementById('addItemForm').addEventListener('submit', function(e) {
+document.getElementById('addItemForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    // Get form data
     const formData = new FormData(this);
-    formData.available = 
-    fetch('/Menu/AddItem', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
+    
+    // Add checkbox values explicitly
+    formData.set('Available', document.getElementById('available').checked);
+    formData.set('IsDefaultTax', document.getElementById('defaultTax').checked);
+    
+    // Collect modifier groups data
+    const modifierGroups = [];
+    const groupElements = document.querySelectorAll('#modifierGroupsContainer [data-group-id]');
+    
+    groupElements.forEach((groupEl, index) => {
+        const groupId = groupEl.dataset.groupId;
+        const minSelect = groupEl.querySelector('[name*="MinSelect"]').value;
+        const maxSelect = groupEl.querySelector('[name*="MaxSelect"]').value;
+        
+        // Add each property individually to FormData
+        formData.append(`ModifierGroups[${index}].ModifierGroupId`, groupId);
+        formData.append(`ModifierGroups[${index}].MinSelect`, minSelect);
+        formData.append(`ModifierGroups[${index}].MaxSelect`, maxSelect);
+    });
+    
+    try {
+        const response = await fetch('/Menu/AddItem', {
+            method: 'POST',
+            body: formData
+        });
+        
         if (response.ok) {
-            $('#addItemModal').modal('hide');
-            const activeCategory = document.querySelector('#categoryList .active-category');
-            if (activeCategory) {
-                loadItems(activeCategory.dataset.categoryId);
-            }
-            this.reset();
-            document.getElementById('modifierGroupsContainer').innerHTML = '';
-            document.getElementById('imagePreview').innerHTML = '';
-            document.getElementById('removeImage').style.display = 'none';
+            // Success handling
         } else {
-            alert('Error saving item');
+            const error = await response.text();
+            alert('Error saving item: ' + error);
         }
-    })
-    .catch(error => console.error('Error:', error));
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error saving item');
+    }
 });
     // Function to open edit modal for modifier
-function editModifier(modifierId) {
-    fetch(`/Menu/GetModifier/${modifierId}`)
-        .then(response => response.json())
-        .then(modifier => {
-            // Populate form fields
-            document.getElementById('editModifierId').value = modifier.modifierId;
-            document.getElementById('editModifierName').value = modifier.modifierName;
-            document.getElementById('editModifierUnit').value = modifier.unit;
-            document.getElementById('editModifierRate').value = modifier.rate;
-            document.getElementById('editModifierQuantity').value = modifier.quantity;
-            document.getElementById('editModifierDescription').value = modifier.description;
+    function editModifier(modifierId) {
+        fetch(`/Menu/GetModifier/${modifierId}`)
+            .then(response => response.json())
+            .then(modifier => {
+                // Populate form fields
+                document.getElementById('editModifierId').value = modifier.modifierId;
+                document.getElementById('editModifierName').value = modifier.modifierName;
+                document.getElementById('editModifierUnit').value = modifier.unit;
+                document.getElementById('editModifierRate').value = modifier.rate;
+                document.getElementById('editModifierQuantity').value = modifier.quantity;
+                document.getElementById('editModifierDescription').value = modifier.description;
 
-            // Load modifier groups dropdown
-            fetch('/Menu/GetModifierGroups')
-                .then(response => response.json())
-                .then(groups => {
-                    const select = document.getElementById('editModifierGroup');
-                    select.innerHTML = '<option value="">Select a group</option>';
-                    groups.forEach(group => {
-                        const option = document.createElement('option');
-                        option.value = group.modifierGroupId;
-                        option.textContent = group.modifierGroupName;
-                        if (group.modifierGroupId === modifier.modifierGroupId) {
-                            option.selected = true;
-                        }
-                        select.appendChild(option);
+                // Load modifier groups dropdown
+                fetch('/Menu/GetModifierGroups')
+                    .then(response => response.json())
+                    .then(groups => {
+                        const select = document.getElementById('editModifierGroup');
+                        select.innerHTML = '<option value="">Select a group</option>';
+                        groups.forEach(group => {
+                            const option = document.createElement('option');
+                            option.value = group.modifierGroupId;
+                            option.textContent = group.modifierGroupName;
+                            if (group.modifierGroupId === modifier.modifierGroupId) {
+                                option.selected = true;
+                            }
+                            select.appendChild(option);
+                        });
                     });
-                });
 
-            // Show modal
-            const editModal = new bootstrap.Modal(document.getElementById('editModifierModal'));
-            editModal.show();
-        });
-}
-
-// Function to save edited modifier
-document.getElementById('updateModifier').addEventListener('click', function() {
-    const modifierData = {
-        modifierId: document.getElementById('editModifierId').value,
-        modifierGroupId: document.getElementById('editModifierGroup').value,
-        modifierName: document.getElementById('editModifierName').value,
-        unit: document.getElementById('editModifierUnit').value,
-        rate: parseFloat(document.getElementById('editModifierRate').value),
-        quantity: parseInt(document.getElementById('editModifierQuantity').value),
-        description: document.getElementById('editModifierDescription').value
-    };
-
-    // Basic validation
-    if (!modifierData.modifierGroupId || 
-        !modifierData.modifierName || 
-        !modifierData.unit || 
-        isNaN(modifierData.rate) || 
-        isNaN(modifierData.quantity)) {
-        alert('Please fill all required fields');
-        return;
+                // Show modal
+                const editModal = new bootstrap.Modal(document.getElementById('editModifierModal'));
+                editModal.show();
+            });
     }
 
-    fetch('/Menu/UpdateModifier', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(modifierData)
-    })
-    .then(response => {
-        if (response.ok) {
-            // Close modal and refresh data
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editModifierModal'));
-            modal.hide();
-            
-            // Refresh the modifiers table
-            const activeGroup = document.querySelector('#modifierGroupList .modifier-group-item.active');
-            if (activeGroup) {
-                const groupId = activeGroup.dataset.modifierGroupId;
-                loadModifiers(groupId);
-            }
-        } else {
-            alert('Failed to update modifier');
+    // Function to save edited modifier
+    document.getElementById('updateModifier').addEventListener('click', function () {
+        const modifierData = {
+            modifierId: document.getElementById('editModifierId').value,
+            modifierGroupId: document.getElementById('editModifierGroup').value,
+            modifierName: document.getElementById('editModifierName').value,
+            unit: document.getElementById('editModifierUnit').value,
+            rate: parseFloat(document.getElementById('editModifierRate').value),
+            quantity: parseInt(document.getElementById('editModifierQuantity').value),
+            description: document.getElementById('editModifierDescription').value
+        };
+
+        // Basic validation
+        if (!modifierData.modifierGroupId ||
+            !modifierData.modifierName ||
+            !modifierData.unit ||
+            isNaN(modifierData.rate) ||
+            isNaN(modifierData.quantity)) {
+            alert('Please fill all required fields');
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating');
+
+        fetch('/Menu/UpdateModifier', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(modifierData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Close modal and refresh data
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editModifierModal'));
+                    modal.hide();
+
+                    // Refresh the modifiers table
+                    const activeGroup = document.querySelector('#modifierGroupList .modifier-group-item.active');
+                    if (activeGroup) {
+                        const groupId = activeGroup.dataset.modifierGroupId;
+                        loadModifiers(groupId);
+                    }
+                } else {
+                    alert('Failed to update modifier');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating');
+            });
     });
-});
     // Load modifier groups
     function loadModifierGroups() {
         fetch('/Menu/GetModifierGroups')
@@ -1119,7 +1197,7 @@ document.getElementById('updateModifier').addEventListener('click', function() {
                         <i class="material-icons" onclick="deleteModifierGroup(${group.modifierGroupId})">delete</i>
                         </span>
                     </a>
-                    
+
                 `;
                     modifierGroupList.insertAdjacentHTML('beforeend', groupItem);
                 });

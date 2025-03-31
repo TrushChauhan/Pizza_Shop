@@ -45,22 +45,24 @@ namespace Repository.Implementations
                 category.Isdeleted = true;
                 await _context.SaveChangesAsync();
             }
-            var items = await _context.Menuitems.Where(c=> c.Categoryid == id).ToListAsync();
-            foreach (var item in items){
-                item.Isdeleted=true;
+            var items = await _context.Menuitems.Where(c => c.Categoryid == id).ToListAsync();
+            foreach (var item in items)
+            {
+                item.Isdeleted = true;
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<int> AddItemAsync(MenuItemViewModel item)
         {
-            var newItem = new Menuitem{
-                Itemid =await _context.Menuitems.CountAsync()+1,
+            var newItem = new Menuitem
+            {
+                Itemid = await _context.Menuitems.CountAsync() + 1,
                 Categoryid = item.CategoryId,
                 Itemname = item.ItemName,
                 Itemtype = item.ItemType,
                 Rate = item.Rate,
-                Unit= item.Unit,
+                Unit = item.Unit,
                 Quantity = item.Quantity,
                 Available = item.Available,
                 Shortcode = item.Shortcode,
@@ -71,7 +73,7 @@ namespace Repository.Implementations
                 Isdeleted = item.IsDeleted,
                 Isfavourite = item.IsFavourite,
                 Isdefaulttax = item.IsDefaultTax,
-                Taxpercentage=item.TaxPercentage
+                Taxpercentage = item.TaxPercentage
             };
             await _context.Menuitems.AddAsync(newItem);
             await _context.SaveChangesAsync();
@@ -93,14 +95,20 @@ namespace Repository.Implementations
             var items = await _context.Menuitems
                 .Where(i => itemIds.Contains(i.Itemid))
                 .ToListAsync();
-
+            var mappeditems = await _context.Itemandmodifiergroups.Where(i => itemIds.Contains(i.Itemid.Value)).ToListAsync();
             foreach (var item in items)
             {
                 item.Isdeleted = true;
                 item.Modifieddate = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+            foreach (var item in mappeditems)
+            {
+                item.Isdeleted = true;
+                item.Modifieddate = DateTime.Now;
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
         }
         public async Task<Menucategory> GetCategoryAsync(int id)
         {
@@ -119,21 +127,24 @@ namespace Repository.Implementations
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task AddModifierGroupsToItemAsync(int itemId, List<ModifierGroupSelection> modifierGroups){
-        foreach (var group in modifierGroups)
+        public async Task AddModifierGroupsToItemAsync(int itemId, List<ModifierGroupSelection> modifierGroups)
         {
-            var mapping = new Itemandmodifiergroup
+            foreach (var group in modifierGroups)
             {
-                Itemandmodifiergroupid=await _context.Itemandmodifiergroups.CountAsync()+1,
-                Itemid = itemId,
-                Modifiergroupid = group.ModifierGroupId,
-                Minselect = group.MinSelect,
-                Maxselect = group.MaxSelect,
-                Createddate = DateTime.Now
-            };
-            _context.Itemandmodifiergroups.Add(mapping);
-        }
-        await _context.SaveChangesAsync();
+                var mapping = new Itemandmodifiergroup
+                {
+                    Itemandmodifiergroupid = await _context.Itemandmodifiergroups.CountAsync() + 1,
+                    Itemid = itemId,
+                    Modifiergroupid = group.ModifierGroupId,
+                    Minselect = group.MinSelect,
+                    Maxselect = group.MaxSelect,
+                    Createddate = DateTime.Now,
+                    Modifieddate = DateTime.Now,
+                    Isdeleted = false
+                };
+                await _context.Itemandmodifiergroups.AddAsync(mapping);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

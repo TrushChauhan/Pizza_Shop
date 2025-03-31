@@ -4,6 +4,7 @@ using Service.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Service.Implementations;
+using System.Text.Json;
 
 namespace Web.Controllers
 {
@@ -13,11 +14,11 @@ namespace Web.Controllers
         private readonly IModifierService _modifierService;
         private readonly IFileService _fileService;
 
-        public MenuController(IMenuService menuService, IModifierService modifierService,IFileService fileService)
+        public MenuController(IMenuService menuService, IModifierService modifierService, IFileService fileService)
         {
             _menuService = menuService;
             _modifierService = modifierService;
-            _fileService=fileService;
+            _fileService = fileService;
         }
 
         public async Task<IActionResult> Index()
@@ -97,7 +98,8 @@ namespace Web.Controllers
                 totalPages = result.TotalPages
             });
         }
-        public async Task<IActionResult> GetCategoriesAsync(){
+        public async Task<IActionResult> GetCategoriesAsync()
+        {
             var categories = await _menuService.GetCategoriesAsync();
             return Ok(categories);
         }
@@ -184,8 +186,7 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItem(
     [FromForm] MenuItemViewModel model,
-    IFormFile itemImage,
-    [FromForm] List<ModifierGroupSelection> modifierGroups)
+    IFormFile itemImage)
         {
             try
             {
@@ -196,11 +197,39 @@ namespace Web.Controllers
                     model.ItemImage = imagePath;
                 }
 
+                // Get modifier groups from form data
+                var modifierGroups = new List<ModifierGroupSelection>();
+
+                // Manually parse the modifier groups from form data
+                int index = 0;
+                while (true)
+                {
+                    var groupIdKey = $"ModifierGroups[{index}].ModifierGroupId";
+                    if (!Request.Form.ContainsKey(groupIdKey)) break;
+
+                    var groupId = Request.Form[groupIdKey].FirstOrDefault();
+                    var minSelect = Request.Form[$"ModifierGroups[{index}].MinSelect"].FirstOrDefault();
+                    var maxSelect = Request.Form[$"ModifierGroups[{index}].MaxSelect"].FirstOrDefault();
+
+                    if (int.TryParse(groupId, out var gId) &&
+                        int.TryParse(minSelect, out var min) &&
+                        int.TryParse(maxSelect, out var max))
+                    {
+                        modifierGroups.Add(new ModifierGroupSelection
+                        {
+                            ModifierGroupId = gId,
+                            MinSelect = min,
+                            MaxSelect = max
+                        });
+                    }
+
+                    index++;
+                }
+
                 // Add the item
                 var itemId = await _menuService.AddItemAsync(model);
 
-                // Add modifier group mappings
-                if (modifierGroups != null && modifierGroups.Any())
+                if (modifierGroups.Any())
                 {
                     await _menuService.AddModifierGroupsToItemAsync(itemId, modifierGroups);
                 }
@@ -212,7 +241,6 @@ namespace Web.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
         public class RemoveModifierRequest
         {
             public int ModifierGroupId { get; set; }
