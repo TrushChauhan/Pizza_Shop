@@ -90,7 +90,6 @@ namespace Service.Implementations
         var category = await _menuRepository.GetCategoryAsync(model.CategoryId);
         if (category == null) throw new KeyNotFoundException("Category not found");
 
-        // Update properties
         category.Categoryname = model.CategoryName;
         category.Description = model.Description;
         category.Modifieddate = DateTime.Now;

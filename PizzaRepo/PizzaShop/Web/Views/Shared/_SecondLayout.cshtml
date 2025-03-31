@@ -176,8 +176,36 @@
 
 
 </body>
-<script>
+<style>
+    .sidebar-item a {
+        color: grey;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .sidebar-item.active a {
+        color: rgba(5,101,158,255);
+        font-weight: bold;
+    }
+    .sidebar-item {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .sidebar-item.active {
+        background-color: rgba(216,239,247,255);
+    }
+</style>
 
+
+<script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let currentPath = window.location.pathname.toLowerCase();
+        document.querySelectorAll(".sidebar-item").forEach(item => {
+            let link = item.querySelector("a");
+            if (link && link.getAttribute("href") && currentPath.includes(link.getAttribute("href").toLowerCase())) {
+                item.classList.add("active");
+            }
+        });
+    });
     $(document).ready(function () {
         $.ajax({
             url: '/Main/GetUserName',

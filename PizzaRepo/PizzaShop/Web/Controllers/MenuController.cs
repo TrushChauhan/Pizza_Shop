@@ -76,19 +76,19 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddModifier([FromBody] ModifierViewModel model)
         {
-        
-                await _modifierService.AddModifierAsync(model);
-                return Ok();
-            
+
+            await _modifierService.AddModifierAsync(model);
+            return Ok();
+
         }
 
         [HttpPost]
         public async Task<IActionResult> AddModifierGroup([FromBody] ModifierGroupViewModel model)
         {
-            int modifierid= await _modifierService.AddModifierGroupAsync(model);
+            int modifierid = await _modifierService.AddModifierGroupAsync(model);
 
             return Json(new { modifierGroupId = modifierid });
-            
+
         }
         public async Task<IActionResult> DeleteModifierGroup(int id)
         {
@@ -143,7 +143,7 @@ namespace Web.Controllers
             await _modifierService.AddModifiersToGroupAsync(request.ModifierGroupId, request.ModifierIds);
             return Ok();
         }
-        
+
 
         [HttpPost]
         public async Task<IActionResult> RemoveModifierFromGroup([FromBody] RemoveModifierRequest request)
@@ -165,7 +165,27 @@ namespace Web.Controllers
             await _modifierService.DeleteModifiersFromGroupAsync(request.ModifierGroupId, request.ModifierIds);
             return Ok();
         }
+        [HttpGet]
+        public async Task<IActionResult> GetModifier(int id)
+        {
+            var modifier = await _modifierService.GetModifierAsync(id);
+            return Json(modifier);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateModifier([FromBody] ModifierViewModel model)
+        {
+
+            try
+            {
+                await _modifierService.UpdateModifierAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         public class RemoveModifierRequest
         {
             public int ModifierGroupId { get; set; }

@@ -29,6 +29,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
+    public virtual DbSet<Itemandmodifiergroup> Itemandmodifiergroups { get; set; }
+
     public virtual DbSet<Kot> Kots { get; set; }
 
     public virtual DbSet<Menucategory> Menucategories { get; set; }
@@ -65,7 +67,7 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;username=postgres;password=Tatva@123");
+        => optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=Tatva@123");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -162,6 +164,22 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Table).WithMany(p => p.Invoices).HasConstraintName("invoice_tableid_fkey");
 
             entity.HasOne(d => d.Tax).WithMany(p => p.Invoices).HasConstraintName("invoice_taxid_fkey");
+        });
+
+        modelBuilder.Entity<Itemandmodifiergroup>(entity =>
+        {
+            entity.HasKey(e => e.Itemandmodifiergroupid).HasName("itemandmodifiergroup_pkey");
+
+            entity.Property(e => e.Maxselect).HasDefaultValueSql("1");
+            entity.Property(e => e.Minselect).HasDefaultValueSql("1");
+
+            entity.HasOne(d => d.CreatedbyNavigation).WithMany(p => p.ItemandmodifiergroupCreatedbyNavigations).HasConstraintName("itemandmodifiergroup_createdby_fkey");
+
+            entity.HasOne(d => d.Item).WithMany(p => p.Itemandmodifiergroups).HasConstraintName("itemandmodifiergroup_itemid_fkey");
+
+            entity.HasOne(d => d.ModifiedbyNavigation).WithMany(p => p.ItemandmodifiergroupModifiedbyNavigations).HasConstraintName("itemandmodifiergroup_modifiedby_fkey");
+
+            entity.HasOne(d => d.Modifiergroup).WithMany(p => p.Itemandmodifiergroups).HasConstraintName("itemandmodifiergroup_modifiergroupid_fkey");
         });
 
         modelBuilder.Entity<Kot>(entity =>
@@ -387,15 +405,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Table).WithMany(p => p.Waitinglists)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("waitinglist_tableid_fkey");
-            modelBuilder.Entity<Modifiergroupandmodifier>()
-   .HasOne(m => m.Modifiergroup)
-   .WithMany(mg => mg.Modifiergroupandmodifiers)
-   .HasForeignKey(m => m.Modifiergroupid);
-
-            modelBuilder.Entity<Modifiergroupandmodifier>()
-                .HasOne(m => m.Modifier)
-                .WithMany(m => m.Modifiergroupandmodifiers)
-                .HasForeignKey(m => m.Modifierid);
         });
 
         OnModelCreatingPartial(modelBuilder);

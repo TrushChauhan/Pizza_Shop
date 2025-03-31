@@ -75,7 +75,7 @@ namespace Repository.Implementations
     string searchTerm,
     int page,
     int pageSize,
-    string sortField = "Name",string sortDirection = "asc")
+    string sortField = "Name", string sortDirection = "asc")
         {
             var query = _context.Userdetails
                 .Include(ud => ud.User)

@@ -10,6 +10,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Web.Filters;
 
 namespace Web.Controllers
 {
@@ -24,12 +25,12 @@ namespace Web.Controllers
         private readonly INotyfService _notify;
 
         public MainController(
-            IUserService userService, 
-            IConfiguration config, 
-            IAuthService authService, 
+            IUserService userService,
+            IConfiguration config,
+            IAuthService authService,
             IEmailService emailService,
-            IRolesAndPermissionsService rolesAndPermissionsService, 
-            IFileService fileService, 
+            IRolesAndPermissionsService rolesAndPermissionsService,
+            IFileService fileService,
             INotyfService notyfService)
         {
             _config = config;
@@ -59,52 +60,52 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-public async Task<IActionResult> UpdateUserProfile(MyProfile model)
-{
-    try
-    {
-        var imagePath = model.ExistingProfileImage;
-        if (model.ProfileImageFile != null)
+        public async Task<IActionResult> UpdateUserProfile(MyProfile model)
         {
-            
-            imagePath = await _fileService.SaveProfileImageAsync(model.ProfileImageFile);
+            try
+            {
+                var imagePath = model.ExistingProfileImage;
+                if (model.ProfileImageFile != null)
+                {
+
+                    imagePath = await _fileService.SaveProfileImageAsync(model.ProfileImageFile);
+                }
+
+                await _userService.UpdateUserProfileAsync(model, imagePath);
+                _notify.Custom("Profile Updated Successfully", 5, "Green", "fa-solid fa-check");
+                return RedirectToAction("Users");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error updating user: " + ex.Message);
+                return View(model);
+            }
         }
-
-        await _userService.UpdateUserProfileAsync(model, imagePath);
-        _notify.Custom("Profile Updated Successfully", 5, "Green", "fa-solid fa-check");
-        return RedirectToAction("Users");
-    }
-    catch (Exception ex)
-    {
-        ModelState.AddModelError("", "Error updating user: " + ex.Message);
-        return View(model);
-    }
-}
-
+        [PermissionAuthorize("Users", "view")]
         public async Task<IActionResult> Users(
-    string searchTerm = null, 
-    int page = 1, 
-    int pageSize = 2,
+    string searchTerm = null,
+    int page = 1,
+    int pageSize = 5,
     string sortField = "Name",
     string sortDirection = "asc")
-{
-    var (users, totalItems) = await _userService.GetUsersAsync(
-        searchTerm, 
-        page, 
-        pageSize,
-        sortField,
-        sortDirection);
-    
-    ViewBag.CurrentPage = page;
-    ViewBag.PageSize = pageSize;
-    ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-    ViewBag.TotalItems = totalItems;
-    ViewBag.SearchTerm = searchTerm;
-    ViewBag.SortField = sortField;
-    ViewBag.SortDirection = sortDirection;
-    
-    return View(users);
-}
+        {
+            var (users, totalItems) = await _userService.GetUsersAsync(
+                searchTerm,
+                page,
+                pageSize,
+                sortField,
+                sortDirection);
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            ViewBag.TotalItems = totalItems;
+            ViewBag.SearchTerm = searchTerm;
+            ViewBag.SortField = sortField;
+            ViewBag.SortDirection = sortDirection;
+
+            return View(users);
+        }
 
         public IActionResult Logout()
         {
@@ -141,14 +142,14 @@ public async Task<IActionResult> UpdateUserProfile(MyProfile model)
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("Users", "edit")]
         public IActionResult AddNewUser()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("Users", "edit")]
         public async Task<IActionResult> AddNewUser(AddUserDetail model)
         {
             try
@@ -166,15 +167,15 @@ public async Task<IActionResult> UpdateUserProfile(MyProfile model)
         }
 
         [HttpGet]
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("Users", "edit")]
         public async Task<IActionResult> EditUser(int id)
         {
             var user = await _userService.GetUserForEditAsync(id);
             return View(user);
         }
 
-        [Authorize(policy: "AdminOnly")]
         [HttpPost]
+        [PermissionAuthorize("Users", "edit")]
         public async Task<IActionResult> EditUser(EditUserDetail model)
         {
             try
@@ -197,12 +198,12 @@ public async Task<IActionResult> UpdateUserProfile(MyProfile model)
         }
 
         [HttpPost]
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("Users", "delete")]
         public async Task<IActionResult> Delete(int id)
         {
             bool isDeleted = await _userService.DeleteUserAsync(id);
-            return isDeleted 
-                ? Ok(new { success = true, message = "User deleted successfully" }) 
+            return isDeleted
+                ? Ok(new { success = true, message = "User deleted successfully" })
                 : NotFound(new { success = false, message = "User not found" });
         }
 
@@ -227,20 +228,20 @@ public async Task<IActionResult> UpdateUserProfile(MyProfile model)
             return Ok(cities.Select(c => new { cityid = c.Cityid, name = c.Name }));
         }
 
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("dashboard", "view")]
         public IActionResult Dashboard()
         {
             return View();
         }
 
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("RolesAndPermissions", "view")]
         public async Task<IActionResult> Roles()
         {
             var roles = await _userService.GetRolesAsync();
             return View(roles);
         }
 
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("RolesAndPermissions", "view")]
         public async Task<IActionResult> Permissions(int roleId)
         {
             var permissions = await _rolesPermissionsService.GetPermissionsByRoleAsync(roleId);
@@ -253,7 +254,7 @@ public async Task<IActionResult> UpdateUserProfile(MyProfile model)
         }
 
         [HttpPost]
-        [Authorize(policy: "AdminOnly")]
+        [PermissionAuthorize("RolesAndPermissions", "edit")]
         public async Task<IActionResult> UpdatePermissions(int roleId, [FromBody] List<PermissionUpdateModel> permissions)
         {
             await _rolesPermissionsService.UpdatePermissionsAsync(roleId, permissions);

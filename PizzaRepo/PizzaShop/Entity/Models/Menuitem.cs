@@ -78,6 +78,9 @@ public partial class Menuitem
     public virtual Userlogin? CreatedbyNavigation { get; set; }
 
     [InverseProperty("Item")]
+    public virtual ICollection<Itemandmodifiergroup> Itemandmodifiergroups { get; } = new List<Itemandmodifiergroup>();
+
+    [InverseProperty("Item")]
     public virtual ICollection<Kot> Kots { get; } = new List<Kot>();
 
     [ForeignKey("Modifiedby")]

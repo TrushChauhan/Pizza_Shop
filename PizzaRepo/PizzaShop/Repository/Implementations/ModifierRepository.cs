@@ -37,12 +37,13 @@ namespace Repository.Implementations
 
         public async Task AddModifierAsync(Modifier modifier, int modifierGroupId)
         {
-            modifier.Modifierid= await _context.Modifiers.CountAsync()+1;
+            modifier.Modifierid = await _context.Modifiers.CountAsync() + 1;
             await _context.Modifiers.AddAsync(modifier);
             await _context.SaveChangesAsync();
 
             var junction = new Modifiergroupandmodifier
             {
+                Mandmid = await _context.Modifiergroupandmodifiers.CountAsync() + 1,
                 Modifiergroupid = modifierGroupId,
                 Modifierid = modifier.Modifierid,
                 Createdat = DateTime.Now,
@@ -91,7 +92,7 @@ namespace Repository.Implementations
             {
                 await _context.Modifiergroupandmodifiers.AddAsync(new Modifiergroupandmodifier
                 {
-                    Mandmid=await _context.Modifiergroupandmodifiers.CountAsync() + 1,
+                    Mandmid = await _context.Modifiergroupandmodifiers.CountAsync() + 1,
                     Modifiergroupid = modifierGroupId,
                     Modifierid = modifierId,
                     Createdat = DateTime.Now,
@@ -113,7 +114,8 @@ namespace Repository.Implementations
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task DeleteModifierGroupAsync(int id){
+        public async Task DeleteModifierGroupAsync(int id)
+        {
             var modifierGroup = await _context.Modifiergroups.FindAsync(id);
             if (modifierGroup != null)
             {
@@ -153,6 +155,23 @@ namespace Repository.Implementations
                 existing.Modifieddate = DateTime.Now;
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task<Modifier> GetModifierAsync(int id)
+        {
+            return await _context.Modifiers
+                .FirstOrDefaultAsync(m => m.Modifierid == id && !m.Isdeleted);
+        }
+
+        public async Task UpdateModifierAsync(ModifierViewModel model)
+        {
+            var modifier = await _context.Modifiers.FirstOrDefaultAsync(m => m.Modifierid == model.ModifierId && !m.Isdeleted);
+            modifier.Modifiername = model.ModifierName;
+            modifier.Unit = model.Unit;
+            modifier.Rate = model.Rate;
+            modifier.Quantity = model.Quantity;
+            modifier.Description = model.Description;
+            modifier.Modifieddate = DateTime.Now;
+            await _context.SaveChangesAsync();
         }
     }
 }

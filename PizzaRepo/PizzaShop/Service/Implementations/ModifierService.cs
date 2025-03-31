@@ -81,33 +81,34 @@ namespace Service.Implementations
             };
         }
 
-    public async Task<ModifierGroupViewModel> GetModifierGroupAsync(int id)
-    {
-        var group = await _modifierRepository.GetModifierGroupAsync(id);
-        if (group == null) throw new KeyNotFoundException("Modifier group not found");
-        
-        return new ModifierGroupViewModel
+        public async Task<ModifierGroupViewModel> GetModifierGroupAsync(int id)
         {
-            ModifierGroupId = group.Modifiergroupid,
-            ModifierGroupName = group.Modifiergroupname,
-            Description = group.Description,
-        };
-    }
+            var group = await _modifierRepository.GetModifierGroupAsync(id);
+            if (group == null) throw new KeyNotFoundException("Modifier group not found");
 
-    public async Task UpdateModifierGroupAsync(ModifierGroupViewModel model)
-    {
-        var group = await _modifierRepository.GetModifierGroupAsync(model.ModifierGroupId);
-        if (group == null) throw new KeyNotFoundException("Modifier group not found");
+            return new ModifierGroupViewModel
+            {
+                ModifierGroupId = group.Modifiergroupid,
+                ModifierGroupName = group.Modifiergroupname,
+                Description = group.Description,
+            };
+        }
 
-        // Update properties
-        group.Modifiergroupname = model.ModifierGroupName;
-        group.Description=model.Description;
-        group.Modifieddate = DateTime.Now;
+        public async Task UpdateModifierGroupAsync(ModifierGroupViewModel model)
+        {
+            var group = await _modifierRepository.GetModifierGroupAsync(model.ModifierGroupId);
+            if (group == null) throw new KeyNotFoundException("Modifier group not found");
 
-        await _modifierRepository.UpdateModifierGroupAsync(group);
-    }
+            // Update properties
+            group.Modifiergroupname = model.ModifierGroupName;
+            group.Description = model.Description;
+            group.Modifieddate = DateTime.Now;
 
-        public async Task DeleteModifierGroupAsync(int id){
+            await _modifierRepository.UpdateModifierGroupAsync(group);
+        }
+
+        public async Task DeleteModifierGroupAsync(int id)
+        {
             await _modifierRepository.DeleteModifierGroupAsync(id);
         }
         public async Task AddModifiersToGroupAsync(int modifierGroupId, List<int> modifierIds)
@@ -123,6 +124,16 @@ namespace Service.Implementations
         public async Task DeleteModifiersFromGroupAsync(int modifierGroupId, List<int> modifierIds)
         {
             await _modifierRepository.DeleteModifiersFromGroupAsync(modifierGroupId, modifierIds);
+        }
+        public async Task<ModifierViewModel> GetModifierAsync(int id)
+        {
+            var modifier = await _modifierRepository.GetModifierAsync(id);
+            return _mappingService.MapToViewModifier(modifier,id);
+        }
+
+        public async Task UpdateModifierAsync(ModifierViewModel model)
+        {
+            await _modifierRepository.UpdateModifierAsync(model);
         }
     }
 }

@@ -16,8 +16,9 @@
         {
             direction = ViewBag.SortDirection == "asc" ? "desc" : "asc";
         }
-        
-        return Url.Action("Users", "Main", new { 
+
+        return Url.Action("Users", "Main", new
+        {
             page = ViewBag.CurrentPage,
             pageSize = ViewBag.PageSize,
             searchTerm = ViewBag.SearchTerm,
@@ -43,7 +44,8 @@
         </div>
     </div>
     <input type="hidden" name="page" value="@currentPage" />
-
+    <input type="hidden" name="sortField" value="@ViewBag.SortField" />
+    <input type="hidden" name="sortDirection" value="@ViewBag.SortDirection" />
 
     <div class="table-responsive users-table row m-3">
         <table class="table">
@@ -109,15 +111,15 @@
             <div class="col-md-8 d-flex align-items-center justify-content-end">
                 <div class="row mx-2">
                     <select class="form-select" name="pageSize" onchange="this.form.submit()">
-                        <option value="1" selected=@(pageSize == 1)>1</option>
-                        <option value="2" selected=@(pageSize == 2)>2</option>
-                        <option value="3" selected=@(pageSize == 3)>3</option>
+                        <option value="5" selected=@(pageSize == 5)>5</option>
+                        <option value="10" selected=@(pageSize == 10)>10</option>
+                        <option value="15" selected=@(pageSize == 15)>15</option>
                     </select>
                 </div>
                 <div>
                     <span class="text-muted">
                         Showing @Math.Min((currentPage - 1) * pageSize + 1, totalItems) - @Math.Min(currentPage *
-                        pageSize, totalItems) of
+                                                pageSize, totalItems) of
                         @totalItems
                     </span>
                 </div>
@@ -125,26 +127,25 @@
                     @if (currentPage > 1)
                     {
                         <a class="btn btn-outline-primary mx-1"
-                            href="/Main/Users?page=@(currentPage - 1)&pageSize=@pageSize&searchTerm=@searchTerm">
+                            href="/Main/Users?page=@(currentPage - 1)&pageSize=@pageSize&searchTerm=@searchTerm&sortField=@ViewBag.SortField&sortDirection=@ViewBag.SortDirection">
                             <i class="fas fa-chevron-left"></i>
                         </a>
                     }
                     else
                     {
-                        <span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-left"></i>
-                        </span>
+                        <span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-left"></i></span>
                     }
 
                     @if (currentPage < totalPages)
                     {
                         <a class="btn btn-outline-primary mx-1"
-                            href="/Main/Users?page=@(currentPage + 1)&pageSize=@pageSize&searchTerm=@searchTerm">
+                            href="/Main/Users?page=@(currentPage + 1)&pageSize=@pageSize&searchTerm=@searchTerm&sortField=@ViewBag.SortField&sortDirection=@ViewBag.SortDirection">
                             <i class="fas fa-chevron-right"></i>
                         </a>
                     }
                     else
                     {
-                        <span class="btn btn-outline-secondary mx-1 disabled"> <i class="fas fa-chevron-right"></i></span>
+                        <span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-right"></i></span>
                     }
                 </div>
             </div>
@@ -172,32 +173,36 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const sortField = '@ViewBag.SortField';
-    const sortDirection = '@ViewBag.SortDirection';
-    
-    if (sortField) {
-        const headers = document.querySelectorAll('th a');
-        headers.forEach(header => {
-            if (header.textContent.trim().includes(sortField)) {
-                header.classList.add('active-sort');
-                const icon = header.querySelector('i');
-                if (icon) {
-                    icon.className = sortDirection === 'asc' 
-                        ? 'fa-solid fa-arrow-up' 
-                        : 'fa-solid fa-arrow-down';
+    document.addEventListener('DOMContentLoaded', function () {
+        const sortField = '@ViewBag.SortField';
+        const sortDirection = '@ViewBag.SortDirection';
+
+        if (sortField) {
+            const headers = document.querySelectorAll('th a');
+            headers.forEach(header => {
+                if (header.textContent.trim().includes(sortField)) {
+                    header.classList.add('active-sort');
+                    const icon = header.querySelector('i');
+                    if (icon) {
+                        icon.className = sortDirection === 'asc'
+                            ? 'fa-solid fa-arrow-up'
+                            : 'fa-solid fa-arrow-down';
+                    }
                 }
-            }
-        });
-    }
-});
+            });
+        }
+    });
 
     document.querySelector('form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const searchTerm = document.querySelector('input[name="searchTerm"]').value;
-        const pageSize = document.querySelector('select[name="pageSize"]').value;
-        window.location.href = `/Main/Users?page=1&pageSize=${pageSize}&searchTerm=${encodeURIComponent(searchTerm)}`;
-    });
+    e.preventDefault();
+    const searchTerm = document.querySelector('input[name="searchTerm"]').value;
+    const pageSize = document.querySelector('select[name="pageSize"]').value;
+    const sortField = document.querySelector('input[name="sortField"]').value;
+    const sortDirection = document.querySelector('input[name="sortDirection"]').value;
+    
+    // Include all parameters in the URL
+    window.location.href = `/Main/Users?page=1&pageSize=${pageSize}&searchTerm=${encodeURIComponent(searchTerm)}&sortField=${sortField}&sortDirection=${sortDirection}`;
+});
 
     document.querySelectorAll('.pagination-container a').forEach(link => {
         link.addEventListener('click', function (e) {

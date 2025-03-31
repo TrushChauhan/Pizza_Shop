@@ -68,6 +68,47 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize disabled states on page load
+        document.querySelectorAll('.view-check').forEach(viewCheck => {
+            const row = viewCheck.closest('tr');
+            toggleEditDeleteStates(row, viewCheck.checked);
+        });
+
+        // Handle view toggle changes
+        document.querySelectorAll('.view-check').forEach(viewCheck => {
+            viewCheck.addEventListener('change', function() {
+                const row = this.closest('tr');
+                toggleEditDeleteStates(row, this.checked);
+                
+                // If view is being turned off, uncheck edit/delete
+                if (!this.checked) {
+                    row.querySelector('.edit-check').checked = false;
+                    row.querySelector('.delete-check').checked = false;
+                }
+            });
+        });
+
+        // Handle edit/delete toggle changes
+        document.querySelectorAll('.edit-check, .delete-check').forEach(check => {
+            check.addEventListener('change', function() {
+                const row = this.closest('tr');
+                const viewCheck = row.querySelector('.view-check');
+                
+                // If trying to enable edit/delete when view is off
+                if (this.checked && !viewCheck.checked) {
+                    viewCheck.checked = true;
+                    toggleEditDeleteStates(row, true);
+                }
+            });
+        });
+
+        function toggleEditDeleteStates(row, isViewEnabled) {
+            row.querySelector('.edit-check').disabled = !isViewEnabled;
+            row.querySelector('.delete-check').disabled = !isViewEnabled;
+        }
+
+        // Save button handler
         document.getElementById('savePermissions').addEventListener('click', function() {
             const permissions = [];
             const rows = document.querySelectorAll('#permissionsTable tbody tr');
@@ -90,15 +131,17 @@
                 body: JSON.stringify(permissions)
             })
             .then(response => {
-                if(permissions==null){
-                    alert('permissio');
-                }
-                else if (response.ok) {
+                if (response.ok) {
                     alert('Permissions updated successfully!');
                     window.location.reload();
                 } else {
                     alert('Error saving permissions');
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving');
             });
         });
+    });
     </script>

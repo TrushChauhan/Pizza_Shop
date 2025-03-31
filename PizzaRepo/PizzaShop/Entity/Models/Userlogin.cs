@@ -86,6 +86,12 @@ public partial class Userlogin
     public virtual ICollection<Invoice> InvoiceModifiedbyNavigations { get; } = new List<Invoice>();
 
     [InverseProperty("CreatedbyNavigation")]
+    public virtual ICollection<Itemandmodifiergroup> ItemandmodifiergroupCreatedbyNavigations { get; } = new List<Itemandmodifiergroup>();
+
+    [InverseProperty("ModifiedbyNavigation")]
+    public virtual ICollection<Itemandmodifiergroup> ItemandmodifiergroupModifiedbyNavigations { get; } = new List<Itemandmodifiergroup>();
+
+    [InverseProperty("CreatedbyNavigation")]
     public virtual ICollection<Kot> KotCreatedbyNavigations { get; } = new List<Kot>();
 
     [InverseProperty("ModifiedbyNavigation")]

@@ -46,6 +46,9 @@ public partial class Modifiergroup
     [InverseProperty("ModifiergroupCreatedbyNavigations")]
     public virtual Userlogin? CreatedbyNavigation { get; set; }
 
+    [InverseProperty("Modifiergroup")]
+    public virtual ICollection<Itemandmodifiergroup> Itemandmodifiergroups { get; } = new List<Itemandmodifiergroup>();
+
     [ForeignKey("Modifiedby")]
     [InverseProperty("ModifiergroupModifiedbyNavigations")]
     public virtual Userlogin? ModifiedbyNavigation { get; set; }

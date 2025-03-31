@@ -25,7 +25,12 @@ namespace Repository.Implementations
             
             return user?.Rolename;
         }
-
+        public async Task<Userrole> GetRoleByNameAsync(string roleName)
+{
+    return await _context.Userroles
+        .AsNoTracking()
+        .FirstOrDefaultAsync(r => r.Rolename == roleName && !r.Isdeleted);
+}
         public async Task<List<PermissionViewModel>> GetPermissionsByRoleAsync(int roleId)
         {
             var role = await _context.Userroles

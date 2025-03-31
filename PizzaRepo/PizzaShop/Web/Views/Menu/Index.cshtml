@@ -3,6 +3,131 @@
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
     ViewData["Title"] = "Menu";
 }
+<style>
+    /* Custom styles for category and modifier groups */
+    #categoryList,
+    #modifierGroupList {
+        height: 70vh;
+        overflow-y: auto;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .category-item,
+    .modifier-group-item {
+        border: none !important;
+        border-radius: 0 !important;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        color: #6c757d !important;
+        transition: all 0.3s ease;
+    }
+
+    .category-item::before,
+    .modifier-group-item::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background-color: currentColor;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    .category-item.active-category,
+    .modifier-group-item.active {
+        color: #0d6efd !important;
+        font-weight: 500;
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+
+    .icon-container {
+        margin-left: auto;
+        display: flex;
+        gap: 12px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .category-item:hover .icon-container,
+    .modifier-group-item:hover .icon-container {
+        opacity: 1;
+    }
+
+    .material-icons {
+        font-size: 18px;
+        cursor: pointer;
+        color: #6c757d;
+    }
+
+    .category-item.active-category .material-icons,
+    .modifier-group-item.active .material-icons {
+        color: #0d6efd;
+    }
+
+    /* Scrollbar styling */
+    #categoryList::-webkit-scrollbar,
+    #modifierGroupList::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #categoryList::-webkit-scrollbar-track,
+    #modifierGroupList::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    #categoryList::-webkit-scrollbar-thumb,
+    #modifierGroupList::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+
+        #modifierGroupList {
+            height: 70vh;
+            overflow-y: auto;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .modifier-group-item {
+            border: none !important;
+            border-radius: 0 !important;
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            color: #6c757d !important;
+            transition: all 0.3s ease;
+        }
+
+        .modifier-group-item::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: currentColor;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .modifier-group-item.active {
+            color: #0d6efd !important;
+            font-weight: 500;
+            background-color: rgba(13, 110, 253, 0.05) !important;
+        }
+
+        /* Scrollbar styling (same as categories) */
+        #modifierGroupList::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #modifierGroupList::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #modifierGroupList::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+    }
+</style>
 <div class="row my-4 px-3">
     <div class="col-6 text-Users-title fs-2">Menu</div>
 </div>
@@ -25,7 +150,7 @@
     <div class="tab-pane fade show active" id="items" role="tabpanel">
         <div class="row">
             <!-- Categories Column -->
-            <div class="col-md-2">
+            <div class="col-md-3"> <!-- Increased column width -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <p class="fs-5 text-primary">Categories</p>
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
@@ -35,21 +160,23 @@
                 <div class="list-group" id="categoryList">
                     @foreach (var category in Model)
                     {
-
                         <a href="#" class="list-group-item list-group-item-action category-item"
                             data-category-id="@category.CategoryId">
                             @category.CategoryName
                             <span class="icon-container">
-                                <i class="material-icons" onclick="editCategory(@category.CategoryId)">edit</i>
-                                <i class="material-icons" onclick="deleteCategory(@category.CategoryId)">delete</i>
+                                <i class="material-icons"
+                                    onclick="event.stopPropagation(); editCategory(@category.CategoryId)">edit</i>
+                                <i class="material-icons"
+                                    onclick="event.stopPropagation(); deleteCategory(@category.CategoryId)">delete</i>
                             </span>
                         </a>
                     }
                 </div>
             </div>
 
+
             <!-- Items Column -->
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div class="row">
                     <p class="text-primary fs-5">Items</p>
                 </div>
@@ -91,9 +218,9 @@
     <div class="tab-pane fade" id="modifiers" role="tabpanel">
         <div class="row">
             <!-- Modifier Groups Column -->
-            <div class="col-md-2">
+            <div class="col-md-3"> <!-- Changed from col-md-2 to col-md-3 -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5>Modifier Groups</h5>
+                    <h5 class="fs-5 text-primary">Modifier Groups</h5> <!-- Added text styling -->
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
                         data-bs-target="#addModifierGroupModal">
                         <i class="material-icons">add</i>
@@ -101,10 +228,11 @@
                 </div>
                 <div class="list-group" id="modifierGroupList">
                     <!-- Modifier groups will be dynamically loaded here -->
+                    <div class="text-muted p-2">No modifier groups found</div> <!-- Placeholder -->
                 </div>
             </div>
             <!-- Modifiers Column -->
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div class="d-flex row mb-3 justify-content-end align-items-center">
                     <div class="row">
                         <p class="text-primary fs-5">Modifiers</p>
@@ -119,7 +247,8 @@
                             data-bs-target="#massDeleteModifiers">
                             <img src="~/images/delete-icon.png" alt="" height="20px" width="20px"></button>
 
-                        <button class="btn btn-primary col mx-2" data-bs-toggle="modal" data-bs-target="#addModifierModal">+
+                        <button class="btn btn-primary col mx-2" data-bs-toggle="modal"
+                            data-bs-target="#addModifierModal">+
                             New Modifier</button>
 
                     </div>
@@ -172,41 +301,190 @@
         </div>
     </div>
 </div>
-<!-- Add Item Modal -->
-<div class="modal fade" id="addItemModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" id="addMenuItemModalLabel">Add Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addItemForm">
-                    <div class="mb-3">
-                        <label for="itemName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="itemName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="itemType" class="form-label">Type</label>
-                        <input type="text" class="form-control" id="itemType" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="itemRate" class="form-label">Rate</label>
-                        <input type="number" class="form-control" id="itemRate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="itemQuantity" class="form-label">Quantity</label>
-                        <input type="number" class="form-control" id="itemQuantity" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="itemAvailable" class="form-label">Available</label>
-                        <input type="checkbox" class="form-check-input" id="itemAvailable">
+                <form>
+                    <div class="row">
+                        <div class="col-md-8 pe-4">
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Categories*</label>
+                                    <select class="form-select">
+                                        <option selected>Sandwich</option>
+                                        <option>Burger</option>
+                                        <option>Pizza</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Name*</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Item Type*</label>
+                                    <select class="form-select">
+                                        <option>Vegetarian</option>
+                                        <option >Non Vegetarian</option>
+                                        <option>Vegan</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Rate*</label>
+                                    <input type="number" class="form-control">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Quantity*</label>
+                                    <input type="number" class="form-control" >
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Unit*</label>
+                                    <select class="form-select">
+                                        <option selected>Pieces</option>
+                                        <option>Grams</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-3 mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="availableSwitch" checked>
+                                    <label class="form-check-label" for="availableSwitch">Available</label>
+                                </div>
+                                <div class="col-md-3 mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="defaultTaxSwitch" checked>
+                                    <label class="form-check-label" for="defaultTaxSwitch">DefaultTax</label>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Tax Percentage</label>
+                                    <input type="number" class="form-control" >
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Short Code</label>
+                                    <input type="text" class="form-control" placeholder="Short Code">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" rows="2"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label class="form-label">Upload Image</label>
+                                    <div class="border p-5 text-center bg-light">
+                                        <input type="file" class="form-control d-none" id="fileInput">
+                                        <label for="fileInput" class="d-block">
+                                            <p class="mt-2 text-muted">Drag and Drop or Browse files</p>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                               <select class="form-select">
+                                        <option>Select Modifier group</option>
+                                        <option>Toppings</option>
+                                        <option >Veggies</option>
+                                </select>
+                            </div>
+                            
+                            <div class="border p-3 mb-3 bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <strong>Size Options</strong>
+                                    <div>
+                                        <div class="form-check form-switch d-inline-block">
+                                            <img src="~/images/delete-icon.png" width="20px" height="20px" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <select class="form-select">
+                                        <option selected>0</option>
+                                        <option>1</option>
+                                </select>
+                                <select class="form-select">
+                                        <option selected>0</option>
+                                        <option>1</option>
+                                </select>
+                                </div>
+                                 <ul>
+                                    <li>
+                                        <div class="d-flex justify-content-between">
+                                            <p>Small</p>
+                                            <p>50</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex justify-content-between">
+                                            <p>Medium</p>
+                                            <p>100</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex justify-content-between">
+                                            <p>Large</p>
+                                            <p>150</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="border p-3 bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <strong>Veggies</strong>
+                                    <div>
+                                        <div class="form-check form-switch d-inline-block">
+                                            <img src="~/images/delete-icon.png" width="20px" height="20px" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <select class="form-select">
+                                        <option selected>0</option>
+                                        <option>1</option>
+                                </select>
+                                <select class="form-select">
+                                        <option selected>0</option>
+                                        <option>1</option>
+                                </select>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <div class="d-flex justify-content-between">
+                                            <p>Onion</p>
+                                            <p>50</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex justify-content-between">
+                                            <p>mushroom</p>
+                                            <p>90</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveItem">Save</button>
+                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -275,7 +553,7 @@
                         <select class="form-select" id="pageSizeSelect">
                             <option value="5">5 per page</option>
                             <option value="10" selected>10 per page</option>
-                            <option value="20">20 per page</option>
+                            <option value="15">15 per page</option>
                         </select>
                     </div>
                     <div class="pagination-container">
@@ -288,12 +566,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="send-button px-3 py-1" id="addSelectedModifiers" data-bs-dismiss="modal">Add</button>
+                <button type="button" class="send-button px-3 py-1" id="addSelectedModifiers"
+                    data-bs-dismiss="modal">Add</button>
                 <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
+<!--add modifier modal -->
 <div class="modal fade" id="addModifierModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -340,7 +620,54 @@
         </div>
     </div>
 </div>
-
+<!-- Edit Modifier Modal -->
+<div class="modal fade" id="editModifierModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Modifier</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editModifierForm">
+                    <input type="hidden" id="editModifierId">
+                    <div class="row g-3">
+                        <div class="col-6 form-floating">
+                            <select class="form-select" id="editModifierGroup" required>
+                                <option value="">Select a group</option>
+                            </select>
+                            <label for="editModifierGroup" class="form-label">Modifier Group*</label>
+                        </div>
+                        <div class="col-md-6 form-floating">
+                            <input type="text" class="form-control" id="editModifierName" required>
+                            <label for="editModifierName" class="form-label">Name*</label>
+                        </div>
+                        <div class="col-md-4 form-floating">
+                            <input type="text" class="form-control" id="editModifierUnit" required>
+                            <label for="editModifierUnit" class="form-label">Unit*</label>
+                        </div>
+                        <div class="col-md-4 form-floating">
+                            <input type="number" class="form-control" id="editModifierRate" required step="0.01">
+                            <label for="editModifierRate" class="form-label">Rate*</label>
+                        </div>
+                        <div class="col-md-4 form-floating">
+                            <input type="number" class="form-control" id="editModifierQuantity" required>
+                            <label for="editModifierQuantity" class="form-label">Quantity*</label>
+                        </div>
+                        <div class="col-12 form-floating">
+                            <textarea class="form-control" id="editModifierDescription" rows="3"></textarea>
+                            <label for="editModifierDescription" class="form-label">Description</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="updateModifier">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Edit Category Modal -->
 <div class="modal fade" id="editCategoryModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -390,7 +717,8 @@
                         <label for="editModifierGroupDescription" class="form-label">Description</label>
                     </div>
                     <div class="mb-2">
-                        <a class="primary text-decoration-none" onclick="loadAllModifiersForEdit()">+ Add Existing Modifiers</a>
+                        <a class="primary text-decoration-none" onclick="loadAllModifiersForEdit()">+ Add Existing
+                            Modifiers</a>
                     </div>
                     <div id="currentModifiersContainer" class="d-flex flex-wrap gap-2 mt-3">
                         <!-- Modifiers will be loaded here -->
@@ -621,7 +949,92 @@
                 });
             });
     });
+    // Function to open edit modal for modifier
+function editModifier(modifierId) {
+    fetch(`/Menu/GetModifier/${modifierId}`)
+        .then(response => response.json())
+        .then(modifier => {
+            // Populate form fields
+            document.getElementById('editModifierId').value = modifier.modifierId;
+            document.getElementById('editModifierName').value = modifier.modifierName;
+            document.getElementById('editModifierUnit').value = modifier.unit;
+            document.getElementById('editModifierRate').value = modifier.rate;
+            document.getElementById('editModifierQuantity').value = modifier.quantity;
+            document.getElementById('editModifierDescription').value = modifier.description;
 
+            // Load modifier groups dropdown
+            fetch('/Menu/GetModifierGroups')
+                .then(response => response.json())
+                .then(groups => {
+                    const select = document.getElementById('editModifierGroup');
+                    select.innerHTML = '<option value="">Select a group</option>';
+                    groups.forEach(group => {
+                        const option = document.createElement('option');
+                        option.value = group.modifierGroupId;
+                        option.textContent = group.modifierGroupName;
+                        if (group.modifierGroupId === modifier.modifierGroupId) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+                });
+
+            // Show modal
+            const editModal = new bootstrap.Modal(document.getElementById('editModifierModal'));
+            editModal.show();
+        });
+}
+
+// Function to save edited modifier
+document.getElementById('updateModifier').addEventListener('click', function() {
+    const modifierData = {
+        modifierId: document.getElementById('editModifierId').value,
+        modifierGroupId: document.getElementById('editModifierGroup').value,
+        modifierName: document.getElementById('editModifierName').value,
+        unit: document.getElementById('editModifierUnit').value,
+        rate: parseFloat(document.getElementById('editModifierRate').value),
+        quantity: parseInt(document.getElementById('editModifierQuantity').value),
+        description: document.getElementById('editModifierDescription').value
+    };
+
+    // Basic validation
+    if (!modifierData.modifierGroupId || 
+        !modifierData.modifierName || 
+        !modifierData.unit || 
+        isNaN(modifierData.rate) || 
+        isNaN(modifierData.quantity)) {
+        alert('Please fill all required fields');
+        return;
+    }
+
+    fetch('/Menu/UpdateModifier', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(modifierData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Close modal and refresh data
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editModifierModal'));
+            modal.hide();
+            
+            // Refresh the modifiers table
+            const activeGroup = document.querySelector('#modifierGroupList .modifier-group-item.active');
+            if (activeGroup) {
+                const groupId = activeGroup.dataset.modifierGroupId;
+                loadModifiers(groupId);
+            }
+        } else {
+            alert('Failed to update modifier');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating');
+    });
+});
     // Load modifier groups
     function loadModifierGroups() {
         fetch('/Menu/GetModifierGroups')
@@ -642,8 +1055,10 @@
                     <a href="#" class="list-group-item list-group-item-action modifier-group-item" 
                        data-modifier-group-id="${group.modifierGroupId}">
                         ${group.modifierGroupName}
+                        <span class="icon-container">
                         <i class="material-icons" onclick="editModifierGroup(${group.modifierGroupId})">edit</i>
                         <i class="material-icons" onclick="deleteModifierGroup(${group.modifierGroupId})">delete</i>
+                        </span>
                     </a>
                     
                 `;
@@ -859,36 +1274,36 @@
     });
 
     // Single handler for adding selected modifiers
-    document.getElementById('addSelectedModifiers').addEventListener('click', function() {
-    const existingModal = bootstrap.Modal.getInstance(document.getElementById('addExistingModifiersModal'));
-    const editModal = bootstrap.Modal.getInstance(document.getElementById('editModifierGroupModal'));
-    const isEditMode = sessionStorage.getItem('modifierEditMode') === 'true';
-    const selectedModifiers = Array.from(document.querySelectorAll('.modifier-check:checked'))
-        .map(checkbox => parseInt(checkbox.dataset.modifierId));
+    document.getElementById('addSelectedModifiers').addEventListener('click', function () {
+        const existingModal = bootstrap.Modal.getInstance(document.getElementById('addExistingModifiersModal'));
+        const editModal = bootstrap.Modal.getInstance(document.getElementById('editModifierGroupModal'));
+        const isEditMode = sessionStorage.getItem('modifierEditMode') === 'true';
+        const selectedModifiers = Array.from(document.querySelectorAll('.modifier-check:checked'))
+            .map(checkbox => parseInt(checkbox.dataset.modifierId));
 
-    if (isEditMode) {
-        // Add to existing group
-        const groupId = currentEditingGroupId;
-        fetch('/Menu/AddModifiersToGroup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                modifierGroupId: groupId,
-                modifierIds: selectedModifiers
-            })
-        }).then(response => {
-            if (response.ok) {
-                loadCurrentModifiers(groupId);
-                existingModal.hide();
-                editModal.show(); // Show the edit modal again
-                sessionStorage.removeItem('modifierEditMode');
-            }
-        });
-    } else {
-        // Original add to new group logic
-        createModifierGroupWithModifiers(tempModifierGroupData, selectedModifiers);
-    }
-});
+        if (isEditMode) {
+            // Add to existing group
+            const groupId = currentEditingGroupId;
+            fetch('/Menu/AddModifiersToGroup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    modifierGroupId: groupId,
+                    modifierIds: selectedModifiers
+                })
+            }).then(response => {
+                if (response.ok) {
+                    loadCurrentModifiers(groupId);
+                    existingModal.hide();
+                    editModal.show(); // Show the edit modal again
+                    sessionStorage.removeItem('modifierEditMode');
+                }
+            });
+        } else {
+            // Original add to new group logic
+            createModifierGroupWithModifiers(tempModifierGroupData, selectedModifiers);
+        }
+    });
 
     function createModifierGroupWithModifiers(groupData, modifierIds) {
         // First create the modifier group
@@ -990,43 +1405,43 @@
     });
     let currentEditingGroupId = null;
 
-function editModifierGroup(modifierGroupId) {
-    currentEditingGroupId = modifierGroupId;
-    
-    fetch(`/Menu/GetModifierGroup/${modifierGroupId}`)
-        .then(response => response.json())
-        .then(group => {
-            document.getElementById('editModifierGroupId').value = group.modifierGroupId;
-            document.getElementById('editModifierGroupName').value = group.modifierGroupName;
-            document.getElementById('editModifierGroupDescription').value = group.description;
-            
-            // Load current modifiers
-            loadCurrentModifiers(group.modifierGroupId);
-            
-            const editModal = new bootstrap.Modal(document.getElementById('editModifierGroupModal'));
+    function editModifierGroup(modifierGroupId) {
+        currentEditingGroupId = modifierGroupId;
+
+        fetch(`/Menu/GetModifierGroup/${modifierGroupId}`)
+            .then(response => response.json())
+            .then(group => {
+                document.getElementById('editModifierGroupId').value = group.modifierGroupId;
+                document.getElementById('editModifierGroupName').value = group.modifierGroupName;
+                document.getElementById('editModifierGroupDescription').value = group.description;
+
+                // Load current modifiers
+                loadCurrentModifiers(group.modifierGroupId);
+
+                const editModal = new bootstrap.Modal(document.getElementById('editModifierGroupModal'));
+                editModal.show();
+            });
+    }
+    function loadAllModifiersForEdit() {
+        const editModal = bootstrap.Modal.getInstance(document.getElementById('editModifierGroupModal'));
+        const existingModal = new bootstrap.Modal(document.getElementById('addExistingModifiersModal'), {
+            backdrop: 'static' // Keep both modals visible
+        });
+
+        // Hide the edit modal temporarily
+        editModal.hide();
+
+        existingModal.show();
+
+        // Handle modal hidden event to reshow edit modal
+        document.getElementById('addExistingModifiersModal').addEventListener('hidden.bs.modal', () => {
             editModal.show();
         });
-}
-function loadAllModifiersForEdit() {
-    const editModal = bootstrap.Modal.getInstance(document.getElementById('editModifierGroupModal'));
-    const existingModal = new bootstrap.Modal(document.getElementById('addExistingModifiersModal'), {
-        backdrop: 'static' // Keep both modals visible
-    });
-    
-    // Hide the edit modal temporarily
-    editModal.hide();
-    
-    existingModal.show();
-    
-    // Handle modal hidden event to reshow edit modal
-    document.getElementById('addExistingModifiersModal').addEventListener('hidden.bs.modal', () => {
-        editModal.show();
-    });
-    
-    // Store that we're in edit mode
-    sessionStorage.setItem('modifierEditMode', 'true');
-    loadAllModifiers();
-}
+
+        // Store that we're in edit mode
+        sessionStorage.setItem('modifierEditMode', 'true');
+        loadAllModifiers();
+    }
 
     document.getElementById('updateModifierGroup').addEventListener('click', () => {
         const groupData = {
@@ -1080,56 +1495,56 @@ function loadAllModifiersForEdit() {
             });
     });
     // Save Modifier functionality
-document.getElementById('saveModifier').addEventListener('click', function() {
-    const modifierData = {
-        modifierGroupId: document.getElementById('modifierGroup').value,
-        modifierName: document.getElementById('modifierName').value,
-        unit: document.getElementById('modifierUnit').value,
-        rate: parseFloat(document.getElementById('modifierRate').value),
-        quantity: parseInt(document.getElementById('modifierQuantity').value),
-        description: document.getElementById('modifierDescription').value
-    };
+    document.getElementById('saveModifier').addEventListener('click', function () {
+        const modifierData = {
+            modifierGroupId: document.getElementById('modifierGroup').value,
+            modifierName: document.getElementById('modifierName').value,
+            unit: document.getElementById('modifierUnit').value,
+            rate: parseFloat(document.getElementById('modifierRate').value),
+            quantity: parseInt(document.getElementById('modifierQuantity').value),
+            description: document.getElementById('modifierDescription').value
+        };
 
-    if (
-        !modifierData.modifierName || 
-        !modifierData.unit || 
-        isNaN(modifierData.rate) || 
-        isNaN(modifierData.quantity)) {
-        alert('Please fill all required fields');
-        return;
-    }
-
-    fetch('/Menu/AddModifier', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(modifierData)
-    })
-    .then(response => {
-        if (response.ok) {
-            // Close modal and refresh data
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addModifierModal'));
-            modal.hide();
-            
-            // Refresh relevant data
-            const activeGroup = document.querySelector('#modifierGroupList .modifier-group-item.active');
-            if (activeGroup) {
-                const groupId = activeGroup.dataset.modifierGroupId;
-                loadModifiers(groupId);
-            }
-            
-            // Clear form
-            document.getElementById('addModifierForm').reset();
-        } else {
-            alert('Failed to save modifier');
+        if (
+            !modifierData.modifierName ||
+            !modifierData.unit ||
+            isNaN(modifierData.rate) ||
+            isNaN(modifierData.quantity)) {
+            alert('Please fill all required fields');
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while saving');
+
+        fetch('/Menu/AddModifier', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(modifierData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Close modal and refresh data
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addModifierModal'));
+                    modal.hide();
+
+                    // Refresh relevant data
+                    const activeGroup = document.querySelector('#modifierGroupList .modifier-group-item.active');
+                    if (activeGroup) {
+                        const groupId = activeGroup.dataset.modifierGroupId;
+                        loadModifiers(groupId);
+                    }
+
+                    // Clear form
+                    document.getElementById('addModifierForm').reset();
+                } else {
+                    alert('Failed to save modifier');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving');
+            });
     });
-});
 
     // Single Item Delete
     function deleteItem(itemId) {
@@ -1183,30 +1598,30 @@ document.getElementById('saveModifier').addEventListener('click', function() {
             });
     });
     // Single Modifier Delete
-   function removeModifierFromGroup(modifierId, groupId) {
-    fetch('/Menu/RemoveModifierFromGroup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            modifierGroupId: groupId,
-            modifierId: modifierId
-        })
-    }).then(response => {
-        if (response.ok) {
-            loadCurrentModifiers(groupId);
-            loadModifiers(groupId); // Refresh the main table if needed
-        }
-    });
-}
-function loadCurrentModifiers(groupId) {
-    fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`)
-        .then(response => response.json())
-        .then(modifiers => {
-            const container = document.getElementById('currentModifiersContainer');
-            container.innerHTML = '';
-            
-            modifiers.forEach(modifier => {
-                const badge = `
+    function removeModifierFromGroup(modifierId, groupId) {
+        fetch('/Menu/RemoveModifierFromGroup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                modifierGroupId: groupId,
+                modifierId: modifierId
+            })
+        }).then(response => {
+            if (response.ok) {
+                loadCurrentModifiers(groupId);
+                loadModifiers(groupId); // Refresh the main table if needed
+            }
+        });
+    }
+    function loadCurrentModifiers(groupId) {
+        fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`)
+            .then(response => response.json())
+            .then(modifiers => {
+                const container = document.getElementById('currentModifiersContainer');
+                container.innerHTML = '';
+
+                modifiers.forEach(modifier => {
+                    const badge = `
                     <div class="badge badge-pill bg-secondary d-flex align-items-center gap-2">
                         ${modifier.modifierName}
                         <button type="button" class="btn-close btn-close-grey" 
@@ -1214,10 +1629,10 @@ function loadCurrentModifiers(groupId) {
                             aria-label="Remove"></button>
                     </div>
                 `;
-                container.insertAdjacentHTML('beforeend', badge);
+                    container.insertAdjacentHTML('beforeend', badge);
+                });
             });
-        });
-}
+    }
     document.getElementById('confirmSingleModifierDelete').addEventListener('click', function () {
         const modifierId = document.getElementById('modifierToDeleteId').value;
         const groupId = document.getElementById('modifierGroupId').value;
