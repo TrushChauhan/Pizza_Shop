@@ -12,6 +12,10 @@ namespace Repository.Interfaces
         Task<List<Menuitem>> GetItemsByCategoryAsync(int categoryId);
         Task AddCategoryAsync(Menucategory category);
         Task<int> AddItemAsync(MenuItemViewModel item);
+        Task<Menuitem> GetItemAsync(int id);
+        Task<List<Itemandmodifiergroup>> GetItemModifierGroupsAsync(int itemId);
+        Task UpdateItemAsync(MenuItemViewModel model);
+        Task UpdateItemModifierGroupsAsync(int itemId, List<ModifierGroupSelection> modifierGroups);
         Task DeleteItemAsync(int id);
         Task DeleteCategoryAsync(int id);
         Task DeleteItemsAsync(List<int> itemIds);

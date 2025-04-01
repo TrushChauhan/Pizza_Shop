@@ -300,6 +300,7 @@
         </div>
     </div>
 </div>
+<!-- Add Item Modal-->
 <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -426,6 +427,135 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Edit Item Modal -->
+<div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editMenuItemModalLabel">Edit Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editItemForm" enctype="multipart/form-data">
+                <input type="hidden" id="editItemId" name="ItemId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 pe-4">
+                            <!-- Categories -->
+                            <div class="row mb-3">
+                                <div class="col-md-6 form-floating">
+                                    <select class="form-select" id="editCategorySelect" name="CategoryId" required>
+                                        <option value="">Loading categories...</option>
+                                    </select>
+                                    <label for="editCategorySelect" class="form-label">Category*</label>
+                                </div>
+                                <div class="col-md-6 form-floating">
+                                    <input type="text" class="form-control" id="editItemName" name="ItemName" required>
+                                    <label for="editItemName" class="form-label">Item Name*</label>
+                                </div>
+                            </div>
+
+                            <!-- Item Details -->
+                            <div class="row mb-3">
+                                <div class="col-md-4 form-floating">
+                                    <select class="form-select" id="editItemType" name="ItemType" required>
+                                        <option value="Vegetarian">Vegetarian</option>
+                                        <option value="Non Vegetarian">Non Vegetarian</option>
+                                        <option value="Vegan">Vegan</option>
+                                    </select>
+                                    <label for="editItemType" class="form-label">Item Type*</label>
+                                </div>
+                                <div class="col-md-4 form-floating">
+                                    <input type="number" class="form-control" id="editRate" name="Rate" step="0.01" required>
+                                    <label for="editRate" class="form-label">Rate*</label>
+                                </div>
+                                <div class="col-md-4 form-floating">
+                                    <input type="number" class="form-control" id="editQuantity" name="Quantity" required>
+                                    <label for="editQuantity" class="form-label">Quantity*</label>
+                                </div>
+                            </div>
+
+                            <!-- Unit and Tax -->
+                            <div class="row mb-3">
+                                <div class="col-md-4 form-floating">
+                                    <select class="form-select" id="editUnit" name="Unit" required>
+                                        <option value="Pieces">Pieces</option>
+                                        <option value="Grams">Grams</option>
+                                        <option value="Milliliters">Milliliters</option>
+                                    </select>
+                                    <label for="editUnit" class="form-label">Unit*</label>
+                                </div>
+                                <div class="col-md-4 form-floating">
+                                    <input type="number" class="form-control" id="editTaxPercentage" name="TaxPercentage">
+                                    <label for="editTaxPercentage" class="form-label">Tax Percentage</label>
+                                </div>
+                                <div class="col-md-4 form-floating">
+                                    <input type="text" class="form-control" id="editShortCode" name="Shortcode">
+                                    <label for="editShortCode" class="form-label">Short Code</label>
+                                </div>
+                            </div>
+
+                            <!-- Availability and Default Tax -->
+                            <div class="row mb-3">
+                                <div class="col-md-4 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="editAvailable" name="Available">
+                                    <label class="form-check-label" for="editAvailable">Available</label>
+                                </div>
+                                <div class="col-md-4 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="editDefaultTax" name="IsDefaultTax">
+                                    <label class="form-check-label" for="editDefaultTax">Default Tax</label>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="row mb-3">
+                                <div class="col-12 form-floating">
+                                    <textarea class="form-control" id="editDescription" name="Description" rows="3"></textarea>
+                                    <label for="editDescription" class="form-label">Description</label>
+                                </div>
+                            </div>
+
+                            <!-- Image Upload -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label class="form-label">Upload Image</label>
+                                    <div class="border p-5 text-center bg-light position-relative">
+                                        <input type="file" class="form-control d-none" id="editItemImage" name="ItemImage" accept="image/*">
+                                        <label for="editItemImage" class="d-block cursor-pointer">
+                                            <div id="editImagePreview" class="mb-2"></div>
+                                            <p class="mt-2 text-muted">Drag and Drop or Browse files</p>
+                                        </label>
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2" 
+                                                id="editRemoveImage" style="display: none;">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modifier Groups -->
+                        <div class="col-md-4">
+                            <div class="mb-3 form-floating">
+                                <select class="form-select" id="editModifierGroupSelect">
+                                    <option value="">Loading modifier groups...</option>
+                                </select>
+                                <label for="editModifierGroupSelect" class="form-label">Add Modifier Group</label>
+                            </div>
+
+                            <div id="editModifierGroupsContainer" class="border p-3 bg-light">
+                                <!-- Dynamic content will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Item</button>
                 </div>
             </form>
         </div>
@@ -836,16 +966,15 @@
                     ? `<img src="${item.itemImage}" class="item-thumbnail me-2 rounded-circle" alt="${item.itemName}" style="width: 40px; height: 35px;">`
                     : '';
                 var itemtype=item.itemType;
-                console.log(itemtype);
-                var itemtypesrc="images/icons/";
+                let itemtypesrc="/images/icons/";
                 if(itemtype=="Vegetarian"){
-                    itemtypesrc+="veg-icon";
+                    itemtypesrc+="veg-icon.svg";
                 }
                 else if(itemtype=="Vegan"){
-                    itemtypesrc+="vegan-icon";
+                    itemtypesrc+="vegan-icon.svg";
                 }
                 else{
-                    itemtypesrc+="non-veg-icon";
+                    itemtypesrc+="non-veg-icon.svg";
                 }
                 const itemtypeHtml=`<img src="${itemtypesrc}" class=" me-2 rounded-circle" alt="" style="width: 40px; height: 35px;">`;
                 const row = `
@@ -918,7 +1047,7 @@
     loadModifierGroupsInAddItem();
 });
 
-// Load categories
+// Load categories in additem
 function loadCategoriesInAddItem() {
     fetch('/Menu/GetCategories')
         .then(response => response.json())
@@ -932,7 +1061,7 @@ function loadCategoriesInAddItem() {
         });
 }
 
-// Load modifier groups
+// Load modifier groups in additem
 function loadModifierGroupsInAddItem() {
     fetch('/Menu/GetModifierGroups')
         .then(response => response.json())
@@ -1052,19 +1181,15 @@ document.getElementById('removeImage').addEventListener('click', function() {
     document.getElementById('imagePreview').innerHTML = '';
     this.style.display = 'none';
 });
-
 // Form submission
 document.getElementById('addItemForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    
-    // Get form data
+
     const formData = new FormData(this);
-    
-    // Add checkbox values explicitly
+
     formData.set('Available', document.getElementById('available').checked);
     formData.set('IsDefaultTax', document.getElementById('defaultTax').checked);
     
-    // Collect modifier groups data
     const modifierGroups = [];
     const groupElements = document.querySelectorAll('#modifierGroupsContainer [data-group-id]');
     
@@ -1073,7 +1198,6 @@ document.getElementById('addItemForm').addEventListener('submit', async function
         const minSelect = groupEl.querySelector('[name*="MinSelect"]').value;
         const maxSelect = groupEl.querySelector('[name*="MaxSelect"]').value;
         
-        // Add each property individually to FormData
         formData.append(`ModifierGroups[${index}].ModifierGroupId`, groupId);
         formData.append(`ModifierGroups[${index}].MinSelect`, minSelect);
         formData.append(`ModifierGroups[${index}].MaxSelect`, maxSelect);
@@ -1086,7 +1210,8 @@ document.getElementById('addItemForm').addEventListener('submit', async function
         });
         
         if (response.ok) {
-            // Success handling
+            closeAllModals();
+            document.location.reload()
         } else {
             const error = await response.text();
             alert('Error saving item: ' + error);
@@ -1094,6 +1219,212 @@ document.getElementById('addItemForm').addEventListener('submit', async function
     } catch (error) {
         console.error('Error:', error);
         alert('Error saving item');
+    }
+});
+// Function to open edit modal with item data
+function editItem(itemId) {
+    // First load categories and modifier groups
+    loadCategoriesInEditItem();
+    loadModifierGroupsInEditItem();
+    
+    // Then fetch item data
+    fetch(`/Menu/GetItem?id=${itemId}`)
+        .then(response => response.json())
+        .then(item => {
+            // Populate form fields
+            document.getElementById('editItemId').value = item.itemId;
+            document.getElementById('editItemName').value = item.itemName;
+            document.getElementById('editRate').value = item.rate;
+            document.getElementById('editQuantity').value = item.quantity;
+            document.getElementById('editTaxPercentage').value = item.taxPercentage;
+            document.getElementById('editShortCode').value = item.shortcode;
+            document.getElementById('editDescription').value = item.description;
+            
+            // Set select values
+            document.getElementById('editCategorySelect').value = item.categoryId;
+            document.getElementById('editItemType').value = item.itemType;
+            document.getElementById('editUnit').value = item.unit;
+            
+            // Set checkboxes
+            document.getElementById('editAvailable').checked = item.available;
+            document.getElementById('editDefaultTax').checked = item.isDefaultTax;
+            
+            // Set image preview if exists
+            if (item.itemImage) {
+                document.getElementById('editImagePreview').innerHTML = `
+                    <img src="${item.itemImage}" class="img-thumbnail" style="max-height: 150px;">
+                `;
+                document.getElementById('editRemoveImage').style.display = 'block';
+            }
+            
+            // Load item's modifier groups
+            loadItemModifierGroups(itemId);
+            
+            // Show modal
+            new bootstrap.Modal(document.getElementById('editItemModal')).show();
+        });
+}
+
+// Load categories for edit modal
+function loadCategoriesInEditItem() {
+    fetch('/Menu/GetCategories')
+        .then(response => response.json())
+        .then(categories => {
+            const select = document.getElementById('editCategorySelect');
+            select.innerHTML = '<option value="">Select Category</option>';
+            categories.forEach(category => {
+                const option = new Option(category.categoryName, category.categoryId);
+                select.add(option);
+            });
+        });
+}
+
+// Load modifier groups for edit modal
+function loadModifierGroupsInEditItem() {
+    fetch('/Menu/GetModifierGroups')
+        .then(response => response.json())
+        .then(groups => {
+            const select = document.getElementById('editModifierGroupSelect');
+            select.innerHTML = '<option value="">Select Modifier Group</option>';
+            groups.forEach(group => {
+                const option = new Option(group.modifierGroupName, group.modifierGroupId);
+                select.add(option);
+            });
+        });
+}
+
+// Load item's modifier groups
+function loadItemModifierGroups(itemId) {
+    fetch(`/Menu/GetItemModifierGroups?itemId=${itemId}`)
+        .then(response => response.json())
+        .then(groups => {
+            const container = document.getElementById('editModifierGroupsContainer');
+            container.innerHTML = '';
+            
+            groups.forEach(group => {
+                addEditModifierGroupRow(
+                    group.modifierGroupId, 
+                    group.modifierGroupName,
+                    group.minSelect,
+                    group.maxSelect
+                );
+            });
+        });
+}
+
+// Add modifier group row to edit modal
+function addEditModifierGroupRow(groupId, groupName, minSelect, maxSelect) {
+    const container = document.getElementById('editModifierGroupsContainer');
+    const existingGroup = container.querySelector(`[data-group-id="${groupId}"]`);
+    if (existingGroup) return;
+
+    const row = document.createElement('div');
+    row.className = 'row mb-2 align-items-center border-bottom pb-2';
+    row.dataset.groupId = groupId;
+    row.innerHTML = `
+        <div class="col-6">
+            <input type="hidden" name="ModifierGroups[${groupId}].ModifierGroupId" value="${groupId}">
+            <strong>${groupName}</strong>
+        </div>
+        <div class="col-6 text-end">
+            <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('[data-group-id]').remove()">
+                <i class="material-icons">delete</i>
+            </button>
+        </div>
+        <div class="col-md-6 mt-2">
+            <label class="form-label">Min Select</label>
+            <select class="form-select" name="ModifierGroups[${groupId}].MinSelect" required>
+                ${Array.from({length: 11}, (_, i) => 
+                    `<option value="${i}" ${i == minSelect ? 'selected' : ''}>${i}</option>`
+                ).join('')}
+            </select>
+        </div>
+        <div class="col-md-6 mt-2">
+            <label class="form-label">Max Select</label>
+            <select class="form-select" name="ModifierGroups[${groupId}].MaxSelect" required>
+                ${Array.from({length: 11}, (_, i) => 
+                    `<option value="${i}" ${i == maxSelect ? 'selected' : ''}>${i}</option>`
+                ).join('')}
+            </select>
+        </div>
+    `;
+    container.appendChild(row);
+}
+
+// Handle modifier group selection in edit modal
+document.getElementById('editModifierGroupSelect').addEventListener('change', async function() {
+    const groupId = this.value;
+    if (groupId) {
+        const response = await fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`);
+        const modifiers = await response.json();
+        const groupName = this.options[this.selectedIndex].text;
+        
+        addEditModifierGroupRow(groupId, groupName, 0, modifiers.length);
+        this.value = '';
+    }
+});
+
+// Image upload handling for edit modal
+document.getElementById('editItemImage').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('editImagePreview').innerHTML = `
+                <img src="${e.target.result}" class="img-thumbnail" style="max-height: 150px;">
+            `;
+            document.getElementById('editRemoveImage').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('editRemoveImage').addEventListener('click', function() {
+    document.getElementById('editItemImage').value = '';
+    document.getElementById('editImagePreview').innerHTML = '';
+    this.style.display = 'none';
+});
+
+// Form submission for edit
+document.getElementById('editItemForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    formData.append('Available', document.getElementById('editAvailable').checked);
+    formData.append('IsDefaultTax', document.getElementById('editDefaultTax').checked);
+    
+    const modifierGroups = [];
+    const groupElements = document.querySelectorAll('#editModifierGroupsContainer [data-group-id]');
+    
+    groupElements.forEach((groupEl, index) => {
+        const groupId = groupEl.dataset.groupId;
+        const minSelect = groupEl.querySelector('[name*="MinSelect"]').value;
+        const maxSelect = groupEl.querySelector('[name*="MaxSelect"]').value;
+        
+        formData.append(`ModifierGroups[${index}].ModifierGroupId`, groupId);
+        formData.append(`ModifierGroups[${index}].MinSelect`, minSelect);
+        formData.append(`ModifierGroups[${index}].MaxSelect`, maxSelect);
+    });
+    
+    try {
+        const response = await fetch('/Menu/UpdateItem', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            $('#editItemModal').modal('hide');
+            const activeCategory = document.querySelector('#categoryList .active-category');
+            if (activeCategory) {
+                loadItems(activeCategory.dataset.categoryId);
+            }
+        } else {
+            const error = await response.text();
+            alert('Error updating item: ' + error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error updating item');
     }
 });
     // Function to open edit modal for modifier

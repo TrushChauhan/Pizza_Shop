@@ -146,5 +146,76 @@ namespace Repository.Implementations
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<Menuitem> GetItemAsync(int id)
+        {
+            return await _context.Menuitems
+                .Include(i => i.Category)
+                .FirstOrDefaultAsync(i => i.Itemid == id && !i.Isdeleted);
+        }
+
+        public async Task<List<Itemandmodifiergroup>> GetItemModifierGroupsAsync(int itemId)
+        {
+            return await _context.Itemandmodifiergroups
+                .Include(img => img.Modifiergroup)
+                .Where(img => img.Itemid == itemId && !img.Isdeleted)
+                .ToListAsync();
+        }
+
+        public async Task UpdateItemAsync(MenuItemViewModel model)
+        {
+            var item = await _context.Menuitems.FirstOrDefaultAsync(i=> i.Itemid==model.ItemId && !i.Isdeleted);
+            if (item == null) throw new KeyNotFoundException("Item not found");
+
+            item.Categoryid = model.CategoryId;
+            item.Itemname = model.ItemName;
+            item.Itemtype = model.ItemType;
+            item.Rate = model.Rate;
+            item.Quantity = model.Quantity;
+            item.Unit = model.Unit;
+            item.Available = model.Available;
+            item.Shortcode = model.Shortcode;
+            item.Description = model.Description;
+            item.Isdefaulttax = model.IsDefaultTax;
+            item.Taxpercentage = model.TaxPercentage;
+            item.Modifieddate = DateTime.Now;
+
+            if (!string.IsNullOrEmpty(model.ItemImage))
+            {
+                item.Itemimage = model.ItemImage;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateItemModifierGroupsAsync(int itemId, List<ModifierGroupSelection> modifierGroups)
+        {
+            // First remove existing mappings
+            var existingMappings = await _context.Itemandmodifiergroups
+                .Where(img => img.Itemid == itemId)
+                .ToListAsync();
+
+            foreach (var mapping in existingMappings)
+            {
+                mapping.Isdeleted=true;
+                await _context.SaveChangesAsync();
+            }
+            // Add new mappings
+            foreach (var group in modifierGroups)
+            {
+                var mapping = new Itemandmodifiergroup
+                {
+                    Itemandmodifiergroupid = await _context.Itemandmodifiergroups.CountAsync() + 1,
+                    Itemid = itemId,
+                    Modifiergroupid = group.ModifierGroupId,
+                    Minselect = group.MinSelect,
+                    Maxselect = group.MaxSelect,
+                    Createddate = DateTime.Now,
+                    Modifieddate = DateTime.Now,
+                    Isdeleted = false
+                };
+                await _context.Itemandmodifiergroups.AddAsync(mapping);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

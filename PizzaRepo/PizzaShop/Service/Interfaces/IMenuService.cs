@@ -1,3 +1,4 @@
+using Entity.Models;
 using Entity.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +11,10 @@ namespace Service.Interfaces
         Task<List<MenuItemViewModel>> GetItemsByCategoryAsync(int categoryId);
         Task AddCategoryAsync(MenuCategoryViewModel model);
         Task<int> AddItemAsync(MenuItemViewModel model);
+        Task<Menuitem> GetItemAsync(int id);
+        Task<List<Itemandmodifiergroup>> GetItemModifierGroupsAsync(int itemId);
+        Task UpdateItemAsync(MenuItemViewModel model);
+        Task UpdateItemModifierGroupsAsync(int itemId, List<ModifierGroupSelection> modifierGroups);
         Task DeleteItemAsync(int id);
         Task DeleteCategoryAsync(int id);
         Task DeleteItemsAsync(List<int> itemIds);

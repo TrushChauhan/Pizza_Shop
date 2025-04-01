@@ -21,7 +21,7 @@ public int Rate { get; set; }
 public int Quantity { get; set; }
 public string Unit{get; set;}
 public bool Available { get; set; }
-[StringLength(5, ErrorMessage = "Shortcode cannot exceed 5 characters")]
+[StringLength(50, ErrorMessage = "Shortcode cannot exceed 50 characters")]
 public string? Shortcode { get; set; }
 [StringLength(500, ErrorMessage = "Image URL cannot exceed 50 characters")]
 public string? ItemImage { get; set; }

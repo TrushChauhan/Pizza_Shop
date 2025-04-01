@@ -190,17 +190,14 @@ namespace Web.Controllers
         {
             try
             {
-                // Handle image upload
                 if (itemImage != null && itemImage.Length > 0)
                 {
                     var imagePath = await _fileService.SaveItemImageAsync(itemImage);
                     model.ItemImage = imagePath;
                 }
 
-                // Get modifier groups from form data
                 var modifierGroups = new List<ModifierGroupSelection>();
 
-                // Manually parse the modifier groups from form data
                 int index = 0;
                 while (true)
                 {
@@ -233,6 +230,97 @@ namespace Web.Controllers
                 {
                     await _menuService.AddModifierGroupsToItemAsync(itemId, modifierGroups);
                 }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetItem(int id)
+        {
+            var item = await _menuService.GetItemAsync(id);
+            if (item == null) return NotFound();
+
+            return Json(new
+            {
+                itemId = item.Itemid,
+                categoryId = item.Categoryid,
+                itemName = item.Itemname,
+                itemType = item.Itemtype,
+                rate = item.Rate,
+                quantity = item.Quantity,
+                unit = item.Unit,
+                available = item.Available,
+                shortcode = item.Shortcode,
+                itemImage = item.Itemimage,
+                description = item.Description,
+                isDefaultTax = item.Isdefaulttax,
+                taxPercentage = item.Taxpercentage
+            });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetItemModifierGroups(int itemId)
+        {
+            var groups = await _menuService.GetItemModifierGroupsAsync(itemId);
+            return Json(groups.Select(g => new
+            {
+                modifierGroupId = g.Modifiergroupid,
+                modifierGroupName = g.Modifiergroup?.Modifiergroupname,
+                minSelect = g.Minselect,
+                maxSelect = g.Maxselect
+            }));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateItem(
+            [FromForm] MenuItemViewModel model,
+            IFormFile itemImage)
+        {
+            try
+            {
+                // Handle image upload
+                if (itemImage != null && itemImage.Length > 0)
+                {
+                    var imagePath = await _fileService.SaveItemImageAsync(itemImage);
+                    model.ItemImage = imagePath;
+                }
+
+                // Parse modifier groups from form data
+                var modifierGroups = new List<ModifierGroupSelection>();
+                int index = 0;
+                while (true)
+                {
+                    var groupIdKey = $"ModifierGroups[{index}].ModifierGroupId";
+                    if (!Request.Form.ContainsKey(groupIdKey)) break;
+
+                    var groupId = Request.Form[groupIdKey].FirstOrDefault();
+                    var minSelect = Request.Form[$"ModifierGroups[{index}].MinSelect"].FirstOrDefault();
+                    var maxSelect = Request.Form[$"ModifierGroups[{index}].MaxSelect"].FirstOrDefault();
+
+                    if (int.TryParse(groupId, out var gId) &&
+                        int.TryParse(minSelect, out var min) &&
+                        int.TryParse(maxSelect, out var max))
+                    {
+                        modifierGroups.Add(new ModifierGroupSelection
+                        {
+                            ModifierGroupId = gId,
+                            MinSelect = min,
+                            MaxSelect = max
+                        });
+                    }
+
+                    index++;
+                }
+
+                // Update the item
+                await _menuService.UpdateItemAsync(model);
+
+                // Update modifier group mappings
+                await _menuService.UpdateItemModifierGroupsAsync(model.ItemId, modifierGroups);
 
                 return Ok();
             }
