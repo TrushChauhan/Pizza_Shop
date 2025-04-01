@@ -187,7 +187,9 @@ namespace Repository.Implementations
 
         public async Task UpdateUserDetailAsync(EditUserDetail model, string profileImagePath)
         {
-            var user = await GetUserByIdAsync(model.UserId);
+            var user = await _context.Userdetails.FirstOrDefaultAsync(u=> u.Userid==model.UserId);
+            var userlogin = await _context.Userlogins.FirstOrDefaultAsync(u=> u.Userid==model.UserId);
+            userlogin.Roleid=model.Roleid;
 
             user.Firstname = model.Firstname;
             user.Lastname = model.Lastname;
@@ -202,7 +204,6 @@ namespace Repository.Implementations
             user.Profileimage = profileImagePath ?? user.Profileimage;
             user.Status = model.Status == "1";
 
-            _context.Userdetails.Update(user);
             await _context.SaveChangesAsync();
         }
         public async Task UpdateUserProfileAsync(MyProfile model, string profileImagePath)
