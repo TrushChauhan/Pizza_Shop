@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IMenuRepository,MenuRepository>();
+builder.Services.AddScoped<ITaxRepository,TaxRepository>();
 builder.Services.AddScoped<IModifierRepository,ModifierRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IRolesAndPermissionsService, RolesAndPermissionsService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddScoped<IModifierService,ModifierService>();
+builder.Services.AddScoped<ITaxService, TaxService>();
 builder.Services.AddScoped<MappingService>();
 builder.Services.AddNotyf(config=>
 {

@@ -24,9 +24,6 @@ public partial class Tax
     [Column("isenabled")]
     public bool Isenabled { get; set; }
 
-    [Column("isdefaulttax")]
-    public bool Isdefaulttax { get; set; }
-
     [Column("taxamount")]
     public int Taxamount { get; set; }
 
