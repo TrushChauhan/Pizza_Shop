@@ -25,7 +25,7 @@ public partial class Tax
     public bool Isenabled { get; set; }
 
     [Column("taxamount")]
-    public int Taxamount { get; set; }
+    public double Taxamount { get; set; }
 
     [Column("createddate", TypeName = "timestamp without time zone")]
     public DateTime Createddate { get; set; }

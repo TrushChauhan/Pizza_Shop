@@ -7,7 +7,7 @@ public class TaxViewModel
     public string Taxname { get; set; } = null!;
     public string Taxtype { get; set; } = null!;
     public bool Isenabled { get; set; }
-    public int Taxamount { get; set; }
+    public double Taxamount { get; set; }
     public DateTime Createddate { get; set; }
     public DateTime? Modifieddate { get; set; }
     public int? Createdby { get; set; }

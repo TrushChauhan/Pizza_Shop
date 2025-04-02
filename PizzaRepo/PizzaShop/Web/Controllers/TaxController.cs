@@ -19,7 +19,7 @@ namespace Web.Controllers
         }
         [Authorize]
         public async Task<IActionResult> Taxes(string search = null)
-        {
+        {   ViewBag.SearchTerm=search;
             var taxes = await _taxService.GetTaxesTableAsync(search);
             return View(taxes);
         }
@@ -42,8 +42,45 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTax([FromBody] TaxViewModel model)
         {
-            await _taxService.AddTaxAsync(model);
-            return Ok();
+            try
+            {
+                await _taxService.AddTaxAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetTax(int id)
+        {
+            var tax = await _taxService.GetTaxByIdAsync(id);
+            if (tax == null)
+            {
+                return NotFound();
+            }
+            return Ok(tax);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTax([FromBody] TaxViewModel model)
+        {
+            try
+            {
+                var result = await _taxService.UpdateTaxAsync(model);
+                if (!result)
+                {
+                    return NotFound();
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }

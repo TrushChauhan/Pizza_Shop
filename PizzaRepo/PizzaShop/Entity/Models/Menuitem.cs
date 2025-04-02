@@ -38,7 +38,7 @@ public partial class Menuitem
     public string? Shortcode { get; set; }
 
     [Column("itemimage")]
-    [StringLength(50)]
+    [StringLength(500)]
     public string? Itemimage { get; set; }
 
     [Column("description")]

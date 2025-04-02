@@ -9,14 +9,13 @@
     Taxes/Fees
   </div>
   <div class="col-6 d-flex justify-content-end">
-    <input type="text" class="m-2" placeholder="Search">
-
+    <input type="text" id="searchInput" class="m-2" placeholder="Search" value="@ViewBag.SearchTerm">
     <button class="send-button m-2" data-bs-toggle="modal" data-bs-target="#addTaxModal">
       + New Tax
     </button>
   </div>
 </div>
-<div class="table-responsive table-shadow row m-3">
+<div class="table-responsive table-shadow row m-2">
   <table class="table ">
     <thead>
       <tr>
@@ -31,12 +30,25 @@
       @foreach (var tax in Model)
       {
         <tr data-user-id="@tax.Taxid">
-          <td>
+          <td class="">
             @tax.Taxname
           </td>
           <td>@tax.Taxtype</td>
-          <td>@tax.Isenabled</td>
-          <td>@tax.Taxamount</td>
+          <td>
+            <div class="form-check form-switch">
+              @if (@tax.Isenabled)
+              {
+                <input class="form-check-input" type="checkbox" checked onclick="return false;">
+              }
+              else
+              {
+                <input class="form-check-input" type="checkbox" onclick="return false;">
+              }
+            </div>
+          </td>
+          <td>
+            @tax.Taxamount
+          </td>
           <td>
             <i class="material-icons">edit</i>
             <i class="material-icons delete-tax" onclick="deleteTax(@tax.Taxid)">delete</i>
@@ -56,7 +68,7 @@
       <div class="modal-body text-center">
         <img src="~/images/danger.png" width="50" height="50" alt="Warning">
         <p class="mt-3">Are you sure you want to delete this tax?</p>
-        <input type="hidden" id="taxToDelete" >
+        <input type="hidden" id="taxToDelete">
       </div>
       <div class="modal-footer justify-content-center">
         <button type="button" class="send-button px-3 py-1" id="confirmTaxDelete">Yes</button>
@@ -67,93 +79,211 @@
 </div>
 <!-- Add Tax Modal -->
 <div class="modal fade" id="addTaxModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Tax</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Tax</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addTaxForm" class="container">
+          <div class="mb-3 form-floating row">
+            <input type="text" class="form-control" id="taxName" required>
+            <label for="taxName" class="form-label">Name*</label>
+          </div>
+          <div class="d-flex row ">
+            <select class="mb-3 col-6 form-floating" id="taxType" required>
+              <option value="1">Percentage</option>
+              <option value="2">Flat amount</option>
+            </select>
+            <div class="mb-3 col-6 form-floating text-align-right">
+              <input type="text" class="form-control" id="taxAmount"></textarea>
+              <label for="taxAmount" class="form-label">Tax Amount*</label>
             </div>
-            <div class="modal-body">
-                <form id="addTaxForm" class="container">
-                    <div class="mb-3 form-floating row">
-                        <input type="text" class="form-control" id="taxName" required>
-                        <label for="taxName" class="form-label">Name*</label>
-                    </div>
-                    <div class="d-flex row ">
-                      <select class="mb-3 col-6 form-floating" id="taxType" required>
-                        <option value="1">Percentage</option>
-                        <option value="2">Flat amount</option>
-                      </select>
-                    <div class="mb-3 col-6 form-floating text-align-right">
-                        <input type="text" class="form-control" id="taxAmount" ></textarea>
-                        <label for="taxAmount" class="form-label">Tax Amount*</label>
-                    </div>
-                    </div>
-                    <div class="form-check form-switch row">
-                      <input class="form-check-input" id="isEnable" type="checkbox">
-                      <p>IsEnable</p>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="send-button px-3 py-1" id="saveTax">Save</button>
-                <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
-            </div>
-        </div>
+          </div>
+          <div class="form-check form-switch row">
+            <input class="form-check-input" id="isEnable" type="checkbox">
+            <p>IsEnable</p>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="send-button px-3 py-1" id="saveTax">Save</button>
+        <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+      </div>
     </div>
+  </div>
 </div>
-  <script>
-    const taxDeleteModal = new bootstrap.Modal(document.getElementById('taxDeleteModal'));
+<!-- Edit Tax Modal -->
+<div class="modal fade" id="editTaxModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Tax</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editTaxForm" class="container">
+          <input type="hidden" id="editTaxId">
+          <div class="mb-3 form-floating row">
+            <input type="text" class="form-control" id="editTaxName" required>
+            <label for="editTaxName" class="form-label">Name*</label>
+          </div>
+          <div class="d-flex row">
+            <select class="mb-3 col-6 form-floating" id="editTaxType" required>
+              <option value="1">Percentage</option>
+              <option value="2">Flat amount</option>
+            </select>
+            <div class="mb-3 col-6 form-floating text-align-right">
+              <input type="text" class="form-control" id="editTaxAmount" required>
+              <label for="editTaxAmount" class="form-label">Tax Amount*</label>
+            </div>
+          </div>
+          <div class="form-check form-switch row">
+            <input class="form-check-input" id="editIsEnable" type="checkbox">
+            <p>IsEnable</p>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="send-button px-3 py-1" id="updateTax">Update</button>
+        <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const taxDeleteModal = new bootstrap.Modal(document.getElementById('taxDeleteModal'));
 
-    function deleteTax(taxid) {
-      document.getElementById('taxToDelete').value = taxid;
-      taxDeleteModal.show();
+  function deleteTax(taxid) {
+    document.getElementById('taxToDelete').value = taxid;
+    taxDeleteModal.show();
+  }
+
+  document.getElementById('confirmTaxDelete').addEventListener('click', function () {
+    const taxId = document.getElementById('taxToDelete').value;
+    console.log(typeof taxId)
+    fetch(`/Tax/DeleteTax?taxid=${taxId}`, {
+      method: 'POST'
+    })
+      .then(response => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          alert('Failed to delete tax');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the tax');
+      })
+      .finally(() => {
+        taxDeleteModal.hide();
+      });
+  });
+  document.getElementById('saveTax').addEventListener('click', () => {
+    // Get form values
+    const taxData = {
+      Taxname: document.getElementById('taxName').value,
+      Taxtype: parseInt(document.getElementById('taxType').value),
+      Taxamount: parseFloat(document.getElementById('taxAmount').value),
+      Isenabled: document.getElementById('isEnable').checked
+    };
+    if (taxData.Taxtype == 1) {
+      taxData.Taxtype = "Percentage";
+    }
+    else {
+      taxData.Taxtype = "Flat Amount"
+    }
+    // Validate required fields
+    if (!taxData.Taxname || isNaN(taxData.Taxamount)) {
+      alert('Please fill all required fields with valid values');
+      return;
     }
 
-    document.getElementById('confirmTaxDelete').addEventListener('click', function () {
-      const taxId = document.getElementById('taxToDelete').value;
-      console.log(typeof taxId)
-      fetch(`/Tax/DeleteTax?taxid=${taxId}`, {
-        method: 'POST'
+    fetch('/Tax/AddTax', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(taxData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => { throw new Error(text) });
+        }
       })
-        .then(response => {
-          if (response.ok) {
-            window.location.reload();
-          } else {
-            alert('Failed to delete tax');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('An error occurred while deleting the tax');
-        })
-        .finally(() => {
-          taxDeleteModal.hide();
-        });
-    });
-    document.getElementById('saveTax').addEventListener('click', () => {
-        const taxName = document.getElementById('taxName').value;
-        const taxType = document.getElementById('taxType').value;
-        const taxAmount = document.getElementById('taxAmount').value;
-        const IsEnable = document.getElementById('isEnable').value;
-        fetch('/Tax/AddTax', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                taxName: taxName,
-                taxType : taxType,
-                taxAmount:taxAmount,
-                IsEnable:IsEnable
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    alert('Failed to add category');
-                }
-            });
-    });
-  </script>
+      .then(data => {
+        console.log('Success:', data);
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding tax: ' + error.message);
+      });
+  });
+  // Allow search on Enter key
+  document.getElementById('searchInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      const searchTerm = document.getElementById('searchInput').value;
+      window.location.href = `/Tax/Taxes?search=${encodeURIComponent(searchTerm)}`;
+    }
+  });
+  // Edit icon click handler
+  document.querySelectorAll('.material-icons').forEach(icon => {
+    if (icon.textContent === 'edit') {
+      icon.addEventListener('click', function () {
+        const taxId = this.closest('tr').getAttribute('data-user-id');
+        fetch(`/Tax/GetTax?id=${taxId}`)
+          .then(response => response.json())
+          .then(tax => {
+            document.getElementById('editTaxId').value = tax.taxid;
+            document.getElementById('editTaxName').value = tax.taxname;
+            document.getElementById('editTaxType').value = (tax.taxtype === "Percentage") ? "1" : "2";
+            document.getElementById('editTaxAmount').value = tax.taxamount;
+            document.getElementById('editIsEnable').checked = tax.isenabled;
+
+            const editModal = new bootstrap.Modal(document.getElementById('editTaxModal'));
+            editModal.show();
+          });
+      });
+    }
+  });
+
+  // Update tax handler
+  document.getElementById('updateTax').addEventListener('click', () => {
+    const taxData = {
+      Taxid: document.getElementById('editTaxId').value,
+      Taxname: document.getElementById('editTaxName').value,
+      Taxtype: parseInt(document.getElementById('editTaxType').value),
+      Taxamount: parseFloat(document.getElementById('editTaxAmount').value),
+      Isenabled: document.getElementById('editIsEnable').checked
+    };
+    if (taxData.Taxtype == 1) {
+      taxData.Taxtype = "Percentage";
+    }
+    else {
+      taxData.Taxtype = "Flat Amount"
+    }
+    fetch('/Tax/UpdateTax', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(taxData)
+    })
+      .then(response => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          alert('Failed to update tax');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the tax');
+      });
+  });
+</script>
