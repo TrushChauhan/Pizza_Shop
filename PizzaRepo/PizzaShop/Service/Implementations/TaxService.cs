@@ -1,3 +1,4 @@
+using Entity.Models;
 using Entity.ViewModel;
 using Repository.Interfaces;
 using Service.Interfaces;
@@ -16,5 +17,16 @@ public class TaxService : ITaxService
     }
     public async Task DeleteTaxAsync(int id){
         await _taxRepo.DeleteTaxAsync(id);
+    }
+    public async Task AddTaxAsync(TaxViewModel model){
+        var tax = new Tax
+            {
+                Taxname = model.Taxname,
+                Taxamount = model.Taxamount,
+                Taxtype=model.Taxtype,
+                Createddate = DateTime.Now,
+                Isdeleted = false
+            };
+        await _taxRepo.AddTaxAsync(tax);
     }
 }

@@ -44,4 +44,8 @@ public class TaxRepository : ITaxRepository
        tax.Isdeleted=true;
        _context.SaveChangesAsync();
     }
+   public async Task AddTaxAsync(Tax model){
+       await _context.Taxes.AddAsync(model);
+       await _context.SaveChangesAsync();
+   }
 }

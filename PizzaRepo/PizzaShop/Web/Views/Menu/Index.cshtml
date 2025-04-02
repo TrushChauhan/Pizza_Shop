@@ -2032,7 +2032,6 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
 
     document.getElementById('confirmSingleItemDelete').addEventListener('click', function () {
         const itemId = document.getElementById('itemToDeleteId').value;
-
         fetch(`/Menu/DeleteItem/${itemId}`, {
             method: 'POST'
         })

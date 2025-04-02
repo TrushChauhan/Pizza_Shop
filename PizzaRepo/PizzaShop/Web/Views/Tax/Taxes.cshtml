@@ -11,13 +11,13 @@
   <div class="col-6 d-flex justify-content-end">
     <input type="text" class="m-2" placeholder="Search">
 
-    <button class="send-button m-2">
+    <button class="send-button m-2" data-bs-toggle="modal" data-bs-target="#addTaxModal">
       + New Tax
     </button>
   </div>
 </div>
-<div class="table-responsive tax-table row m-3">
-  <table class="table">
+<div class="table-responsive table-shadow row m-3">
+  <table class="table ">
     <thead>
       <tr>
         <th scope="col" class="text-black-50">Name</th>
@@ -45,50 +45,115 @@
       }
     </tbody>
   </table>
-
+</div>
 <div id="taxDeleteModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="~/images/danger.png" width="50" height="50" alt="Warning">
+        <p class="mt-3">Are you sure you want to delete this tax?</p>
+        <input type="hidden" id="taxToDelete" >
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="send-button px-3 py-1" id="confirmTaxDelete">Yes</button>
+        <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Tax Modal -->
+<div class="modal fade" id="addTaxModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete Confirmation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Add New Tax</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body text-center">
-                <img src="~/images/danger.png" width="50" height="50" alt="Warning">
-                <p class="mt-3">Are you sure you want to delete this tax?</p>
-                <input type="hidden" id="taxToDelete">
+            <div class="modal-body">
+                <form id="addTaxForm" class="container">
+                    <div class="mb-3 form-floating row">
+                        <input type="text" class="form-control" id="taxName" required>
+                        <label for="taxName" class="form-label">Name*</label>
+                    </div>
+                    <div class="d-flex row ">
+                      <select class="mb-3 col-6 form-floating" id="taxType" required>
+                        <option value="1">Percentage</option>
+                        <option value="2">Flat amount</option>
+                      </select>
+                    <div class="mb-3 col-6 form-floating text-align-right">
+                        <input type="text" class="form-control" id="taxAmount" ></textarea>
+                        <label for="taxAmount" class="form-label">Tax Amount*</label>
+                    </div>
+                    </div>
+                    <div class="form-check form-switch row">
+                      <input class="form-check-input" id="isEnable" type="checkbox">
+                      <p>IsEnable</p>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary" id="confirmTaxDelete" >Yes</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <div class="modal-footer">
+                <button type="button" class="send-button px-3 py-1" id="saveTax">Save</button>
+                <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-  const taxDeleteModal = new bootstrap.Modal(document.getElementById('taxDeleteModal'));
+  <script>
+    const taxDeleteModal = new bootstrap.Modal(document.getElementById('taxDeleteModal'));
 
     function deleteTax(taxid) {
-        document.getElementById('taxToDelete').value = taxid;
-        taxDeleteModal.show();
+      document.getElementById('taxToDelete').value = taxid;
+      taxDeleteModal.show();
     }
 
     document.getElementById('confirmTaxDelete').addEventListener('click', function () {
-        const taxId = document.getElementById('taxToDelete').value;
-        console.log(taxId);
-        fetch(`/Tax/DeleteTax/${taxId}`, {
-            method: 'POST'
+      const taxId = document.getElementById('taxToDelete').value;
+      console.log(typeof taxId)
+      fetch(`/Tax/DeleteTax?taxid=${taxId}`, {
+        method: 'POST'
+      })
+        .then(response => {
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            alert('Failed to delete tax');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while deleting the tax');
+        })
+        .finally(() => {
+          taxDeleteModal.hide();
+        });
+    });
+    document.getElementById('saveTax').addEventListener('click', () => {
+        const taxName = document.getElementById('taxName').value;
+        const taxType = document.getElementById('taxType').value;
+        const taxAmount = document.getElementById('taxAmount').value;
+        const IsEnable = document.getElementById('isEnable').value;
+        fetch('/Tax/AddTax', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                taxName: taxName,
+                taxType : taxType,
+                taxAmount:taxAmount,
+                IsEnable:IsEnable
+            })
         })
             .then(response => {
                 if (response.ok) {
                     window.location.reload();
                 } else {
-                    alert('Failed to delete tax');
+                    alert('Failed to add category');
                 }
-            })
-            .finally(() => {
-                taxDeleteModal.hide();
             });
     });
-</script>
+  </script>
