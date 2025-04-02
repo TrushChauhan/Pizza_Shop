@@ -47,7 +47,12 @@
             </div>
           </td>
           <td>
-            @tax.Taxamount
+            @if(tax.Taxtype=="Percentage"){
+              @(tax.Taxamount+"%")
+            }
+            else{
+              @("₹"+tax.Taxamount)
+            }
           </td>
           <td>
             <i class="material-icons">edit</i>

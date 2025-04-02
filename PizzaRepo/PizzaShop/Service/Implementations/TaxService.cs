@@ -33,6 +33,7 @@ public class TaxService : ITaxService
             Isenabled=model.Isenabled,
             Isdeleted = false
         };
+        tax.Taxamount = Math.Round(tax.Taxamount, 2);
         await _taxRepo.AddTaxAsync(tax);
     }
     public async Task<TaxViewModel> GetTaxByIdAsync(int id)
@@ -52,6 +53,7 @@ public class TaxService : ITaxService
             Isenabled=model.Isenabled,
             Isdeleted = false
         };
+        tax.Taxamount = Math.Round(tax.Taxamount, 2);
         return await _taxRepo.UpdateTaxAsync(tax);
     }
 }

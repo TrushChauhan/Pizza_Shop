@@ -20,6 +20,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+input[type="checkbox"]:checked {
+  background-color:rgba(0,102,167,255); 
+}
 .icon-email{
   padding-right: 30px;
   background: url(../images/icons/customer.svg) no-repeat right;
