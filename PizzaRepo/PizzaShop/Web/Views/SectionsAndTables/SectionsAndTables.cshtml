@@ -1,0 +1,70 @@
+@model List<Entity.ViewModel.SectionViewModel>
+@{
+    Layout = "~/Views/Shared/_SecondLayout.cshtml";
+    ViewData["Title"] = "Sections";
+}
+
+<div class="row">
+            <!-- Categories Column -->
+            <div class="col-md-3"> <!-- Increased column width -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="fs-5 text-Users-title">Sections/Tables</p>
+                    <button class="send-button" data-bs-toggle="modal" data-bs-target="#addsectionModal">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+                <div class="list-group" id="sectionList">
+                    @foreach (var Section in Model)
+                    {
+                        <a href="#" class="list-group-item list-group-item-action section-item"
+                            data-section-id="@Section.Sectionid">
+                            @Section.Sectionname
+                            <span class="icon-container">
+                                <i class="material-icons"
+                                    onclick="event.stopPropagation(); editsection(@Section.Sectionid)">edit</i>
+                                <i class="material-icons"
+                                    onclick="event.stopPropagation(); deletesection(@Section.Sectionid)">delete</i>
+                            </span>
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <!-- Items Column -->
+            <div class="col-md-9">
+                <div class="row">
+                    <p class="text-Users-title fs-5">Items</p>
+                </div>
+                <div class="d-flex row mb-3 justify-content-end align-items-center">
+                    <div class="col-6">
+
+                    </div>
+                    <input type="text" class="form-control col mx-2" id="searchItem" placeholder="Search items">
+
+                    <button class="btn btn-secondary col mx-2" data-bs-toggle="modal" data-bs-target="#massDeleteItems">
+                        <img src="~/images/delete-icon.png" alt="" height="20px" width="20px"></button>
+
+                    <button class="btn btn-primary col mx-2" data-bs-toggle="modal" data-bs-target="#addItemModal">+ New
+                        Item</button>
+
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="itemsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col"><input class="form-check-input" type="checkbox" value="" disabled></th>
+                                <th scope="col" class="text-black-50">Name</th>
+                                <th scope="col" class="text-black-50">Item Type</th>
+                                <th scope="col" class="text-black-50">Rate</th>
+                                <th scope="col" class="text-black-50">Quantity</th>
+                                <th scope="col" class="text-black-50">Available</th>
+                                <th scope="col" class="text-black-50">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Items will be dynamically loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>

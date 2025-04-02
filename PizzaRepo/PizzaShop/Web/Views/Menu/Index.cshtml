@@ -3,131 +3,6 @@
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
     ViewData["Title"] = "Menu";
 }
-<style>
-    /* Custom styles for category and modifier groups */
-    #categoryList,
-    #modifierGroupList {
-        height: 70vh;
-        overflow-y: auto;
-        border-right: 1px solid #dee2e6;
-    }
-
-    .category-item,
-    .modifier-group-item {
-        border: none !important;
-        border-radius: 0 !important;
-        display: flex;
-        align-items: center;
-        padding: 1rem 1.25rem;
-        color: #6c757d !important;
-        transition: all 0.3s ease;
-    }
-
-    .category-item::before,
-    .modifier-group-item::before {
-        content: '';
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        background-color: currentColor;
-        margin-right: 12px;
-        flex-shrink: 0;
-    }
-
-    .category-item.active-category,
-    .modifier-group-item.active {
-        color: #0d6efd !important;
-        font-weight: 500;
-        background-color: rgba(13, 110, 253, 0.05) !important;
-    }
-
-    .icon-container {
-        margin-left: auto;
-        display: flex;
-        gap: 12px;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-    }
-
-    .category-item:hover .icon-container,
-    .modifier-group-item:hover .icon-container {
-        opacity: 1;
-    }
-
-    .material-icons {
-        font-size: 18px;
-        cursor: pointer;
-        color: #6c757d;
-    }
-
-    .category-item.active-category .material-icons,
-    .modifier-group-item.active .material-icons {
-        color: #0d6efd;
-    }
-
-    /* Scrollbar styling */
-    #categoryList::-webkit-scrollbar,
-    #modifierGroupList::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    #categoryList::-webkit-scrollbar-track,
-    #modifierGroupList::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    #categoryList::-webkit-scrollbar-thumb,
-    #modifierGroupList::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-
-        #modifierGroupList {
-            height: 70vh;
-            overflow-y: auto;
-            border-right: 1px solid #dee2e6;
-        }
-
-        .modifier-group-item {
-            border: none !important;
-            border-radius: 0 !important;
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.25rem;
-            color: #6c757d !important;
-            transition: all 0.3s ease;
-        }
-
-        .modifier-group-item::before {
-            content: '';
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: currentColor;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        .modifier-group-item.active {
-            color: #0d6efd !important;
-            font-weight: 500;
-            background-color: rgba(13, 110, 253, 0.05) !important;
-        }
-
-        /* Scrollbar styling (same as categories) */
-        #modifierGroupList::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        #modifierGroupList::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        #modifierGroupList::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-    }
-</style>
 <div class="row my-4 px-3">
     <div class="col-6 text-Users-title fs-2">Menu</div>
 </div>
@@ -152,8 +27,8 @@
             <!-- Categories Column -->
             <div class="col-md-3"> <!-- Increased column width -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <p class="fs-5 text-primary">Categories</p>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                    <p class="fs-5 text-Users-title">Categories</p>
+                    <button class="send-button" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                         <i class="material-icons">add</i>
                     </button>
                 </div>
@@ -177,7 +52,7 @@
             <!-- Items Column -->
             <div class="col-md-9">
                 <div class="row">
-                    <p class="text-primary fs-5">Items</p>
+                    <p class="text-Users-title fs-5">Items</p>
                 </div>
                 <div class="d-flex row mb-3 justify-content-end align-items-center">
                     <div class="col-6">
@@ -2201,3 +2076,127 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
         tempModifierGroupData = null;
     }
 </script>
+<style>
+     #categoryList,
+    #modifierGroupList {
+        height: 70vh;
+        overflow-y: auto;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .category-item,
+    .modifier-group-item {
+        border: none !important;
+        border-radius: 0 !important;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        color: #6c757d !important;
+        transition: all 0.3s ease;
+    }
+
+    .category-item::before,
+    .modifier-group-item::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background-color: currentColor;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    .category-item.active-category,
+    .modifier-group-item.active {
+        color: rgba(66,119,153,255) !important;
+        font-weight: 500;
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+
+    .icon-container {
+        margin-left: auto;
+        display: flex;
+        gap: 12px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .category-item:hover .icon-container,
+    .modifier-group-item:hover .icon-container {
+        opacity: 1;
+    }
+
+    .material-icons {
+        font-size: 25px;
+        cursor: pointer;
+        color: #6c757d;
+    }
+
+    .category-item.active-category .material-icons,
+    .modifier-group-item.active .material-icons {
+        color: rgba(66,119,153,255);
+    }
+
+    /* Scrollbar styling */
+    #categoryList::-webkit-scrollbar,
+    #modifierGroupList::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #categoryList::-webkit-scrollbar-track,
+    #modifierGroupList::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    #categoryList::-webkit-scrollbar-thumb,
+    #modifierGroupList::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+
+        #modifierGroupList {
+            height: 70vh;
+            overflow-y: auto;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .modifier-group-item {
+            border: none !important;
+            border-radius: 0 !important;
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            color: #6c757d !important;
+            transition: all 0.3s ease;
+        }
+
+        .modifier-group-item::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: currentColor;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .modifier-group-item.active {
+            color: rgba(66,119,153,255) !important;
+            font-weight: 500;
+            background-color: rgba(13, 110, 253, 0.05) !important;
+        }
+
+        /* Scrollbar styling (same as categories) */
+        #modifierGroupList::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #modifierGroupList::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #modifierGroupList::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+    }
+</style>

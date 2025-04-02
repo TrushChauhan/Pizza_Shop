@@ -77,4 +77,16 @@ public class MappingService
             IsDeleted = modifier.Isdeleted
         };
     }
+       public SectionViewModel MapToViewSectionModel(Section section)
+    {
+        return new SectionViewModel
+        {
+            Sectionid = section.Sectionid,
+            Sectionname = section.Sectionname,
+            Description = section.Description,
+            Createddate = section.Createddate,
+            Modifieddate = section.Modifieddate,
+            Isdeleted = section.Isdeleted,
+        };
+    }
 }
