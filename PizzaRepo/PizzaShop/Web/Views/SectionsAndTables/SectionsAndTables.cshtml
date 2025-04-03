@@ -52,15 +52,13 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table" id="itemsTable">
+            <table class="table" id="SectionTable">
                 <thead>
                     <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" value="" disabled></th>
                         <th scope="col" class="text-black-50">Name</th>
-                        <th scope="col" class="text-black-50">Item Type</th>
-                        <th scope="col" class="text-black-50">Rate</th>
-                        <th scope="col" class="text-black-50">Quantity</th>
-                        <th scope="col" class="text-black-50">Available</th>
+                        <th scope="col" class="text-black-50">Capicity</th>
+                        <th scope="col" class="text-black-50">Status</th>
                         <th scope="col" class="text-black-50">Action</th>
                     </tr>
                 </thead>
@@ -222,6 +220,37 @@
                         alert('Failed to update section');
                     }
                 });
+        });
+        function loadSection(categoryId) {
+    fetch(`SectionsAndTables/GetSection?categoryId=${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#SectionTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(section => {
+                
+                const row = `
+                    <tr>
+                        <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${section.sectionId}"></td>
+                        <td class="align-middle">
+                            <div class="d-flex align-sections-center">
+                                ${imageHtml}
+                                <span>${section.sectionName}</span>
+                            </div>
+                        </td>
+                        <td class="align-middle">${section.capacity}</td>
+                        <td class="align-middle">${section.quantity}</td>
+                        <td class="align-middle">
+                            ${section.status}
+                        </td>
+                        <td class="align-middle">
+                            <i class="material-icons cursor-pointer" onclick="editsection(${section.sectionId})">edit</i>
+                            <i class="material-icons cursor-pointer" onclick="deletesection(${section.sectionId})">delete</i>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
         });
     });
 </script>
