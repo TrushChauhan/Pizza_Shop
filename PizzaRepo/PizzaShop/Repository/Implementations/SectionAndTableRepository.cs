@@ -16,4 +16,13 @@ public class SectionAndTableRepository : ISectionAndTableRepository
                 .Where(c => !c.Isdeleted)
                 .ToListAsync();
     }
+    public async Task AddSectionAsync(Section section){
+        await _context.Sections.AddAsync(section);
+        await _context.SaveChangesAsync();
+    }
+    public async Task DeleteSectionAsync(int id){
+        Section section = await _context.Sections.FirstOrDefaultAsync(s => s.Sectionid == id);
+        section.Isdeleted = true;
+        await _context.SaveChangesAsync();
+    }
 }

@@ -1062,8 +1062,8 @@ document.getElementById('addItemForm').addEventListener('submit', async function
 
     const formData = new FormData(this);
 
-    formData.set('Available', document.getElementById('available').checked);
-    formData.set('IsDefaultTax', document.getElementById('defaultTax').checked);
+    formData.set('Available', document.getElementById('available').checked ? "true" : "false");
+    formData.set('IsDefaultTax', document.getElementById('defaultTax').checked ? "true" : "false");
     
     const modifierGroups = [];
     const groupElements = document.querySelectorAll('#modifierGroupsContainer [data-group-id]');
@@ -1265,8 +1265,8 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
     e.preventDefault();
     
     const formData = new FormData(this);
-    formData.append('Available', document.getElementById('editAvailable').checked);
-    formData.append('IsDefaultTax', document.getElementById('editDefaultTax').checked);
+    formData.append('Available', document.getElementById('editAvailable').checked ? "true" : "false");
+    formData.append('IsDefaultTax', document.getElementById('editDefaultTax').checked ? "true" : "false");
     
     const modifierGroups = [];
     const groupElements = document.querySelectorAll('#editModifierGroupsContainer [data-group-id]');
@@ -1821,11 +1821,11 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
     // Initialize modals
     const singleItemDeleteModal = new bootstrap.Modal(document.getElementById('singleItemDeleteModal'));
     const singleModifierDeleteModal = new bootstrap.Modal(document.getElementById('singleModifierDeleteModal'));
-    const categoryDeleteModal = new bootstrap.Modal(document.getElementById('categoryDeleteModal'));
     const modifiergroupDeleteModal = new bootstrap.Modal(document.getElementById('modifiergroupDeleteModal'));
 
     // category delete
     function deleteCategory(categoryId) {
+        const categoryDeleteModal = new bootstrap.Modal(document.getElementById('categoryDeleteModal'));
         document.getElementById('categoryToDelete').value = categoryId;
         categoryDeleteModal.show();
     }

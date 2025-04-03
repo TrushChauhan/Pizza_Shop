@@ -48,7 +48,7 @@ public class TaxRepository : ITaxRepository
     {
         var tax = await _context.Taxes.FirstOrDefaultAsync(t => t.Taxid == id);
         tax.Isdeleted = true;
-        _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
     public async Task AddTaxAsync(Tax model)
     {

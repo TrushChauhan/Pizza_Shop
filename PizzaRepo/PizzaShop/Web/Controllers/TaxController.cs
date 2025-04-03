@@ -20,7 +20,7 @@ namespace Web.Controllers
         [Authorize]
         public async Task<IActionResult> Taxes(string search = null)
         {   ViewBag.SearchTerm=search;
-            var taxes = await _taxService.GetTaxesTableAsync(search);
+            List<TaxViewModel> taxes = await _taxService.GetTaxesTableAsync(search);
             return View(taxes);
         }
 

@@ -183,6 +183,7 @@ namespace Web.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> AddItem(
     [FromForm] MenuItemViewModel model,
@@ -198,11 +199,16 @@ namespace Web.Controllers
 
                 var modifierGroups = new List<ModifierGroupSelection>();
 
-                int index = 0;
-                while (true)
+                var modifierGroupKeys = Request.Form.Keys
+                    .Where(k => k.StartsWith("ModifierGroups["))
+                    .Select(k => k.Split('[', ']')[1])
+                    .Distinct()
+                    .ToList();
+
+                foreach (var index in modifierGroupKeys)
                 {
                     var groupIdKey = $"ModifierGroups[{index}].ModifierGroupId";
-                    if (!Request.Form.ContainsKey(groupIdKey)) break;
+                    if (!Request.Form.ContainsKey(groupIdKey)) continue;
 
                     var groupId = Request.Form[groupIdKey].FirstOrDefault();
                     var minSelect = Request.Form[$"ModifierGroups[{index}].MinSelect"].FirstOrDefault();
@@ -212,15 +218,17 @@ namespace Web.Controllers
                         int.TryParse(minSelect, out var min) &&
                         int.TryParse(maxSelect, out var max))
                     {
-                        modifierGroups.Add(new ModifierGroupSelection
+                        // Check if this group is already added
+                        if (!modifierGroups.Any(mg => mg.ModifierGroupId == gId))
                         {
-                            ModifierGroupId = gId,
-                            MinSelect = min,
-                            MaxSelect = max
-                        });
+                            modifierGroups.Add(new ModifierGroupSelection
+                            {
+                                ModifierGroupId = gId,
+                                MinSelect = min,
+                                MaxSelect = max
+                            });
+                        }
                     }
-
-                    index++;
                 }
 
                 // Add the item
@@ -277,8 +285,8 @@ namespace Web.Controllers
 
         [HttpPost]
         public async Task<IActionResult> UpdateItem(
-            [FromForm] MenuItemViewModel model,
-            IFormFile itemImage)
+    [FromForm] MenuItemViewModel model,
+    IFormFile itemImage)
         {
             try
             {
@@ -289,13 +297,24 @@ namespace Web.Controllers
                     model.ItemImage = imagePath;
                 }
 
-                // Parse modifier groups from form data
                 var modifierGroups = new List<ModifierGroupSelection>();
-                int index = 0;
-                while (true)
+
+                // Get all modifier group keys
+                var modifierGroupKeys = Request.Form.Keys
+                    .Where(k => k.StartsWith("ModifierGroups["))
+                    .Select(k =>
+                    {
+                        var parts = k.Split('[', ']');
+                        return parts.Length > 1 ? parts[1] : null;
+                    })
+                    .Where(k => k != null)
+                    .Distinct()
+                    .ToList();
+
+                foreach (var index in modifierGroupKeys)
                 {
                     var groupIdKey = $"ModifierGroups[{index}].ModifierGroupId";
-                    if (!Request.Form.ContainsKey(groupIdKey)) break;
+                    if (!Request.Form.ContainsKey(groupIdKey)) continue;
 
                     var groupId = Request.Form[groupIdKey].FirstOrDefault();
                     var minSelect = Request.Form[$"ModifierGroups[{index}].MinSelect"].FirstOrDefault();
@@ -312,15 +331,15 @@ namespace Web.Controllers
                             MaxSelect = max
                         });
                     }
-
-                    index++;
                 }
 
                 // Update the item
                 await _menuService.UpdateItemAsync(model);
 
-                // Update modifier group mappings
-                await _menuService.UpdateItemModifierGroupsAsync(model.ItemId, modifierGroups);
+                if (modifierGroups.Any() || modifierGroupKeys.Any())
+                {
+                    await _menuService.UpdateItemModifierGroupsAsync(model.ItemId, modifierGroups);
+                }
 
                 return Ok();
             }

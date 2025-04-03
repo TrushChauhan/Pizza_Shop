@@ -76,7 +76,12 @@ input[type="checkbox"]:checked {
 }
 .send-button{
   border: none;
-  height: 34px;
+  color: white;
+  border-radius: 2px;
+  background-color: rgba(5,101,158,255);
+}
+.send-button-color{
+  border: none;
   color: white;
   border-radius: 2px;
   background-color: rgba(5,101,158,255);

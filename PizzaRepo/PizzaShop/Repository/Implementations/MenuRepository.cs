@@ -163,7 +163,7 @@ namespace Repository.Implementations
 
         public async Task UpdateItemAsync(MenuItemViewModel model)
         {
-            var item = await _context.Menuitems.FirstOrDefaultAsync(i=> i.Itemid==model.ItemId && !i.Isdeleted);
+            var item = await _context.Menuitems.FirstOrDefaultAsync(i => i.Itemid == model.ItemId && !i.Isdeleted);
             if (item == null) throw new KeyNotFoundException("Item not found");
 
             item.Categoryid = model.CategoryId;
@@ -189,31 +189,49 @@ namespace Repository.Implementations
 
         public async Task UpdateItemModifierGroupsAsync(int itemId, List<ModifierGroupSelection> modifierGroups)
         {
-            // First remove existing mappings
             var existingMappings = await _context.Itemandmodifiergroups
-                .Where(img => img.Itemid == itemId)
+                .Where(img => img.Itemid == itemId && !img.Isdeleted)
                 .ToListAsync();
 
-            foreach (var mapping in existingMappings)
+            foreach (var newGroup in modifierGroups)
             {
-                mapping.Isdeleted=true;
-                await _context.SaveChangesAsync();
-            }
-            // Add new mappings
-            foreach (var group in modifierGroups)
-            {
-                var mapping = new Itemandmodifiergroup
+                var existingMapping = existingMappings
+                    .FirstOrDefault(em => em.Modifiergroupid == newGroup.ModifierGroupId);
+
+                if (existingMapping != null)
                 {
-                    Itemandmodifiergroupid = await _context.Itemandmodifiergroups.CountAsync() + 1,
-                    Itemid = itemId,
-                    Modifiergroupid = group.ModifierGroupId,
-                    Minselect = group.MinSelect,
-                    Maxselect = group.MaxSelect,
-                    Createddate = DateTime.Now,
-                    Modifieddate = DateTime.Now,
-                    Isdeleted = false
-                };
-                await _context.Itemandmodifiergroups.AddAsync(mapping);
+                    // Update existing mapping if min/max values changed
+                    if (existingMapping.Minselect != newGroup.MinSelect ||
+                        existingMapping.Maxselect != newGroup.MaxSelect)
+                    {
+                        existingMapping.Minselect = newGroup.MinSelect;
+                        existingMapping.Maxselect = newGroup.MaxSelect;
+                        existingMapping.Modifieddate = DateTime.Now;
+                        await _context.SaveChangesAsync();
+                    }
+                    existingMappings.Remove(existingMapping);
+                }
+                else
+                {
+                    var mapping = new Itemandmodifiergroup
+                    {
+                        Itemandmodifiergroupid = await _context.Itemandmodifiergroups.CountAsync() + 1,
+                        Itemid = itemId,
+                        Modifiergroupid = newGroup.ModifierGroupId,
+                        Minselect = newGroup.MinSelect,
+                        Maxselect = newGroup.MaxSelect,
+                        Createddate = DateTime.Now,
+                        Modifieddate = DateTime.Now,
+                        Isdeleted = false
+                    };
+                    await _context.Itemandmodifiergroups.AddAsync(mapping);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            foreach (var oldMapping in existingMappings)
+            {
+                oldMapping.Isdeleted = true;
+                oldMapping.Modifieddate = DateTime.Now;
                 await _context.SaveChangesAsync();
             }
         }
