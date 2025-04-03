@@ -48,5 +48,33 @@ namespace Web.Controllers
                 return BadRequest();
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetSection(int id)
+        {
+            SectionViewModel section = await _sectionTableService.GetSectionByIdAsync(id);
+            if (section == null)
+            {
+                return NotFound();
+            }
+            return Ok(section);
+        }
+                [HttpPost]
+        public async Task<IActionResult> UpdateSection([FromBody] SectionViewModel model)
+        {
+            try
+            {
+                bool result = await _sectionTableService.UpdateSectionAsync(model);
+                if (!result)
+                {
+                    return NotFound();
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

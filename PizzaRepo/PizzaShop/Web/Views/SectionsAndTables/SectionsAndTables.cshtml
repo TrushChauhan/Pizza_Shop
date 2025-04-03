@@ -24,9 +24,9 @@
                     @Section.Sectionname
                     <span class="icon-container">
                         <i class="material-icons"
-                            onclick="event.stopPropagation(); editsection(@Section.Sectionid)">edit</i>
+                            onclick="event.stopPropagation(); editSection(@Section.Sectionid)">edit</i>
                         <i class="material-icons"
-                            onclick="event.stopPropagation(); deletesection(@Section.Sectionid)">delete</i>
+                            onclick="event.stopPropagation(); deleteSection(@Section.Sectionid)">delete</i>
                     </span>
                 </a>
             }
@@ -110,13 +110,58 @@
                 <input type="hidden" id="sectionToDelete">
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="send-button px-3 py-1" id="confirmsectionDelete">Yes</button>
+                <button type="button" class="send-button px-3 py-1" id="confirmSectionDelete">Yes</button>
                 <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">No</button>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="editSectionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editSectionForm">
+                    <input type="hidden" id="editSectionId">
+                    <div class="mb-3 form-floating">
+                        <input type="text" class="form-control" id="editSectionName" required>
+                        <label for="editSectionName" class="form-label">Name</label>
+                    </div>
+                    <div class="mb-3 form-floating">
+                        <textarea class="form-control" id="editSectionDescription" rows="3"></textarea>
+                        <label for="editSectionDescription" class="form-label">Description</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="send-button px-3 py-1" id="updateSection">Save</button>
+                <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    const sectionDeleteModal = new bootstrap.Modal(document.getElementById('sectionDeleteModal'));
+    function deleteSection(sectionId) {
+
+        document.getElementById('sectionToDelete').value = sectionId;
+        sectionDeleteModal.show();
+    }
+    function editSection(sectionId) {
+            fetch(`/SectionsAndTables/GetSection/${sectionId}`)
+                .then(response => response.json())
+                .then(section => {
+                    document.getElementById('editSectionId').value = section.sectionid;
+                    document.getElementById('editSectionName').value = section.sectionname;
+                    document.getElementById('editSectionDescription').value = section.description;
+
+                    const editModal = new bootstrap.Modal(document.getElementById('editSectionModal'));
+                    editModal.show();
+                });
+        }
     window.addEventListener("DOMContentLoaded", (event) => {
         document.getElementById('saveSection').addEventListener('click', () => {
             const SectionName = document.getElementById('SectionName').value;
@@ -139,17 +184,11 @@
                     }
                 });
         });
-        const sectionDeleteModal = new bootstrap.Modal(document.getElementById('sectionDeleteModal'));
-
-        function deletesection(sectionId) {
-            document.getElementById('sectionToDelete').value = sectionId;
-            sectionDeleteModal.show();
-        }
 
         document.getElementById('confirmSectionDelete').addEventListener('click', function () {
             const sectionId = document.getElementById('sectionToDelete').value;
 
-            fetch(`/SectionsAndTables/DeleteSection/${sectionId}`, {
+            fetch(`/SectionsAndTables/DeleteSection?sectionid=${sectionId}`, {
                 method: 'POST'
             })
                 .then(response => {
@@ -161,6 +200,27 @@
                 })
                 .finally(() => {
                     sectionDeleteModal.hide();
+                });
+        });
+
+        document.getElementById('updateSection').addEventListener('click', () => {
+            const sectionData = {
+                SectionId: document.getElementById('editSectionId').value,
+                Sectionname: document.getElementById('editSectionName').value,
+                Description: document.getElementById('editSectionDescription').value
+            };
+
+            fetch('/SectionsAndTables/UpdateSection', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sectionData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to update section');
+                    }
                 });
         });
     });

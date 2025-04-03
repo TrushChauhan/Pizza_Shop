@@ -69,7 +69,7 @@ namespace Web.Controllers
         {
             try
             {
-                var result = await _taxService.UpdateTaxAsync(model);
+                bool result = await _taxService.UpdateTaxAsync(model);
                 if (!result)
                 {
                     return NotFound();

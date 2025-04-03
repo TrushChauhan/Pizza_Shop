@@ -167,7 +167,6 @@
 
   document.getElementById('confirmTaxDelete').addEventListener('click', function () {
     const taxId = document.getElementById('taxToDelete').value;
-    console.log(typeof taxId)
     fetch(`/Tax/DeleteTax?taxid=${taxId}`, {
       method: 'POST'
     })

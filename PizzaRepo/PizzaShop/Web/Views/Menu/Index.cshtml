@@ -1821,11 +1821,11 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
     // Initialize modals
     const singleItemDeleteModal = new bootstrap.Modal(document.getElementById('singleItemDeleteModal'));
     const singleModifierDeleteModal = new bootstrap.Modal(document.getElementById('singleModifierDeleteModal'));
+    const categoryDeleteModal = new bootstrap.Modal(document.getElementById('categoryDeleteModal'));
     const modifiergroupDeleteModal = new bootstrap.Modal(document.getElementById('modifiergroupDeleteModal'));
 
     // category delete
     function deleteCategory(categoryId) {
-        const categoryDeleteModal = new bootstrap.Modal(document.getElementById('categoryDeleteModal'));
         document.getElementById('categoryToDelete').value = categoryId;
         categoryDeleteModal.show();
     }

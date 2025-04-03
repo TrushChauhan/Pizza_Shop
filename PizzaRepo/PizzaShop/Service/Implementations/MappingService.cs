@@ -77,7 +77,7 @@ public class MappingService
             IsDeleted = modifier.Isdeleted
         };
     }
-       public SectionViewModel MapToViewSectionModel(Section section)
+       public async Task<SectionViewModel> MapToViewSectionModel(Section section)
     {
         return new SectionViewModel
         {

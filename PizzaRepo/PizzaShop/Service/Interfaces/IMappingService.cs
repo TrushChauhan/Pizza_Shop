@@ -9,6 +9,6 @@ public interface IMappingService
     public MenuItemViewModel MapToViewItemModel(Menuitem item);
     public ModifierGroupViewModel MapToViewModifier(Modifiergroup group);
     public ModifierViewModel MapToViewModifier(Modifier modifier);
-    public SectionViewModel MapToViewSectionModel(Section section);
+    public Task<SectionViewModel> MapToViewSectionModel(Section section);
 
 }

@@ -8,4 +8,7 @@ public interface ISectionAndTableService
     Task<List<SectionViewModel>> GetSectionsAsync();
     Task AddSectionAsync(SectionViewModel sectionViewModel);
     Task DeleteSectionAsync(int id);
+    Task<SectionViewModel>GetSectionByIdAsync(int id);
+    Task<bool> UpdateSectionAsync(SectionViewModel model);
+
 }
