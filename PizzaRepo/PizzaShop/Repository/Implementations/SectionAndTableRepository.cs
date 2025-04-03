@@ -45,4 +45,31 @@ public class SectionAndTableRepository : ISectionAndTableRepository
         await _context.SaveChangesAsync();
         return true;
     }
+        public async Task<(List<DinetableViewModel> tables, int totalItems)> GetTablesBySectionAsync(int sectionId, int page, int pageSize, string searchTerm)
+{
+    var query = _context.Dinetables
+        .Where(t => t.Sectionid == sectionId && !t.Isdeleted);
+        
+    if (!string.IsNullOrEmpty(searchTerm))
+    {
+        query = query.Where(t => t.Tablename.Contains(searchTerm));
+    }
+    
+    var totalItems = await query.CountAsync();
+    
+    var tables = await query
+        .OrderBy(t => t.Tablename)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .Select(t => new DinetableViewModel {
+            Tableid = t.Tableid,
+            Tablename = t.Tablename,
+            Capacity = t.Capacity,
+            Status = t.Status,
+            Sectionid = t.Sectionid
+        })
+        .ToListAsync();
+        
+    return (tables, totalItems);
+}
 }

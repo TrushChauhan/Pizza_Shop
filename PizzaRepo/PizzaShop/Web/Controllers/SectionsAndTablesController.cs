@@ -21,6 +21,27 @@ namespace Web.Controllers
             List<SectionViewModel> sections = await _sectionTableService.GetSectionsAsync();
             return View("SectionsAndTables", sections);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetTablesBySection(int sectionId, int page = 1, int pageSize = 5, string searchTerm = "")
+        {
+            try
+            {
+                var (tables, totalItems) = await _sectionTableService.GetTablesBySectionAsync(sectionId, page, pageSize, searchTerm);
+
+                return Ok(new
+                {
+                    tables = tables,
+                    totalItems = totalItems,
+                    currentPage = page,
+                    pageSize = pageSize
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> AddSection([FromBody] SectionViewModel model)
         {
@@ -58,7 +79,7 @@ namespace Web.Controllers
             }
             return Ok(section);
         }
-                [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> UpdateSection([FromBody] SectionViewModel model)
         {
             try

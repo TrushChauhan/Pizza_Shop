@@ -3,12 +3,15 @@
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
     ViewData["Title"] = "Sections";
 }
+
+
 <div class="row my-4 px-3">
     <div class="col-6 text-Users-title fs-2">Sections/Tables</div>
 </div>
+
 <div class="row mx-2">
     <!-- Sections Column -->
-    <div class="col-md-3"> <!-- Increased column width -->
+    <div class="col-md-3">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <p class="fs-5 text-Users-title">Sections</p>
             <button class="send-button" data-bs-toggle="modal" data-bs-target="#addSectionModal">
@@ -19,7 +22,8 @@
         <div class="list-group" id="sectionList">
             @foreach (var Section in Model)
             {
-                <a href="#" class="list-group-item list-group-item-action section-item"
+                <a href="#"
+                    class="list-group-item list-group-item-action section-item @(Model.IndexOf(Section) == 0 ? "active" : "")"
                     data-section-id="@Section.Sectionid">
                     @Section.Sectionname
                     <span class="icon-container">
@@ -38,17 +42,16 @@
             <p class="col-2 text-Users-title font-weight-bold fs-5">Tables</p>
 
             <div class="d-flex col-10 mb-3 justify-content-end align-items-center">
-                <div class="col-6">
-
-                </div>
+                <div class="col-6"></div>
                 <input type="text" class="form-control col mx-2 p-3" id="searchItem" placeholder="Search tables">
 
                 <button class="col delete-user mx-2 p-3" data-bs-toggle="modal" data-bs-target="#massDeleteItems">
-                    <img src="~/images/delete-icon.png" alt="" height="20px" width="20px"></button>
+                    <img src="~/images/delete-icon.png" alt="" height="20px" width="20px">
+                </button>
 
-                <button class="add-user-button m-2 p-3" data-bs-toggle="modal" data-bs-target="#addItemModal">+ New
-                    Table</button>
-
+                <button class="add-user-button m-2 p-3" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                    + New Table
+                </button>
             </div>
         </div>
         <div class="table-responsive">
@@ -57,7 +60,7 @@
                     <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" value="" disabled></th>
                         <th scope="col" class="text-black-50">Name</th>
-                        <th scope="col" class="text-black-50">Capicity</th>
+                        <th scope="col" class="text-black-50">Capacity</th>
                         <th scope="col" class="text-black-50">Status</th>
                         <th scope="col" class="text-black-50">Action</th>
                     </tr>
@@ -67,8 +70,11 @@
                 </tbody>
             </table>
         </div>
+        <!-- Pagination will be dynamically loaded here -->
     </div>
 </div>
+
+<!-- Add Section Modal -->
 <div class="modal fade" id="addSectionModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -95,6 +101,8 @@
         </div>
     </div>
 </div>
+
+<!-- Delete Section Modal -->
 <div id="sectionDeleteModal" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -114,6 +122,8 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Section Modal -->
 <div class="modal fade" id="editSectionModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -141,14 +151,178 @@
         </div>
     </div>
 </div>
-<script>
-    const sectionDeleteModal = new bootstrap.Modal(document.getElementById('sectionDeleteModal'));
-    function deleteSection(sectionId) {
 
-        document.getElementById('sectionToDelete').value = sectionId;
-        sectionDeleteModal.show();
-    }
-    function editSection(sectionId) {
+<!-- Add Table Modal -->
+<div class="modal fade" id="addItemModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Table</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addTableForm">
+                    <input type="hidden" id="activeSectionId">
+                    <div class="mb-3 form-floating">
+                        <input type="text" class="form-control" id="tableName" required>
+                        <label for="tableName" class="form-label">Table Name*</label>
+                    </div>
+                    <div class="mb-3 form-floating">
+                        <input type="number" class="form-control" id="tableCapacity" required min="1">
+                        <label for="tableCapacity" class="form-label">Capacity*</label>
+                    </div>
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="tableStatus" checked>
+                        <label class="form-check-label" for="tableStatus">Available</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="send-button px-3 py-1" id="saveTable">Save</button>
+                <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const sectionDeleteModal = new bootstrap.Modal(document.getElementById('sectionDeleteModal'));
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Load tables when a section is clicked
+            document.querySelectorAll('.section-item').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Remove active class from all sections
+                    document.querySelectorAll('.section-item').forEach(i => i.classList.remove('active'));
+                    // Add active class to clicked section
+                    this.classList.add('active');
+                    const sectionId = this.getAttribute('data-section-id');
+                    document.getElementById('activeSectionId').value = sectionId;
+                    loadTables(sectionId, 1);
+                });
+            });
+
+            // Load tables for the first section by default if exists
+            const firstSection = document.querySelector('.section-item.active');
+            if (firstSection) {
+                const sectionId = firstSection.getAttribute('data-section-id');
+                document.getElementById('activeSectionId').value = sectionId;
+                loadTables(sectionId, 1);
+            }
+
+            // Save section
+            document.getElementById('saveSection').addEventListener('click', () => {
+                const SectionName = document.getElementById('SectionName').value;
+                const SectionDescription = document.getElementById('SectionDescription').value;
+
+                fetch('/SectionsAndTables/AddSection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        SectionName: SectionName,
+                        description: SectionDescription
+                    })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert('Failed to add Section');
+                        }
+                    });
+            });
+
+            // Delete section
+            document.getElementById('confirmSectionDelete').addEventListener('click', function () {
+                const sectionId = document.getElementById('sectionToDelete').value;
+
+                fetch(`/SectionsAndTables/DeleteSection?sectionid=${sectionId}`, {
+                    method: 'POST'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert('Failed to delete section');
+                        }
+                    })
+                    .finally(() => {
+                        sectionDeleteModal.hide();
+                    });
+            });
+
+            // Update section
+            document.getElementById('updateSection').addEventListener('click', () => {
+                const sectionData = {
+                    SectionId: document.getElementById('editSectionId').value,
+                    Sectionname: document.getElementById('editSectionName').value,
+                    Description: document.getElementById('editSectionDescription').value
+                };
+
+                fetch('/SectionsAndTables/UpdateSection', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(sectionData)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert('Failed to update section');
+                        }
+                    });
+            });
+
+            // Save table
+            document.getElementById('saveTable').addEventListener('click', () => {
+                const tableData = {
+                    Tablename: document.getElementById('tableName').value,
+                    Capacity: parseInt(document.getElementById('tableCapacity').value),
+                    Status: document.getElementById('tableStatus').checked,
+                    Sectionid: parseInt(document.getElementById('activeSectionId').value)
+                };
+
+                fetch('/SectionsAndTables/AddTable', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(tableData)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            const activeSection = document.querySelector('.section-item.active');
+                            if (activeSection) {
+                                const sectionId = activeSection.getAttribute('data-section-id');
+                                loadTables(sectionId, 1);
+                            }
+                            $('#addItemModal').modal('hide');
+                            document.getElementById('addTableForm').reset();
+                        } else {
+                            alert('Failed to add table');
+                        }
+                    });
+            });
+
+            // Search functionality
+            document.getElementById('searchItem').addEventListener('input', function () {
+                const searchTerm = this.value;
+                const activeSection = document.querySelector('.section-item.active');
+                if (activeSection) {
+                    const sectionId = activeSection.getAttribute('data-section-id');
+                    loadTables(sectionId, 1, searchTerm);
+                }
+            });
+        });
+
+        function deleteSection(sectionId) {
+            document.getElementById('sectionToDelete').value = sectionId;
+            sectionDeleteModal.show();
+        }
+
+        function editSection(sectionId) {
             fetch(`/SectionsAndTables/GetSection/${sectionId}`)
                 .then(response => response.json())
                 .then(section => {
@@ -160,97 +334,104 @@
                     editModal.show();
                 });
         }
-    window.addEventListener("DOMContentLoaded", (event) => {
-        document.getElementById('saveSection').addEventListener('click', () => {
-            const SectionName = document.getElementById('SectionName').value;
-            const SectionDescription = document.getElementById('SectionDescription').value;
-            fetch('/SectionsAndTables/AddSection', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    SectionName: SectionName,
-                    description: SectionDescription
-                })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Failed to add Section');
-                    }
+
+        function loadTables(sectionId, page, searchTerm = '', pageSize = 5) {
+            fetch(`/SectionsAndTables/GetTablesBySection?sectionId=${sectionId}&page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector('#SectionTable tbody');
+                    tbody.innerHTML = '';
+
+                    data.tables.forEach(table => {
+                        const statusText = table.status ? 'Available' : 'Occupied';
+                        const statusClass = table.status ? 'text-success' : 'text-danger';
+
+                        const row = `
+                                <tr>
+                                    <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${table.tableid}"></td>
+                                    <td class="align-middle">${table.tablename}</td>
+                                    <td class="align-middle">${table.capacity}</td>
+                                    <td class="align-middle ${statusClass}">${statusText}</td>
+                                    <td class="align-middle">
+                                        <i class="material-icons cursor-pointer" onclick="editTable(${table.tableid})">edit</i>
+                                        <i class="material-icons cursor-pointer" onclick="deleteTable(${table.tableid})">delete</i>
+                                    </td>
+                                </tr>
+                            `;
+                        tbody.insertAdjacentHTML('beforeend', row);
+                    });
+
+                    // Update pagination controls
+                    updatePaginationControls(data.totalItems, data.pageSize, data.currentPage, sectionId, searchTerm);
                 });
-        });
+        }
 
-        document.getElementById('confirmSectionDelete').addEventListener('click', function () {
-            const sectionId = document.getElementById('sectionToDelete').value;
+        function updatePaginationControls(totalItems, pageSize, currentPage, sectionId, searchTerm) {
+            const totalPages = Math.ceil(totalItems / pageSize);
+            let paginationContainer = document.querySelector('.pagination-container');
 
-            fetch(`/SectionsAndTables/DeleteSection?sectionid=${sectionId}`, {
-                method: 'POST'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Failed to delete section');
-                    }
-                })
-                .finally(() => {
-                    sectionDeleteModal.hide();
-                });
-        });
+            if (!paginationContainer) {
+                paginationContainer = document.createElement('div');
+                paginationContainer.className = 'row mt-4 pagination-container justify-content-end';
+                document.querySelector('.col-md-9').appendChild(paginationContainer);
+            }
 
-        document.getElementById('updateSection').addEventListener('click', () => {
-            const sectionData = {
-                SectionId: document.getElementById('editSectionId').value,
-                Sectionname: document.getElementById('editSectionName').value,
-                Description: document.getElementById('editSectionDescription').value
-            };
+            paginationContainer.innerHTML = `
+                    <div class="col-md-8 d-flex align-items-center justify-content-end">
+                        <div class="row mx-2">
+                            <select class="form-select page-size-select">
+                                <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                                <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                                <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span class="text-muted">
+                                Showing ${Math.min((currentPage - 1) * pageSize + 1, totalItems)} - ${Math.min(currentPage * pageSize, totalItems)} of ${totalItems}
+                            </span>
+                        </div>
+                        <div>
+                            ${currentPage > 1 ?
+                    `<button class="btn btn-outline-primary mx-1 prev-page">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>` :
+                    `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-left"></i></span>`}
 
-            fetch('/SectionsAndTables/UpdateSection', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(sectionData)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Failed to update section');
-                    }
-                });
-        });
-        function loadSection(categoryId) {
-    fetch(`SectionsAndTables/GetSection?categoryId=${categoryId}`)
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.querySelector('#SectionTable tbody');
-            tbody.innerHTML = '';
-            data.forEach(section => {
-                
-                const row = `
-                    <tr>
-                        <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${section.sectionId}"></td>
-                        <td class="align-middle">
-                            <div class="d-flex align-sections-center">
-                                ${imageHtml}
-                                <span>${section.sectionName}</span>
-                            </div>
-                        </td>
-                        <td class="align-middle">${section.capacity}</td>
-                        <td class="align-middle">${section.quantity}</td>
-                        <td class="align-middle">
-                            ${section.status}
-                        </td>
-                        <td class="align-middle">
-                            <i class="material-icons cursor-pointer" onclick="editsection(${section.sectionId})">edit</i>
-                            <i class="material-icons cursor-pointer" onclick="deletesection(${section.sectionId})">delete</i>
-                        </td>
-                    </tr>
+                            ${currentPage < totalPages ?
+                    `<button class="btn btn-outline-primary mx-1 next-page">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>` :
+                    `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-right"></i></span>`}
+                        </div>
+                    </div>
                 `;
-                tbody.insertAdjacentHTML('beforeend', row);
+
+            // Add event listeners
+            document.querySelector('.page-size-select').addEventListener('change', function () {
+                const newPageSize = this.value;
+                loadTables(sectionId, 1, searchTerm, newPageSize);
             });
-        });
-    });
-</script>
+
+            if (currentPage > 1) {
+                document.querySelector('.prev-page').addEventListener('click', function () {
+                    loadTables(sectionId, currentPage - 1, searchTerm, pageSize);
+                });
+            }
+
+            if (currentPage < totalPages) {
+                document.querySelector('.next-page').addEventListener('click', function () {
+                    loadTables(sectionId, currentPage + 1, searchTerm, pageSize);
+                });
+            }
+        }
+        function editTable(tableId) {
+            // Implement table edit functionality
+            console.log('Edit table:', tableId);
+        }
+
+        function deleteTable(tableId) {
+            // Implement table delete functionality
+            console.log('Delete table:', tableId);
+        }
+    </script>
+}

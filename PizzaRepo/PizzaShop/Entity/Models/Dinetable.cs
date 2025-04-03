@@ -23,8 +23,8 @@ public partial class Dinetable
     [Column("capacity")]
     public int Capacity { get; set; }
 
-    [Column("status")]
-    public bool Status { get; set; }
+    [Column("status", TypeName = "character varying")]
+    public string Status { get; set; } = null!;
 
     [Column("createddate", TypeName = "timestamp without time zone")]
     public DateTime Createddate { get; set; }

@@ -53,4 +53,9 @@ public class SectionAndTableService : ISectionAndTableService
         };
         return await _sectionAndTablerepo.UpdateSectionAsync(section);
     }
+    public async Task<(List<DinetableViewModel> tables, int totalItems)> GetTablesBySectionAsync(int sectionId, int page, int pageSize, string searchTerm)
+{
+        
+    return await _sectionAndTablerepo.GetTablesBySectionAsync(sectionId,page,pageSize,searchTerm);
+}
 }

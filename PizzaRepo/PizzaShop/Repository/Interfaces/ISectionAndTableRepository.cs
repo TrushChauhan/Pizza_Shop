@@ -10,4 +10,5 @@ public interface ISectionAndTableRepository
     Task DeleteSectionAsync(int id);
     Task<Section>GetSectionByIdAsync(int id);
     Task<bool> UpdateSectionAsync(Section section);
+    Task<(List<DinetableViewModel> tables, int totalItems)> GetTablesBySectionAsync(int sectionId, int page, int pageSize, string searchTerm);
 }
