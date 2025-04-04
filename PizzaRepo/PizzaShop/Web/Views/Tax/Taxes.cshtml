@@ -199,11 +199,6 @@
     else {
       taxData.Taxtype = "Flat Amount"
     }
-    // Validate required fields
-    if (!taxData.Taxname || isNaN(taxData.Taxamount)) {
-      alert('Please fill all required fields with valid values');
-      return;
-    }
 
     fetch('/Tax/AddTax', {
       method: 'POST',

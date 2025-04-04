@@ -19,43 +19,58 @@ public class SectionAndTableService : ISectionAndTableService
         List<Section> sections = await _sectionAndTablerepo.GetSectionsAsync();
         List<SectionViewModel> sectionViews = new();
         foreach (Section section in sections)
-        {   
-            sectionViews.Add( await _mappingService.MapToViewSectionModel(section));
-        } 
+        {
+            sectionViews.Add(await _mappingService.MapToViewSectionModel(section));
+        }
         return sectionViews;
     }
-    public async Task AddSectionAsync(SectionViewModel sectionViewModel){
-        Section section = new Section{
-            Sectionid=sectionViewModel.Sectionid,
-            Sectionname=sectionViewModel.Sectionname,
-            Description=sectionViewModel.Description,
-            Createddate=DateTime.Now,
-            Isdeleted=false
+    public async Task AddSectionAsync(SectionViewModel sectionViewModel)
+    {
+        Section section = new Section
+        {
+            Sectionid = sectionViewModel.Sectionid,
+            Sectionname = sectionViewModel.Sectionname,
+            Description = sectionViewModel.Description,
+            Createddate = DateTime.Now,
+            Isdeleted = false
         };
         await _sectionAndTablerepo.AddSectionAsync(section);
     }
-    public async Task DeleteSectionAsync(int id){
+    public async Task DeleteSectionAsync(int id)
+    {
         await _sectionAndTablerepo.DeleteSectionAsync(id);
     }
-    public async Task<SectionViewModel>GetSectionByIdAsync(int id){
-        Section section=await _sectionAndTablerepo.GetSectionByIdAsync(id);
+    public async Task<SectionViewModel> GetSectionByIdAsync(int id)
+    {
+        Section section = await _sectionAndTablerepo.GetSectionByIdAsync(id);
         return await _mappingService.MapToViewSectionModel(section);
     }
     public async Task<bool> UpdateSectionAsync(SectionViewModel model)
     {
         var section = new Section
         {
-            Sectionid=model.Sectionid,
+            Sectionid = model.Sectionid,
             Sectionname = model.Sectionname,
             Modifieddate = DateTime.Now,
-            Description=model.Description,
-            Createddate=model.Createddate
+            Description = model.Description,
+            Createddate = model.Createddate
         };
         return await _sectionAndTablerepo.UpdateSectionAsync(section);
     }
     public async Task<(List<DinetableViewModel> tables, int totalItems)> GetTablesBySectionAsync(int sectionId, int page, int pageSize, string searchTerm)
-{
-        
-    return await _sectionAndTablerepo.GetTablesBySectionAsync(sectionId,page,pageSize,searchTerm);
-}
+    {
+        return await _sectionAndTablerepo.GetTablesBySectionAsync(sectionId, page, pageSize, searchTerm);
+    }
+    public async Task AddTableAsync(DinetableViewModel tablemodel){
+        Dinetable table = new Dinetable{
+            Sectionid=tablemodel.Sectionid,
+            Tablename=tablemodel.Tablename,
+            Status=tablemodel.Status,
+            Capacity=tablemodel.Capacity,
+            Isdeleted=false,
+            Createddate=DateTime.Now,
+            Modifieddate=DateTime.Now
+        };
+        await _sectionAndTablerepo.AddTableAsync(table);
+    }
 }

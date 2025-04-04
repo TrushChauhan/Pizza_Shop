@@ -49,7 +49,7 @@
                     <img src="~/images/delete-icon.png" alt="" height="20px" width="20px">
                 </button>
 
-                <button class="add-user-button m-2 p-3" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                <button class="add-user-button m-2 p-3" data-bs-toggle="modal" data-bs-target="#addTableModal">
                     + New Table
                 </button>
             </div>
@@ -153,7 +153,7 @@
 </div>
 
 <!-- Add Table Modal -->
-<div class="modal fade" id="addItemModal" tabindex="-1">
+<div class="modal fade" id="addTableModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -163,17 +163,31 @@
             <div class="modal-body">
                 <form id="addTableForm">
                     <input type="hidden" id="activeSectionId">
-                    <div class="mb-3 form-floating">
-                        <input type="text" class="form-control" id="tableName" required>
-                        <label for="tableName" class="form-label">Table Name*</label>
+                    <div class="d-flex row">
+                        <div class="mb-3 col-md-6 form-floating">
+                            <input type="text" class="form-control" id="tableName" required>
+                            <label for="tableName" class="form-label">Table Name*</label>
+                        </div>
+                        <div class="mb-3 col-md-6 form-floating">
+                            <select class="form-select" id="sectionSelect" name="SectionId" required>
+                                <option value="">Loading sections...</option>
+                            </select>
+                            <label for="sectionSelect" class="form-label">Section*</label>
+                        </div>
                     </div>
-                    <div class="mb-3 form-floating">
-                        <input type="number" class="form-control" id="tableCapacity" required min="1">
-                        <label for="tableCapacity" class="form-label">Capacity*</label>
-                    </div>
-                    <div class="mb-3 form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="tableStatus" checked>
-                        <label class="form-check-label" for="tableStatus">Available</label>
+                    <div class="row d-flex">
+                        <div class="mb-3 col-md-6 form-floating">
+                            <input type="number" class="form-control" id="tableCapacity" required min="1">
+                            <label for="tableCapacity" class="form-label">Capacity*</label>
+                        </div>
+                        <div class="mb-3 col-md-6 form-floating">
+                            <select class="form-select" id="tableStatus" name="TableId" required>
+                                <option value="Available">Available</option>
+                                <option value="Occupied">Occupied</option>
+                                <option value="Reserved">Reserved</option>
+                            </select>
+                            <label for="tableStatus" class="form-label">Status*</label>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -277,35 +291,6 @@
                     });
             });
 
-            // Save table
-            document.getElementById('saveTable').addEventListener('click', () => {
-                const tableData = {
-                    Tablename: document.getElementById('tableName').value,
-                    Capacity: parseInt(document.getElementById('tableCapacity').value),
-                    Status: document.getElementById('tableStatus').checked,
-                    Sectionid: parseInt(document.getElementById('activeSectionId').value)
-                };
-
-                fetch('/SectionsAndTables/AddTable', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(tableData)
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            const activeSection = document.querySelector('.section-item.active');
-                            if (activeSection) {
-                                const sectionId = activeSection.getAttribute('data-section-id');
-                                loadTables(sectionId, 1);
-                            }
-                            $('#addItemModal').modal('hide');
-                            document.getElementById('addTableForm').reset();
-                        } else {
-                            alert('Failed to add table');
-                        }
-                    });
-            });
-
             // Search functionality
             document.getElementById('searchItem').addEventListener('input', function () {
                 const searchTerm = this.value;
@@ -347,17 +332,17 @@
                         const statusClass = table.status ? 'text-success' : 'text-danger';
 
                         const row = `
-                                <tr>
-                                    <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${table.tableid}"></td>
-                                    <td class="align-middle">${table.tablename}</td>
-                                    <td class="align-middle">${table.capacity}</td>
-                                    <td class="align-middle ${statusClass}">${statusText}</td>
-                                    <td class="align-middle">
-                                        <i class="material-icons cursor-pointer" onclick="editTable(${table.tableid})">edit</i>
-                                        <i class="material-icons cursor-pointer" onclick="deleteTable(${table.tableid})">delete</i>
-                                    </td>
-                                </tr>
-                            `;
+                                            <tr>
+                                                <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${table.tableid}"></td>
+                                                <td class="align-middle">${table.tablename}</td>
+                                                <td class="align-middle">${table.capacity}</td>
+                                                <td class="align-middle ${statusClass}">${statusText}</td>
+                                                <td class="align-middle">
+                                                    <i class="material-icons cursor-pointer" onclick="editTable(${table.tableid})">edit</i>
+                                                    <i class="material-icons cursor-pointer" onclick="deleteTable(${table.tableid})">delete</i>
+                                                </td>
+                                            </tr>
+                                        `;
                         tbody.insertAdjacentHTML('beforeend', row);
                     });
 
@@ -377,34 +362,34 @@
             }
 
             paginationContainer.innerHTML = `
-                    <div class="col-md-8 d-flex align-items-center justify-content-end">
-                        <div class="row mx-2">
-                            <select class="form-select page-size-select">
-                                <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
-                                <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
-                                <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
-                            </select>
-                        </div>
-                        <div>
-                            <span class="text-muted">
-                                Showing ${Math.min((currentPage - 1) * pageSize + 1, totalItems)} - ${Math.min(currentPage * pageSize, totalItems)} of ${totalItems}
-                            </span>
-                        </div>
-                        <div>
-                            ${currentPage > 1 ?
+                                <div class="col-md-8 d-flex align-items-center justify-content-end">
+                                    <div class="row mx-2">
+                                        <select class="form-select page-size-select">
+                                            <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                                            <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                                            <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">
+                                            Showing ${Math.min((currentPage - 1) * pageSize + 1, totalItems)} - ${Math.min(currentPage * pageSize, totalItems)} of ${totalItems}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        ${currentPage > 1 ?
                     `<button class="btn btn-outline-primary mx-1 prev-page">
-                                    <i class="fas fa-chevron-left"></i>
-                                </button>` :
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>` :
                     `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-left"></i></span>`}
 
-                            ${currentPage < totalPages ?
+                                        ${currentPage < totalPages ?
                     `<button class="btn btn-outline-primary mx-1 next-page">
-                                    <i class="fas fa-chevron-right"></i>
-                                </button>` :
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>` :
                     `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-right"></i></span>`}
-                        </div>
-                    </div>
-                `;
+                                    </div>
+                                </div>
+                            `;
 
             // Add event listeners
             document.querySelector('.page-size-select').addEventListener('change', function () {
@@ -424,13 +409,57 @@
                 });
             }
         }
+        document.getElementById('addTableModal').addEventListener('shown.bs.modal', function () {
+            loadSectionsInAddTable();
+        });
+        function loadSectionsInAddTable() {
+            fetch('/SectionsAndTables/GetAllSections')
+                .then(response => response.json())
+                .then(sections => {
+                    const select = document.getElementById('sectionSelect');
+                    select.innerHTML = '';
+                    sections.forEach(section => {
+                        const option = new Option(section.sectionname, section.sectionid);
+                        select.add(option);
+                    });
+                });
+        }
+        // Save table
+            document.getElementById('saveTable').addEventListener('click', () => {
+                const tableData = {
+                    tablename: document.getElementById('tableName').value,
+                    capacity: parseInt(document.getElementById('tableCapacity').value),
+                    status: document.getElementById('tableStatus'),
+                    sectionid: parseInt(document.getElementById('sectionSelect').value)
+                };
+
+                fetch('/SectionsAndTables/AddTable', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(tableData)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            const activeSection = document.querySelector('.section-item.active');
+                            if (activeSection) {
+                                const sectionId = activeSection.getAttribute('data-section-id');
+                                loadTables(sectionId, 1);
+                            }
+                            $('#addTableModal').modal('hide');
+                            document.getElementById('addTableForm').reset();
+                        } else {
+                            alert('Failed to add table');
+                        }
+                    });
+            });
+
         function editTable(tableId) {
-            // Implement table edit functionality
+
             console.log('Edit table:', tableId);
         }
 
         function deleteTable(tableId) {
-            // Implement table delete functionality
+
             console.log('Delete table:', tableId);
         }
     </script>

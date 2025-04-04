@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Entity.Models;
 using Entity.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,12 @@ namespace Web.Controllers
     {
 
         private readonly ISectionAndTableService _sectionTableService;
+        private readonly INotyfService _notify;
 
-        public SectionsAndTablesController(ISectionAndTableService sectionAndTableService)
+        public SectionsAndTablesController(ISectionAndTableService sectionAndTableService,INotyfService notyfService)
         {
             _sectionTableService = sectionAndTableService;
+            _notify=notyfService;
         }
         public async Task<IActionResult> Index()
         {
@@ -48,6 +51,7 @@ namespace Web.Controllers
             try
             {
                 await _sectionTableService.AddSectionAsync(model);
+                _notify.Custom("Section Added Successfully", 5, "Green", "fa-solid fa-check");
                 return Ok();
             }
             catch (Exception ex)
@@ -61,6 +65,7 @@ namespace Web.Controllers
             try
             {
                 await _sectionTableService.DeleteSectionAsync(sectionId);
+                _notify.Custom("Section Deleted Successfully", 5, "Green", "fa-solid fa-check");
                 return Ok();
             }
             catch (Exception ex)
@@ -89,6 +94,24 @@ namespace Web.Controllers
                 {
                     return NotFound();
                 }
+                _notify.Custom("Section Updated Successfully", 5, "Green", "fa-solid fa-check");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        public async Task<IActionResult> GetAllSections(){
+            List<SectionViewModel> Sections = await _sectionTableService.GetSectionsAsync();
+            return Ok(Sections);
+        }
+        public async Task<IActionResult> AddTable([FromBody] DinetableViewModel table){
+            try
+            {
+                await _sectionTableService.AddTableAsync(table);
+                _notify.Custom("Table Added Successfully", 5, "Green", "fa-solid fa-check");
                 return Ok();
             }
             catch (Exception ex)
