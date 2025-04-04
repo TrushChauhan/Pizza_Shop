@@ -14,4 +14,7 @@ public interface ISectionAndTableService
     Task AddTableAsync( DinetableViewModel table);
     Task<bool> UpdateTableAsync(DinetableViewModel model);
     Task<DinetableViewModel> GetTableByIdAsync(int id);
+    Task DeleteTableAsync(int tableId);
+    Task MassDeleteTablesAsync(List<int> tableIds);
+
 }

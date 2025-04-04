@@ -94,4 +94,12 @@ public class SectionAndTableService : ISectionAndTableService
         };
         return await _sectionAndTablerepo.UpdateTableAsync(table);
     }
+    public async Task DeleteTableAsync(int tableId)
+    {
+        await _sectionAndTablerepo.DeleteTableAsync(tableId);
+    }
+    public async Task MassDeleteTablesAsync(List<int> tableIds)
+    {
+        await _sectionAndTablerepo.MassDeleteTablesAsync(tableIds);
+    }
 }

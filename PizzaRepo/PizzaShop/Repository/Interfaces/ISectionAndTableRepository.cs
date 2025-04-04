@@ -14,4 +14,6 @@ public interface ISectionAndTableRepository
     Task AddTableAsync(Dinetable table);
     Task<Dinetable> GetTableByIdAsync(int id);
     Task<bool> UpdateTableAsync(Dinetable model);
+    Task DeleteTableAsync(int tableId);
+    Task MassDeleteTablesAsync(List<int> ids);
 }

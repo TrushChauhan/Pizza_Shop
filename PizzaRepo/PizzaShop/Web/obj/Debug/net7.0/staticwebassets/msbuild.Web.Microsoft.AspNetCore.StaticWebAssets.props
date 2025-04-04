@@ -1104,6 +1104,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\35c5190f-0059-4ffe-89f4-6d1b41cdf1f6_Screenshot (1).png))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\439366c1-0bfb-487f-9109-49d85c456576_Default_pfp.svg.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>Web</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Web</BasePath>
+      <RelativePath>images/profiles/439366c1-0bfb-487f-9109-49d85c456576_Default_pfp.svg.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\439366c1-0bfb-487f-9109-49d85c456576_Default_pfp.svg.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\49c8c1c7-77d1-473d-93d9-110524f5fdf0_Default_pfp.svg.png))">
       <SourceType>Package</SourceType>
       <SourceId>Web</SourceId>
@@ -1599,6 +1615,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\b7dfc2de-fe79-44e9-944e-25b905d453d9_Default_pfp.svg.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\bbb7dfc8-d8db-4ed9-93a0-8b5f95fd1c72_Default_pfp.svg.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>Web</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Web</BasePath>
+      <RelativePath>images/profiles/bbb7dfc8-d8db-4ed9-93a0-8b5f95fd1c72_Default_pfp.svg.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\bbb7dfc8-d8db-4ed9-93a0-8b5f95fd1c72_Default_pfp.svg.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\profiles\c0ad93a8-0030-463a-a79b-d7698878e8ba_danger.png))">
       <SourceType>Package</SourceType>

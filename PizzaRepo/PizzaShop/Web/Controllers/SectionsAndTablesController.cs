@@ -149,5 +149,36 @@ namespace Web.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> DeleteTable(int tableid)
+        {
+            try
+            {
+                await _sectionTableService.DeleteTableAsync(tableid);
+                _notify.Custom("Table Deleted Successfully", 5, "Green", "fa-solid fa-check");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> MassDeleteTables(string tableIds)
+        {
+            try
+            {
+                var ids = tableIds.Split(',').Select(int.Parse).ToList();
+                await _sectionTableService.MassDeleteTablesAsync(ids);
+                _notify.Custom("Tables Deleted Successfully", 5, "Green", "fa-solid fa-check");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest();
+            }
+        }
     }
 }

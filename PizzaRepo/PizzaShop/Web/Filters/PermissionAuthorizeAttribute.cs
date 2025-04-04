@@ -25,7 +25,6 @@ namespace Web.Filters
         private readonly IRolesAndPermissionsService _permsService;
         private readonly IRoleRepository _roleRepo;
 
-        //  constructor to receive parameters correctly
         public PermissionAuthorizeFilter(
             string module,
             string operation,

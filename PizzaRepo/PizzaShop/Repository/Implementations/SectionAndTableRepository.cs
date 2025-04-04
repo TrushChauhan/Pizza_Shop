@@ -58,7 +58,7 @@ public class SectionAndTableRepository : ISectionAndTableRepository
 
         int totalItems = await query.CountAsync();
 
-        var tables = await query
+        List<DinetableViewModel> tables = await query
             .OrderBy(t => t.Tablename)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -100,5 +100,27 @@ public class SectionAndTableRepository : ISectionAndTableRepository
 
         await _context.SaveChangesAsync();
         return true;
+    }
+    public async Task DeleteTableAsync(int tableId)
+    {
+        Dinetable table = await _context.Dinetables.FirstOrDefaultAsync(t => t.Tableid == tableId);
+        if (table != null)
+        {
+            table.Isdeleted = true;
+            await _context.SaveChangesAsync();
+        }
+    }
+    public async Task MassDeleteTablesAsync(List<int> ids)
+    {
+        var tables = await _context.Dinetables
+            .Where(t => ids.Contains(t.Tableid))
+            .ToListAsync();
+
+        foreach (var table in tables)
+        {
+            table.Isdeleted = true;
+        }
+
+        await _context.SaveChangesAsync();
     }
 }
