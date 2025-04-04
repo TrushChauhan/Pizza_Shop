@@ -61,16 +61,37 @@ public class SectionAndTableService : ISectionAndTableService
     {
         return await _sectionAndTablerepo.GetTablesBySectionAsync(sectionId, page, pageSize, searchTerm);
     }
-    public async Task AddTableAsync(DinetableViewModel tablemodel){
-        Dinetable table = new Dinetable{
-            Sectionid=tablemodel.Sectionid,
-            Tablename=tablemodel.Tablename,
-            Status=tablemodel.Status,
-            Capacity=tablemodel.Capacity,
-            Isdeleted=false,
-            Createddate=DateTime.Now,
-            Modifieddate=DateTime.Now
+    public async Task AddTableAsync(DinetableViewModel tablemodel)
+    {
+        Dinetable table = new Dinetable
+        {
+            Sectionid = tablemodel.Sectionid,
+            Tablename = tablemodel.Tablename,
+            Status = tablemodel.Status,
+            Capacity = tablemodel.Capacity,
+            Isdeleted = false,
+            Createddate = DateTime.Now,
+            Modifieddate = DateTime.Now
         };
         await _sectionAndTablerepo.AddTableAsync(table);
+    }
+    public async Task<DinetableViewModel> GetTableByIdAsync(int id)
+    {
+        Dinetable table = await _sectionAndTablerepo.GetTableByIdAsync(id);
+        return await _mappingService.MapToViewTableModel(table);
+    }
+
+    public async Task<bool> UpdateTableAsync(DinetableViewModel model)
+    {
+        var table = new Dinetable
+        {
+            Tableid = model.Tableid,
+            Tablename = model.Tablename,
+            Capacity = model.Capacity,
+            Status = model.Status,
+            Sectionid = model.Sectionid,
+            Modifieddate = DateTime.Now
+        };
+        return await _sectionAndTablerepo.UpdateTableAsync(table);
     }
 }

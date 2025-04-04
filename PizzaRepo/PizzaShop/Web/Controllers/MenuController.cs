@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Entity.ViewModel;
 using Service.Interfaces;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Service.Implementations;
-using System.Text.Json;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace Web.Controllers
 {
@@ -13,9 +10,10 @@ namespace Web.Controllers
         private readonly IMenuService _menuService;
         private readonly IModifierService _modifierService;
         private readonly IFileService _fileService;
-
-        public MenuController(IMenuService menuService, IModifierService modifierService, IFileService fileService)
+        private readonly INotyfService _notify;
+        public MenuController(IMenuService menuService, IModifierService modifierService, IFileService fileService, INotyfService notify)
         {
+            _notify=notify;
             _menuService = menuService;
             _modifierService = modifierService;
             _fileService = fileService;
@@ -37,6 +35,7 @@ namespace Web.Controllers
         public async Task<IActionResult> AddCategory([FromBody] MenuCategoryViewModel model)
         {
             await _menuService.AddCategoryAsync(model);
+            _notify.Custom("Category Added Successfully", 5, "Green", "fa-regular fa-check");
             return Ok();
         }
 
@@ -44,6 +43,7 @@ namespace Web.Controllers
         public async Task<IActionResult> DeleteCategory(int id)
         {
             await _menuService.DeleteCategoryAsync(id);
+            _notify.Custom("Category Deleted Successfully", 5, "Green", "fa-regular fa-check");
             return Ok();
         }
 
@@ -51,6 +51,7 @@ namespace Web.Controllers
         public async Task<IActionResult> DeleteItem(int id)
         {
             await _menuService.DeleteItemAsync(id);
+            _notify.Custom("Item Deleted Successfully", 5, "Green", "fa-regular fa-check");
             return Ok();
         }
 
@@ -69,23 +70,23 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddModifier([FromBody] ModifierViewModel model)
         {
-
             await _modifierService.AddModifierAsync(model);
+            _notify.Custom("Modifier Added Successfully", 5, "Green", "fa-regular fa-check");
             return Ok();
-
         }
 
         [HttpPost]
         public async Task<IActionResult> AddModifierGroup([FromBody] ModifierGroupViewModel model)
         {
             int modifierid = await _modifierService.AddModifierGroupAsync(model);
-
+            _notify.Custom("Modifier Group Added Successfully", 5, "Green", "fa-regular fa-check");
             return Json(new { modifierGroupId = modifierid });
 
         }
         public async Task<IActionResult> DeleteModifierGroup(int id)
         {
             await _modifierService.DeleteModifierGroupAsync(id);
+            _notify.Custom("Modifier Group Deleted Successfully", 5, "Green", "fa-regular fa-check");
             return Ok();
         }
         [HttpGet]
@@ -116,6 +117,7 @@ namespace Web.Controllers
         public async Task<IActionResult> UpdateCategory([FromBody] MenuCategoryViewModel model)
         {
             await _menuService.UpdateCategoryAsync(model);
+            _notify.Custom("Category Updated Successfully", 5, "Green", "fa-solid fa-check");
             return Ok();
         }
         // Get single modifier group endpoint
@@ -126,11 +128,11 @@ namespace Web.Controllers
             return Json(group);
         }
 
-        // Update modifier group endpoint
         [HttpPost]
         public async Task<IActionResult> UpdateModifierGroup([FromBody] ModifierGroupViewModel model)
         {
             await _modifierService.UpdateModifierGroupAsync(model);
+            _notify.Custom("Modifier Group Updated Successfully", 5, "Green", "fa-solid fa-check");
             return Ok();
         }
 
@@ -230,8 +232,6 @@ namespace Web.Controllers
                         }
                     }
                 }
-
-                // Add the item
                 var itemId = await _menuService.AddItemAsync(model);
 
                 if (modifierGroups.Any())
@@ -290,7 +290,6 @@ namespace Web.Controllers
         {
             try
             {
-                // Handle image upload
                 if (itemImage != null && itemImage.Length > 0)
                 {
                     var imagePath = await _fileService.SaveItemImageAsync(itemImage);

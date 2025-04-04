@@ -32,7 +32,7 @@ public class MappingService
             ItemName = item.Itemname,
             ItemType = item.Itemtype,
             Rate = item.Rate,
-            Unit= item.Unit,
+            Unit = item.Unit,
             Quantity = item.Quantity,
             Available = item.Available,
             Shortcode = item.Shortcode,
@@ -77,7 +77,7 @@ public class MappingService
             IsDeleted = modifier.Isdeleted
         };
     }
-       public async Task<SectionViewModel> MapToViewSectionModel(Section section)
+    public async Task<SectionViewModel> MapToViewSectionModel(Section section)
     {
         return new SectionViewModel
         {
@@ -87,6 +87,17 @@ public class MappingService
             Createddate = section.Createddate,
             Modifieddate = section.Modifieddate,
             Isdeleted = section.Isdeleted,
+        };
+    }
+    public async Task<DinetableViewModel> MapToViewTableModel(Dinetable table)
+    {
+        return new DinetableViewModel
+        {
+            Tableid = table.Tableid,
+            Tablename = table.Tablename,
+            Capacity = table.Capacity,
+            Status = table.Status,
+            Sectionid = table.Sectionid
         };
     }
 }

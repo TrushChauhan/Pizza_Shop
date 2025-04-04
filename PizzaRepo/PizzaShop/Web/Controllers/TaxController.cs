@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Entity.Models;
 using Entity.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,6 @@ namespace Web.Controllers
     {
 
         private readonly ITaxService _taxService;
-
         public TaxController(ITaxService taxService)
         {
             _taxService = taxService;

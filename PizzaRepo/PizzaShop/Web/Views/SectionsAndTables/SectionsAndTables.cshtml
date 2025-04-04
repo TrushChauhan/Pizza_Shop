@@ -198,7 +198,51 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="editTableModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Table</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editTableForm">
+                    <input type="hidden" id="editTableId">
+                    <div class="d-flex row">
+                        <div class="mb-3 col-md-6 form-floating">
+                            <input type="text" class="form-control" id="editTableName" required>
+                            <label for="editTableName" class="form-label">Table Name*</label>
+                        </div>
+                        <div class="mb-3 col-md-6 form-floating">
+                            <select class="form-select" id="editSectionSelect" name="SectionId" required>
+                                <option value="">Loading sections...</option>
+                            </select>
+                            <label for="editSectionSelect" class="form-label">Section*</label>
+                        </div>
+                    </div>
+                    <div class="row d-flex">
+                        <div class="mb-3 col-md-6 form-floating">
+                            <input type="number" class="form-control" id="editTableCapacity" required min="1">
+                            <label for="editTableCapacity" class="form-label">Capacity*</label>
+                        </div>
+                        <div class="mb-3 col-md-6 form-floating">
+                            <select class="form-select" id="editTableStatus" name="TableId" required>
+                                <option value="Available">Available</option>
+                                <option value="Occupied">Occupied</option>
+                                <option value="Reserved">Reserved</option>
+                            </select>
+                            <label for="editTableStatus" class="form-label">Status*</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="send-button px-3 py-1" id="updateTable">Save</button>
+                <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     <script>
         const sectionDeleteModal = new bootstrap.Modal(document.getElementById('sectionDeleteModal'));
@@ -328,21 +372,21 @@
                     tbody.innerHTML = '';
 
                     data.tables.forEach(table => {
-                        const statusText = table.status ? 'Available' : 'Occupied';
-                        const statusClass = table.status ? 'text-success' : 'text-danger';
+                        const statusText = table.status;
+                        const statusClass = (table.status == 'Available') ? 'text-success' : 'text-danger';
 
                         const row = `
-                                            <tr>
-                                                <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${table.tableid}"></td>
-                                                <td class="align-middle">${table.tablename}</td>
-                                                <td class="align-middle">${table.capacity}</td>
-                                                <td class="align-middle ${statusClass}">${statusText}</td>
-                                                <td class="align-middle">
-                                                    <i class="material-icons cursor-pointer" onclick="editTable(${table.tableid})">edit</i>
-                                                    <i class="material-icons cursor-pointer" onclick="deleteTable(${table.tableid})">delete</i>
-                                                </td>
-                                            </tr>
-                                        `;
+                                                <tr>
+                                                    <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${table.tableid}"></td>
+                                                    <td class="align-middle">${table.tablename}</td>
+                                                    <td class="align-middle">${table.capacity}</td>
+                                                    <td class="align-middle ${statusClass}">${statusText}</td>
+                                                    <td class="align-middle">
+                                                        <i class="material-icons cursor-pointer" onclick="editTable(${table.tableid})">edit</i>
+                                                        <i class="material-icons cursor-pointer" onclick="deleteTable(${table.tableid})">delete</i>
+                                                    </td>
+                                                </tr>
+                                            `;
                         tbody.insertAdjacentHTML('beforeend', row);
                     });
 
@@ -362,34 +406,34 @@
             }
 
             paginationContainer.innerHTML = `
-                                <div class="col-md-8 d-flex align-items-center justify-content-end">
-                                    <div class="row mx-2">
-                                        <select class="form-select page-size-select">
-                                            <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
-                                            <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
-                                            <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <span class="text-muted">
-                                            Showing ${Math.min((currentPage - 1) * pageSize + 1, totalItems)} - ${Math.min(currentPage * pageSize, totalItems)} of ${totalItems}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        ${currentPage > 1 ?
+                                    <div class="col-md-8 d-flex align-items-center justify-content-end">
+                                        <div class="row mx-2">
+                                            <select class="form-select page-size-select">
+                                                <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                                                <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                                                <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted">
+                                                Showing ${Math.min((currentPage - 1) * pageSize + 1, totalItems)} - ${Math.min(currentPage * pageSize, totalItems)} of ${totalItems}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            ${currentPage > 1 ?
                     `<button class="btn btn-outline-primary mx-1 prev-page">
-                                                <i class="fas fa-chevron-left"></i>
-                                            </button>` :
+                                                    <i class="fas fa-chevron-left"></i>
+                                                </button>` :
                     `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-left"></i></span>`}
 
-                                        ${currentPage < totalPages ?
+                                            ${currentPage < totalPages ?
                     `<button class="btn btn-outline-primary mx-1 next-page">
-                                                <i class="fas fa-chevron-right"></i>
-                                            </button>` :
+                                                    <i class="fas fa-chevron-right"></i>
+                                                </button>` :
                     `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-right"></i></span>`}
+                                        </div>
                                     </div>
-                                </div>
-                            `;
+                                `;
 
             // Add event listeners
             document.querySelector('.page-size-select').addEventListener('change', function () {
@@ -425,38 +469,95 @@
                 });
         }
         // Save table
-            document.getElementById('saveTable').addEventListener('click', () => {
-                const tableData = {
-                    tablename: document.getElementById('tableName').value,
-                    capacity: parseInt(document.getElementById('tableCapacity').value),
-                    status: document.getElementById('tableStatus'),
-                    sectionid: parseInt(document.getElementById('sectionSelect').value)
-                };
+        document.getElementById('saveTable').addEventListener('click', () => {
+            const tableData = {
+                tablename: document.getElementById('tableName').value,
+                capacity: parseInt(document.getElementById('tableCapacity').value),
+                status: document.getElementById('tableStatus').value,
+                sectionid: parseInt(document.getElementById('sectionSelect').value)
+            };
 
-                fetch('/SectionsAndTables/AddTable', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(tableData)
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            const activeSection = document.querySelector('.section-item.active');
-                            if (activeSection) {
-                                const sectionId = activeSection.getAttribute('data-section-id');
-                                loadTables(sectionId, 1);
-                            }
-                            $('#addTableModal').modal('hide');
-                            document.getElementById('addTableForm').reset();
-                        } else {
-                            alert('Failed to add table');
+            fetch('/SectionsAndTables/AddTable', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(tableData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        const activeSection = document.querySelector('.section-item.active');
+                        if (activeSection) {
+                            const sectionId = activeSection.getAttribute('data-section-id');
+                            loadTables(sectionId, 1);
                         }
-                    });
-            });
+                        $('#addTableModal').modal('hide');
+                        document.getElementById('addTableForm').reset();
+                    } else {
+                        alert('Failed to add table');
+                    }
+                });
+        });
 
         function editTable(tableId) {
+            fetch(`/SectionsAndTables/GetTable/${tableId}`)
+                .then(response => response.json())
+                .then(table => {
+                    document.getElementById('editTableId').value = table.tableid;
+                    document.getElementById('editTableName').value = table.tablename;
+                    document.getElementById('editTableCapacity').value = table.capacity;
+                    document.getElementById('editTableStatus').value = table.status;
 
-            console.log('Edit table:', tableId);
+                    // Load sections and set the current section
+                    loadSectionsInEditTable(table.sectionid);
+
+                    const editModal = new bootstrap.Modal(document.getElementById('editTableModal'));
+                    editModal.show();
+                });
         }
+
+        function loadSectionsInEditTable(currentSectionId) {
+            fetch('/SectionsAndTables/GetAllSections')
+                .then(response => response.json())
+                .then(sections => {
+                    const select = document.getElementById('editSectionSelect');
+                    select.innerHTML = '';
+                    sections.forEach(section => {
+                        const option = new Option(section.sectionname, section.sectionid);
+                        if (section.sectionid == currentSectionId) {
+                            option.selected = true;
+                        }
+                        select.add(option);
+                    });
+                });
+        }
+
+        // Update table
+        document.getElementById('updateTable').addEventListener('click', () => {
+            const tableData = {
+                tableid: parseInt(document.getElementById('editTableId').value),
+                tablename: document.getElementById('editTableName').value,
+                capacity: parseInt(document.getElementById('editTableCapacity').value),
+                status: document.getElementById('editTableStatus').value,
+                sectionid: parseInt(document.getElementById('editSectionSelect').value)
+            };
+
+            fetch('/SectionsAndTables/UpdateTable', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(tableData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        const activeSection = document.querySelector('.section-item.active');
+                        if (activeSection) {
+                            const sectionId = activeSection.getAttribute('data-section-id');
+                            loadTables(sectionId, 1);
+                        }
+                        $('#editTableModal').modal('hide');
+                    } else {
+                        alert('Failed to update table');
+                    }
+                });
+        });
 
         function deleteTable(tableId) {
 

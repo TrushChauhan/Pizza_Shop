@@ -74,9 +74,31 @@ public class SectionAndTableRepository : ISectionAndTableRepository
 
         return (tables, totalItems);
     }
-    public async Task AddTableAsync( Dinetable table){
+    public async Task AddTableAsync(Dinetable table)
+    {
         await _context.AddAsync(table);
         await _context.SaveChangesAsync();
     }
+    public async Task<Dinetable> GetTableByIdAsync(int id)
+    {
+        return await _context.Dinetables.FirstOrDefaultAsync(t => t.Tableid == id && !t.Isdeleted);
+    }
 
+    public async Task<bool> UpdateTableAsync(Dinetable table)
+    {
+        Dinetable? existingTable = await _context.Dinetables.FirstOrDefaultAsync(t => t.Tableid == table.Tableid);
+        if (existingTable == null)
+        {
+            return false;
+        }
+
+        existingTable.Tablename = table.Tablename;
+        existingTable.Capacity = table.Capacity;
+        existingTable.Status = table.Status;
+        existingTable.Sectionid = table.Sectionid;
+        existingTable.Modifieddate = DateTime.Now;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

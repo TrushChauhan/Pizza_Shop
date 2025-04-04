@@ -1,13 +1,9 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Entity.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
 using Entity.ViewModel;
 using Service.Interfaces;
 using System.Security.Claims;
 using AspNetCoreHero.ToastNotification.Abstractions;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Web.Filters;
@@ -156,7 +152,7 @@ namespace Web.Controllers
             {
                 await _emailService.SendEmailToNewUserAsync(model.Email, model.Password);
                 await _userService.AddNewUserAsync(model);
-                _notify.Custom("User Added Successfully", 5, "green", "fa-regular fa-check");
+                _notify.Custom("User Added Successfully", 5, "green", "fa-solid fa-check");
                 return RedirectToAction("Users");
             }
             catch (Exception ex)
@@ -187,7 +183,7 @@ namespace Web.Controllers
                 }
 
                 await _userService.UpdateUserAsync(model, imagePath);
-                _notify.Custom("User Updated Successfully", 5, "Green", "fa-regular fa-check");
+                _notify.Custom("User Updated Successfully", 5, "Green", "fa-solid fa-check");
                 return RedirectToAction("Users");
             }
             catch (Exception ex)
@@ -257,8 +253,14 @@ namespace Web.Controllers
         [PermissionAuthorize("RolesAndPermissions", "edit")]
         public async Task<IActionResult> UpdatePermissions(int roleId, [FromBody] List<PermissionUpdateModel> permissions)
         {
+            try{
             await _rolesPermissionsService.UpdatePermissionsAsync(roleId, permissions);
+            _notify.Custom("Permissions Updated Successfully", 5, "Green", "fa-solid fa-check");
             return Ok(new { success = true });
+            }
+            catch{
+                return BadRequest();
+            }
         }
 
         private async Task<IActionResult> LogoutAsync()

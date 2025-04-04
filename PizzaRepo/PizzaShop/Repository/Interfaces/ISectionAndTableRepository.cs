@@ -12,4 +12,6 @@ public interface ISectionAndTableRepository
     Task<bool> UpdateSectionAsync(Section section);
     Task<(List<DinetableViewModel> tables, int totalItems)> GetTablesBySectionAsync(int sectionId, int page, int pageSize, string searchTerm);
     Task AddTableAsync(Dinetable table);
+    Task<Dinetable> GetTableByIdAsync(int id);
+    Task<bool> UpdateTableAsync(Dinetable model);
 }
