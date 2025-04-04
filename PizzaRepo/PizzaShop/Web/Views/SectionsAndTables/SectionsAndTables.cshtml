@@ -286,82 +286,85 @@
 </div>
 <script>
     // Initialize modals at the top of your script
-    const sectionDeleteModal = new bootstrap.Modal(document.getElementById('sectionDeleteModal'));
-    const tableDeleteModal = new bootstrap.Modal(document.getElementById('tableDeleteModal'));
-    const massDeleteTablesModal = new bootstrap.Modal(document.getElementById('massDeleteTablesModal'));
+let sectionDeleteModal;
+let tableDeleteModal;
+let massDeleteTablesModal;
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Load tables when a section is clicked
-        document.querySelectorAll('.section-item').forEach(item => {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-                // Remove active class from all sections
-                document.querySelectorAll('.section-item').forEach(i => i.classList.remove('active'));
-                // Add active class to clicked section
-                this.classList.add('active');
-                const sectionId = this.getAttribute('data-section-id');
-                document.getElementById('activeSectionId').value = sectionId;
-                loadTables(sectionId, 1);
-            });
-        });
+document.addEventListener("DOMContentLoaded", function () {
+    // Initialize modals
+    sectionDeleteModal = new bootstrap.Modal(document.getElementById('sectionDeleteModal'));
+    tableDeleteModal = new bootstrap.Modal(document.getElementById('tableDeleteModal'));
+    massDeleteTablesModal = new bootstrap.Modal(document.getElementById('massDeleteTablesModal'));
 
-        // Load tables for the first section by default if exists
-        const firstSection = document.querySelector('.section-item.active');
-        if (firstSection) {
-            const sectionId = firstSection.getAttribute('data-section-id');
+    // Load tables when a section is clicked
+    document.querySelectorAll('.section-item').forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            // Remove active class from all sections
+            document.querySelectorAll('.section-item').forEach(i => i.classList.remove('active'));
+            // Add active class to clicked section
+            this.classList.add('active');
+            const sectionId = this.getAttribute('data-section-id');
             document.getElementById('activeSectionId').value = sectionId;
             loadTables(sectionId, 1);
-        }
-
-        // Save section
-        document.getElementById('saveSection').addEventListener('click', () => {
-            const SectionName = document.getElementById('SectionName').value;
-            const SectionDescription = document.getElementById('SectionDescription').value;
-
-            fetch('/SectionsAndTables/AddSection', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    SectionName: SectionName,
-                    description: SectionDescription
-                })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Failed to add Section');
-                    }
-                });
-        });
-        function deleteSection(sectionId) {
-            document.getElementById('sectionToDelete').value = sectionId;
-            sectionDeleteModal.show();
-        }
-        // Delete section
-        document.getElementById('confirmSectionDelete').addEventListener('click', function () {
-            const sectionId = document.getElementById('sectionToDelete').value;
-
-            fetch(`/SectionsAndTables/DeleteSection?sectionid=${sectionId}`, {
-                method: 'POST'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Failed to delete section');
-                    }
-                })
-                .finally(() => {
-                    sectionDeleteModal.hide();
-                });
         });
     });
 
+    // Load tables for the first section by default if exists
+    const firstSection = document.querySelector('.section-item.active');
+    if (firstSection) {
+        const sectionId = firstSection.getAttribute('data-section-id');
+        document.getElementById('activeSectionId').value = sectionId;
+        loadTables(sectionId, 1);
+    }
+
+    // Save section
+    document.getElementById('saveSection').addEventListener('click', () => {
+        const SectionName = document.getElementById('SectionName').value;
+        const SectionDescription = document.getElementById('SectionDescription').value;
+
+        fetch('/SectionsAndTables/AddSection', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                SectionName: SectionName,
+                description: SectionDescription
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to add Section');
+                }
+            });
+    });
+
+    // Delete section
+    document.getElementById('confirmSectionDelete').addEventListener('click', function () {
+        const sectionId = document.getElementById('sectionToDelete').value;
+
+        fetch(`/SectionsAndTables/DeleteSection?sectionid=${sectionId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete section');
+                }
+            })
+            .finally(() => {
+                sectionDeleteModal.hide();
+            });
+    });
+
+    // Mass delete tables
     document.getElementById('confirmMassDelete').addEventListener('click', function () {
-        const tableIds = document.getElementById('tablesToDelete').value;
+        const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+        const tableIds = Array.from(checkboxes).map(checkbox => checkbox.getAttribute('data-item-id')).join(',');
 
         fetch(`/SectionsAndTables/MassDeleteTables?tableIds=${tableIds}`, {
             method: 'POST'
@@ -373,10 +376,7 @@
                         const sectionId = activeSection.getAttribute('data-section-id');
                         loadTables(sectionId, 1);
                     }
-                    // Hide the modal properly
-                    if (massDeleteTablesModal) {
-                        massDeleteTablesModal.hide();
-                    }
+                    massDeleteTablesModal.hide();
                 } else {
                     alert('Failed to delete tables');
                 }
@@ -386,6 +386,7 @@
                 alert('An error occurred while deleting tables');
             });
     });
+
     // Update section
     document.getElementById('updateSection').addEventListener('click', () => {
         const sectionData = {
@@ -418,236 +419,254 @@
         }
     });
 
-
-    function editSection(sectionId) {
-        fetch(`/SectionsAndTables/GetSection/${sectionId}`)
-            .then(response => response.json())
-            .then(section => {
-                document.getElementById('editSectionId').value = section.sectionid;
-                document.getElementById('editSectionName').value = section.sectionname;
-                document.getElementById('editSectionDescription').value = section.description;
-
-                const editModal = new bootstrap.Modal(document.getElementById('editSectionModal'));
-                editModal.show();
-            });
-    }
-
-    function loadTables(sectionId, page, searchTerm = '', pageSize = 5) {
-        fetch(`/SectionsAndTables/GetTablesBySection?sectionId=${sectionId}&page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`)
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector('#SectionTable tbody');
-                tbody.innerHTML = '';
-
-                data.tables.forEach(table => {
-                    const statusText = table.status;
-                    const statusClass = (table.status == 'Available') ? 'text-success' : 'text-danger';
-
-                    const row = `
-                                                                            <tr>
-                                                                                <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${table.tableid}"></td>
-                                                                                <td class="align-middle">${table.tablename}</td>
-                                                                                <td class="align-middle">${table.capacity}</td>
-                                                                                <td class="align-middle ${statusClass}">${statusText}</td>
-                                                                                <td class="align-middle">
-                                                                                    <i class="material-icons cursor-pointer" onclick="editTable(${table.tableid})">edit</i>
-                                                                                    <i class="material-icons cursor-pointer" onclick="deleteTable(${table.tableid})">delete</i>
-                                                                                </td>
-                                                                            </tr>
-                                                                        `;
-                    tbody.insertAdjacentHTML('beforeend', row);
-                });
-
-                // Update pagination controls
-                updatePaginationControls(data.totalItems, data.pageSize, data.currentPage, sectionId, searchTerm);
-            });
-    }
-
-    function updatePaginationControls(totalItems, pageSize, currentPage, sectionId, searchTerm) {
-        const totalPages = Math.ceil(totalItems / pageSize);
-        let paginationContainer = document.querySelector('.pagination-container');
-
-        if (!paginationContainer) {
-            paginationContainer = document.createElement('div');
-            paginationContainer.className = 'row mt-4 pagination-container justify-content-end';
-            document.querySelector('.col-md-9').appendChild(paginationContainer);
+    // Mass delete button event listener
+    document.querySelector('[data-bs-target="#massDeleteTables"]').addEventListener('click', function(e) {
+        e.preventDefault();
+        const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+        if (checkboxes.length === 0) {
+            alert('Please select at least one table to delete');
+            return;
         }
+        massDeleteTablesModal.show();
+    });
+});
 
-        paginationContainer.innerHTML = `
-                                        <div class="col-md-8 d-flex align-items-center justify-content-end">
-                                            <div class="row mx-2">
-                                                <select class="form-select page-size-select">
-                                                    <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
-                                                    <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
-                                                    <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <span class="text-muted">
-                                                    Showing ${Math.min((currentPage - 1) * pageSize + 1, totalItems)} - ${Math.min(currentPage * pageSize, totalItems)} of ${totalItems}
-                                                </span>
-                                            </div>
-                                            <div>
-                                                ${currentPage > 1 ?
-                `<button class="btn btn-outline-primary mx-1 prev-page">
-                                                        <i class="fas fa-chevron-left"></i>
-                                                    </button>` :
-                `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-left"></i></span>`}
+function editSection(sectionId) {
+    fetch(`/SectionsAndTables/GetSection/${sectionId}`)
+        .then(response => response.json())
+        .then(section => {
+            document.getElementById('editSectionId').value = section.sectionid;
+            document.getElementById('editSectionName').value = section.sectionname;
+            document.getElementById('editSectionDescription').value = section.description;
 
-                                                ${currentPage < totalPages ?
-                `<button class="btn btn-outline-primary mx-1 next-page">
-                                                        <i class="fas fa-chevron-right"></i>
-                                                    </button>` :
-                `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-right"></i></span>`}
-                                            </div>
-                                        </div>
-                                    `;
-
-        // Add event listeners
-        document.querySelector('.page-size-select').addEventListener('change', function () {
-            const newPageSize = this.value;
-            loadTables(sectionId, 1, searchTerm, newPageSize);
+            const editModal = new bootstrap.Modal(document.getElementById('editSectionModal'));
+            editModal.show();
         });
+}
 
-        if (currentPage > 1) {
-            document.querySelector('.prev-page').addEventListener('click', function () {
-                loadTables(sectionId, currentPage - 1, searchTerm, pageSize);
-            });
-        }
+function loadTables(sectionId, page, searchTerm = '', pageSize = 5) {
+    fetch(`/SectionsAndTables/GetTablesBySection?sectionId=${sectionId}&page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#SectionTable tbody');
+            tbody.innerHTML = '';
 
-        if (currentPage < totalPages) {
-            document.querySelector('.next-page').addEventListener('click', function () {
-                loadTables(sectionId, currentPage + 1, searchTerm, pageSize);
+            data.tables.forEach(table => {
+                const statusText = table.status;
+                const statusClass = (table.status == 'Available') ? 'text-success' : 'text-danger';
+
+                const row = `
+                    <tr>
+                        <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${table.tableid}"></td>
+                        <td class="align-middle">${table.tablename}</td>
+                        <td class="align-middle">${table.capacity}</td>
+                        <td class="align-middle ${statusClass}">${statusText}</td>
+                        <td class="align-middle">
+                            <i class="material-icons cursor-pointer" onclick="editTable(${table.tableid})">edit</i>
+                            <i class="material-icons cursor-pointer" onclick="deleteTable(${table.tableid})">delete</i>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
             });
-        }
+
+            // Update pagination controls
+            updatePaginationControls(data.totalItems, data.pageSize, data.currentPage, sectionId, searchTerm);
+        });
+}
+
+function updatePaginationControls(totalItems, pageSize, currentPage, sectionId, searchTerm) {
+    const totalPages = Math.ceil(totalItems / pageSize);
+    let paginationContainer = document.querySelector('.pagination-container');
+
+    if (!paginationContainer) {
+        paginationContainer = document.createElement('div');
+        paginationContainer.className = 'row mt-4 pagination-container justify-content-end';
+        document.querySelector('.col-md-9').appendChild(paginationContainer);
     }
-    document.getElementById('addTableModal').addEventListener('shown.bs.modal', function () {
-        loadSectionsInAddTable();
+
+    paginationContainer.innerHTML = `
+        <div class="col-md-8 d-flex align-items-center justify-content-end">
+            <div class="row mx-2">
+                <select class="form-select page-size-select">
+                    <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                    <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                    <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
+                </select>
+            </div>
+            <div>
+                <span class="text-muted">
+                    Showing ${Math.min((currentPage - 1)* pageSize + 1, totalItems)} - ${Math.min(currentPage *  pageSize, totalItems)} of ${totalItems}
+                </span>
+            </div>
+            <div>
+                ${currentPage > 1 ?
+                    `<button class="btn btn-outline-primary mx-1 prev-page">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>` :
+                    `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-left"></i></span>`}
+
+                ${currentPage < totalPages ?
+                    `<button class="btn btn-outline-primary mx-1 next-page">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>` :
+                    `<span class="btn btn-outline-secondary mx-1 disabled"><i class="fas fa-chevron-right"></i></span>`}
+            </div>
+        </div>
+    `;
+
+    // Add event listeners
+    document.querySelector('.page-size-select').addEventListener('change', function () {
+        const newPageSize = this.value;
+        loadTables(sectionId, 1, searchTerm, newPageSize);
     });
-    function loadSectionsInAddTable() {
-        fetch('/SectionsAndTables/GetAllSections')
-            .then(response => response.json())
-            .then(sections => {
-                const select = document.getElementById('sectionSelect');
-                select.innerHTML = '';
-                sections.forEach(section => {
-                    const option = new Option(section.sectionname, section.sectionid);
-                    select.add(option);
-                });
-            });
-    }
-    // Save table
-    document.getElementById('saveTable').addEventListener('click', () => {
-        const tableData = {
-            tablename: document.getElementById('tableName').value,
-            capacity: parseInt(document.getElementById('tableCapacity').value),
-            status: document.getElementById('tableStatus').value,
-            sectionid: parseInt(document.getElementById('sectionSelect').value)
-        };
 
-        fetch('/SectionsAndTables/AddTable', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(tableData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    const activeSection = document.querySelector('.section-item.active');
-                    if (activeSection) {
-                        const sectionId = activeSection.getAttribute('data-section-id');
-                        loadTables(sectionId, 1);
-                    }
-                    $('#addTableModal').modal('hide');
-                    document.getElementById('addTableForm').reset();
-                } else {
-                    alert('Failed to add table');
-                }
-            });
-    });
-
-    function editTable(tableId) {
-        fetch(`/SectionsAndTables/GetTable/${tableId}`)
-            .then(response => response.json())
-            .then(table => {
-                document.getElementById('editTableId').value = table.tableid;
-                document.getElementById('editTableName').value = table.tablename;
-                document.getElementById('editTableCapacity').value = table.capacity;
-                document.getElementById('editTableStatus').value = table.status;
-
-                // Load sections and set the current section
-                loadSectionsInEditTable(table.sectionid);
-
-                const editModal = new bootstrap.Modal(document.getElementById('editTableModal'));
-                editModal.show();
-            });
+    if (currentPage > 1) {
+        document.querySelector('.prev-page').addEventListener('click', function () {
+            loadTables(sectionId, currentPage - 1, searchTerm, pageSize);
+        });
     }
 
-    function loadSectionsInEditTable(currentSectionId) {
-        fetch('/SectionsAndTables/GetAllSections')
-            .then(response => response.json())
-            .then(sections => {
-                const select = document.getElementById('editSectionSelect');
-                select.innerHTML = '';
-                sections.forEach(section => {
-                    const option = new Option(section.sectionname, section.sectionid);
-                    if (section.sectionid == currentSectionId) {
-                        option.selected = true;
-                    }
-                    select.add(option);
-                });
-            });
+    if (currentPage < totalPages) {
+        document.querySelector('.next-page').addEventListener('click', function () {
+            loadTables(sectionId, currentPage + 1, searchTerm, pageSize);
+        });
     }
+}
 
-    // Update table
-    document.getElementById('updateTable').addEventListener('click', () => {
-        const tableData = {
-            tableid: parseInt(document.getElementById('editTableId').value),
-            tablename: document.getElementById('editTableName').value,
-            capacity: parseInt(document.getElementById('editTableCapacity').value),
-            status: document.getElementById('editTableStatus').value,
-            sectionid: parseInt(document.getElementById('editSectionSelect').value)
-        };
-
-        fetch('/SectionsAndTables/UpdateTable', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(tableData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    const activeSection = document.querySelector('.section-item.active');
-                    if (activeSection) {
-                        const sectionId = activeSection.getAttribute('data-section-id');
-                        loadTables(sectionId, 1);
-                    }
-                    $('#editTableModal').modal('hide');
-                } else {
-                    alert('Failed to update table');
-                }
+function loadSectionsInAddTable() {
+    fetch('/SectionsAndTables/GetAllSections')
+        .then(response => response.json())
+        .then(sections => {
+            const select = document.getElementById('sectionSelect');
+            select.innerHTML = '';
+            sections.forEach(section => {
+                const option = new Option(section.sectionname, section.sectionid);
+                select.add(option);
             });
-    });
-    function deleteTable(tableId) {
-        document.getElementById('tableToDelete').value = tableId;
-        tableDeleteModal.show();
-    }
-    document.getElementById('confirmTableDelete').addEventListener('click', function () {
-        const tableId = document.getElementById('tableToDelete').value;
+        });
+}
 
-        fetch(`/SectionsAndTables/DeleteTable?tableid=${tableId}`, {
-            method: 'POST'
-        })
-            .then(response => {
-                if (response.ok) {
-                    const activeSection = document.querySelector('.section-item.active');
-                    if (activeSection) {
-                        const sectionId = activeSection.getAttribute('data-section-id');
-                        loadTables(sectionId, 1);
-                    }
-                    tableDeleteModal.hide();
-                } else {
-                    alert('Failed to delete table');
-                }
-            });
+// Save table
+document.getElementById('saveTable').addEventListener('click', () => {
+    const tableData = {
+        tablename: document.getElementById('tableName').value,
+        capacity: parseInt(document.getElementById('tableCapacity').value),
+        status: document.getElementById('tableStatus').value,
+        sectionid: parseInt(document.getElementById('sectionSelect').value)
+    };
 
+    fetch('/SectionsAndTables/AddTable', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tableData)
     })
+        .then(response => {
+            if (response.ok) {
+                const activeSection = document.querySelector('.section-item.active');
+                if (activeSection) {
+                    const sectionId = activeSection.getAttribute('data-section-id');
+                    loadTables(sectionId, 1);
+                }
+                const addTableModal = bootstrap.Modal.getInstance(document.getElementById('addTableModal'));
+                addTableModal.hide();
+                document.getElementById('addTableForm').reset();
+            } else {
+                alert('Failed to add table');
+            }
+        });
+});
+
+function editTable(tableId) {
+    fetch(`/SectionsAndTables/GetTable/${tableId}`)
+        .then(response => response.json())
+        .then(table => {
+            document.getElementById('editTableId').value = table.tableid;
+            document.getElementById('editTableName').value = table.tablename;
+            document.getElementById('editTableCapacity').value = table.capacity;
+            document.getElementById('editTableStatus').value = table.status;
+
+            // Load sections and set the current section
+            loadSectionsInEditTable(table.sectionid);
+
+            const editModal = new bootstrap.Modal(document.getElementById('editTableModal'));
+            editModal.show();
+        });
+}
+
+function loadSectionsInEditTable(currentSectionId) {
+    fetch('/SectionsAndTables/GetAllSections')
+        .then(response => response.json())
+        .then(sections => {
+            const select = document.getElementById('editSectionSelect');
+            select.innerHTML = '';
+            sections.forEach(section => {
+                const option = new Option(section.sectionname, section.sectionid);
+                if (section.sectionid == currentSectionId) {
+                    option.selected = true;
+                }
+                select.add(option);
+            });
+        });
+}
+
+// Update table
+document.getElementById('updateTable').addEventListener('click', () => {
+    const tableData = {
+        tableid: parseInt(document.getElementById('editTableId').value),
+        tablename: document.getElementById('editTableName').value,
+        capacity: parseInt(document.getElementById('editTableCapacity').value),
+        status: document.getElementById('editTableStatus').value,
+        sectionid: parseInt(document.getElementById('editSectionSelect').value)
+    };
+
+    fetch('/SectionsAndTables/UpdateTable', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tableData)
+    })
+        .then(response => {
+            if (response.ok) {
+                const activeSection = document.querySelector('.section-item.active');
+                if (activeSection) {
+                    const sectionId = activeSection.getAttribute('data-section-id');
+                    loadTables(sectionId, 1);
+                }
+                const editTableModal = bootstrap.Modal.getInstance(document.getElementById('editTableModal'));
+                editTableModal.hide();
+            } else {
+                alert('Failed to update table');
+            }
+        });
+});
+
+function deleteTable(tableId) {
+    document.getElementById('tableToDelete').value = tableId;
+    tableDeleteModal.show();
+}
+
+document.getElementById('confirmTableDelete').addEventListener('click', function () {
+    const tableId = document.getElementById('tableToDelete').value;
+
+    fetch(`/SectionsAndTables/DeleteTable?tableid=${tableId}`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (response.ok) {
+                const activeSection = document.querySelector('.section-item.active');
+                if (activeSection) {
+                    const sectionId = activeSection.getAttribute('data-section-id');
+                    loadTables(sectionId, 1);
+                }
+                tableDeleteModal.hide();
+            } else {
+                alert('Failed to delete table');
+            }
+        });
+});
+
+// Add event listener for when the add table modal is shown
+document.getElementById('addTableModal').addEventListener('shown.bs.modal', function () {
+    loadSectionsInAddTable();
+});
 </script>
