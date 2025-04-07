@@ -74,6 +74,12 @@ namespace Web.Controllers
             var groups = await _modifierService.GetModifierGroupsAsync();
             return Json(groups);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetModifiersById(int modifierGroupId)
+        {
+            var modifiers = await _modifierService.GetModifiersByGroupAsync(modifierGroupId);
+            return Json(modifiers);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetModifiers(int modifierGroupId, int page = 1, int pageSize = 10, string searchTerm = "")

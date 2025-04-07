@@ -1,0 +1,100 @@
+@{
+    Layout = "~/Views/Shared/_SecondLayout.cshtml";
+    ViewData["Title"] = "Orders";
+}
+<div class="row-11 d-flex">
+    <div class="text-Users-title my-3 mx-2 fs-2 col-3">
+        Orders
+    </div>
+    <div class="d-flex col-9 p-0">
+        <div class="row w-100 p-0 d-flex justify-content-end">
+
+        <input type="text" class="my-3 mx-2 col-3" id="search" placeholder="Search">
+        <select class="form-floating my-3 mx-2 col-3" id="orderStatus" required>
+            <option value="All Status">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Served">Served</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Failed">Failed</option>
+        </select>
+        <select class="my-3 mx-2 form-floating col-3" id="orderTime" required>
+            <option value="All time">All time</option>
+            <option value="Last 7 days">Last 7 days</option>
+            <option value="Last 30 days">Last 30 days</option>
+            <option value="Current Month">Current Month</option>
+        </select>
+        <button class="col-1 my-3 mx-2 p-2 send-button w-auto">
+            <div class="row d-flex">
+            <i class=" fa-solid fa-file-export col-1 my-2"></i>
+            <p class="col-1 my-1">Export</p>
+            </div>
+        </button>
+        </div>
+    </div>
+</div>
+<div class="row-12s justify-content-end d-flex">
+    <div class="form-floating col-2 m-2">
+    <input type="date" id= "fromDate" class=" form-control">
+    <label for="fromDate">From Date</label>
+    </div>
+    <div class="form-floating col-2 m-2">
+    <input type="date" id="toDate" class="form-control">
+    <label for="toDate">To Date</label>
+    </div>
+    <div class="col-1 w-auto m-2">
+        <button class="send-button w-auto px-4 py-3">
+            Search
+        </button>
+    </div>
+    <div class="col-1 w-auto m-2">
+        <button class="back-button px-4 py-3">
+            Clear
+        </button>
+    </div>
+</div>
+<div class="table-responsive table-shadow row m-2">
+  <table class="table ">
+    <thead>
+      <tr>
+        <th scope="col" class="text-black-50">Order<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
+        <th scope="col" class="text-black-50">Date<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
+        <th scope="col" class="text-black-50">Customer<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
+        <th scope="col" class="text-black-50">Status</th>
+        <th scope="col" class="text-black-50">Payment Mode</th>
+        <th scope="col" class="text-black-50">Rating</th>
+        <th scope="col" class="text-black-50">Total Amount<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
+        <th scope="col" class="text-black-50">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+  <div class="row mt-4 pagination-container justify-content-end">
+                    <div class="col-md-8 d-flex align-items-center justify-content-end">
+                        <div class="row mx-2">
+                            <select class="form-select page-size-select">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span class="text-muted showing-info">
+                                Showing 0 - 0 of 0
+                            </span>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-primary mx-1 prev-page" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-outline-primary mx-1 next-page" disabled>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+</div>

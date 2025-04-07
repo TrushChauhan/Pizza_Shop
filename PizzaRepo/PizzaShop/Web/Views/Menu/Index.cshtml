@@ -88,7 +88,7 @@
                         <div class="row mx-2">
                             <select class="form-select page-size-select">
                                 <option value="5">5</option>
-                                <option value="10" selected>10</option>
+                                <option value="10">10</option>
                                 <option value="15">15</option>
                             </select>
                         </div>
@@ -1093,7 +1093,7 @@ document.getElementById('modifierGroupSelect').addEventListener('change', async 
     const groupId = this.value;
     if (groupId) {
         // Get modifier group details including modifiers
-        const response = await fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`);
+        const response = await fetch(`/Menu/GetModifiersById?modifierGroupId=${groupId}`);
         const modifiers = await response.json();
         
         // Get the group name
@@ -1123,7 +1123,7 @@ function showModifiersForGroup(groupId, modifiers) {
         <h6>Modifiers:</h6>
         <ul class="list-group">
             ${modifiers.map(mod => 
-                `<li class="list-group-item py-1">${mod.modifierName}</li>`
+                `<li class="list-group-item py-1"><div class="d-flex justify-content-between">${mod.modifierName} ${mod.rate}</div></li>`
             ).join('')}
         </ul>
     `;
@@ -1368,15 +1368,36 @@ function addEditModifierGroupRow(groupId, groupName, minSelect, maxSelect) {
 document.getElementById('editModifierGroupSelect').addEventListener('change', async function() {
     const groupId = this.value;
     if (groupId) {
-        const response = await fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`);
+        const response = await fetch(`/Menu/GetModifiersById?modifierGroupId=${groupId}`);
         const modifiers = await response.json();
         const groupName = this.options[this.selectedIndex].text;
         
         addEditModifierGroupRow(groupId, groupName, 0, modifiers.length);
+        editShowModifiersForGroup()
         this.value = '';
     }
 });
-
+function editShowModifiersForGroup(groupId, modifiers) {
+    const container = document.getElementById('editmodifierGroupsContainer');
+    const groupRow = container.querySelector(`[data-group-id="${groupId}"]`);
+    
+    if (!groupRow) return;
+    
+    // Create modifiers list
+    const modifiersList = document.createElement('div');
+    modifiersList.className = 'modifiers-list mt-2';
+    modifiersList.innerHTML = `
+        <h6>Modifiers:</h6>
+        <ul class="list-group">
+            ${modifiers.map(mod => 
+                `<li class="list-group-item py-1"><div class="d-flex justify-content-between">${mod.modifierName} ${mod.rate}</div></li>`
+            ).join('')}
+        </ul>
+    `;
+    
+    // Append after the group row
+    groupRow.appendChild(modifiersList);
+}
 // Image upload handling for edit modal
 document.getElementById('editItemImage').addEventListener('change', function(e) {
     const file = e.target.files[0];
@@ -2128,7 +2149,7 @@ function updateModifierPaginationInfo() {
         });
     }
     function loadCurrentModifiers(groupId) {
-        fetch(`/Menu/GetModifiers?modifierGroupId=${groupId}`)
+        fetch(`/Menu/GetModifiersById?modifierGroupId=${groupId}`)
             .then(response => response.json())
             .then(modifiers => {
                 const container = document.getElementById('currentModifiersContainer');
