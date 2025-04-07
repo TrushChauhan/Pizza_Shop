@@ -32,7 +32,10 @@ namespace Service.Implementations
             var items = await _menuRepository.GetItemsByCategoryAsync(categoryId);
             return items.Select(i => _mappingService.MapToViewItemModel(i)).ToList();
         }
-
+        public async Task<(List<MenuItemViewModel> items, int totalItems)> GetItemsByCategoryAsync(int categoryId, int page, int pageSize, string searchTerm)
+        {
+            return await _menuRepository.GetItemsByCategoryAsync(categoryId,  page, pageSize,searchTerm);
+        }
         public async Task AddCategoryAsync(MenuCategoryViewModel model)
         {
             var category = new Menucategory

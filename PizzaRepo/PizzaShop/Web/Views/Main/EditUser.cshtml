@@ -68,9 +68,10 @@
 
             <div class="col form-floating m-2 p-0">
                 <div class="custom-file-upload">
-                    <label for="profileImage" class="browse-file-button w-100 p-3 d-flex flex-column justify-content-center align-items-center">
+                    <label for="profileImage"
+                        class="browse-file-button w-100 p-3 d-flex flex-column justify-content-center align-items-center">
                         <i class="fa-solid fa-cloud-arrow-up mt-3"></i>
-                        <p>Browse Files</p>
+                        <p id="file-upload-text">Browse Files</p>
                     </label>
                     <input type="file" class="" id="profileImage" asp-for="ProfileImageFile" style="display: none;">
                 </div>
@@ -133,6 +134,12 @@
 
     $(document).ready(function () {
         $('#profileImage').removeAttr('required');
+
+        $('#profileImage').change(function () {
+            const fileName = this.files[0]?.name || 'Browse Files';
+            $('#file-upload-text').text(fileName);
+        });
+
         var selectedCountryId = $('#selectedCountryId').val();
         var selectedStateId = $('#selectedStateId').val();
         var selectedCityId = $('#selectedCityId').val();

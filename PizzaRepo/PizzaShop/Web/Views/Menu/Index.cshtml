@@ -35,7 +35,7 @@
                 <div class="list-group" id="categoryList">
                     @foreach (var category in Model)
                     {
-                        <a href="#" class="list-group-item list-group-item-action category-item"
+                        <a href="#" class="list-group-item list-group-item-action category-item @(Model.IndexOf(category) == 0 ? "active-category" : "")"
                             data-category-id="@category.CategoryId">
                             @category.CategoryName
                             <span class="icon-container">
@@ -55,9 +55,7 @@
                     <p class="text-Users-title fs-5">Items</p>
                 </div>
                 <div class="d-flex row mb-3 justify-content-end align-items-center">
-                    <div class="col-6">
-
-                    </div>
+                    <div class="col-6"></div>
                     <input type="text" class="form-control col mx-2" id="searchItem" placeholder="Search items">
 
                     <button class="btn btn-secondary col mx-2" data-bs-toggle="modal" data-bs-target="#massDeleteItems">
@@ -65,7 +63,6 @@
 
                     <button class="btn btn-primary col mx-2" data-bs-toggle="modal" data-bs-target="#addItemModal">+ New
                         Item</button>
-
                 </div>
                 <div class="table-responsive">
                     <table class="table" id="itemsTable">
@@ -85,6 +82,31 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- Pagination will be dynamically loaded here -->
+                <div class="row mt-4 pagination-container justify-content-end">
+                    <div class="col-md-8 d-flex align-items-center justify-content-end">
+                        <div class="row mx-2">
+                            <select class="form-select page-size-select">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span class="text-muted showing-info">
+                                Showing 0 - 0 of 0
+                            </span>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-primary mx-1 prev-page" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-outline-primary mx-1 next-page" disabled>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -92,7 +114,7 @@
     <div class="tab-pane fade" id="modifiers" role="tabpanel">
         <div class="row">
             <!-- Modifier Groups Column -->
-            <div class="col-md-3"> <!-- Changed from col-md-2 to col-md-3 -->
+            <div class="col-md-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fs-5 text-primary">Modifier Groups</h5> <!-- Added text styling -->
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -107,26 +129,21 @@
             </div>
             <!-- Modifiers Column -->
             <div class="col-md-9">
-                <div class="d-flex row mb-3 justify-content-end align-items-center">
-                    <div class="row">
-                        <p class="text-primary fs-5">Modifiers</p>
-                    </div>
-                    <div class="d-flex row mb-3 justify-content-end align-items-center">
-                        <div class="col-6">
-
-                        </div>
-                        <input type="text" class="form-control col mx-2" id="searchItem" placeholder="Search ">
-
-                        <button class="btn btn-secondary col mx-2" data-bs-toggle="modal"
-                            data-bs-target="#massDeleteModifiers">
-                            <img src="~/images/delete-icon.png" alt="" height="20px" width="20px"></button>
-
-                        <button class="btn btn-primary col mx-2" data-bs-toggle="modal"
-                            data-bs-target="#addModifierModal">+
-                            New Modifier</button>
-
-                    </div>
-                </div>
+            <div class="row">
+                <p class="text-primary fs-5">Modifiers</p>
+            </div>
+            <div class="d-flex row mb-3 justify-content-end align-items-center">
+                <div class="col-6"></div>
+                <input type="text" class="form-control col mx-2" id="searchModifier" placeholder="Search modifiers">
+                
+                <button class="btn btn-secondary col mx-2" data-bs-toggle="modal" data-bs-target="#massDeleteModifiers">
+                    <img src="~/images/delete-icon.png" alt="" height="20px" width="20px">
+                </button>
+                
+                <button class="btn btn-primary col mx-2" data-bs-toggle="modal" data-bs-target="#addModifierModal">
+                    + New Modifier
+                </button>
+            </div>
                 <div class="table-responsive">
                     <table class="table" id="modifiersTable">
                         <thead>
@@ -143,6 +160,29 @@
                             <!-- Modifiers will be dynamically loaded here -->
                         </tbody>
                     </table>
+                </div>
+                <div class="row mt-4 pagination-container justify-content-end">
+                <div class="col-md-8 d-flex align-items-center justify-content-end">
+                    <div class="row mx-2">
+                        <select class="form-select modifier-page-size-select">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span class="text-muted modifier-showing-info">
+                            Showing 0 - 0 of 0
+                        </span>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary mx-1 modifier-prev-page" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-outline-primary mx-1 modifier-next-page" disabled>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -810,6 +850,57 @@
             const categoryId = firstCategory.dataset.categoryId;
             loadItems(categoryId);
         }
+        document.getElementById('searchItem').addEventListener('input', function() {
+    currentSearchTerm = this.value;
+    loadItems(currentCategoryId, 1, currentSearchTerm);
+});
+
+// Page size change
+document.querySelector('.page-size-select').addEventListener('change', function() {
+    itemPageSize = parseInt(this.value);
+    loadItems(currentCategoryId, 1, currentSearchTerm);
+});
+
+// Previous page button
+document.querySelector('.prev-page').addEventListener('click', function() {
+    if (currentItemPage > 1) {
+        loadItems(currentCategoryId, currentItemPage - 1, currentSearchTerm);
+    }
+});
+
+// Next page button
+document.querySelector('.next-page').addEventListener('click', function() {
+    const totalPages = Math.ceil(totalItems / itemPageSize);
+    if (currentItemPage < totalPages) {
+        loadItems(currentCategoryId, currentItemPage + 1, currentSearchTerm);
+    }
+});
+// Modifier search functionality
+document.getElementById('searchModifier').addEventListener('input', function() {
+    currentModifierSearchTermMain = this.value;
+    loadModifiers(currentModifierGroupIdMain, 1, currentModifierSearchTermMain);
+});
+
+// Modifier page size change
+document.querySelector('.modifier-page-size-select').addEventListener('change', function() {
+    modifierPageSizeMain = parseInt(this.value);
+    loadModifiers(currentModifierGroupIdMain, 1, currentModifierSearchTermMain);
+});
+
+// Modifier previous page button
+document.querySelector('.modifier-prev-page').addEventListener('click', function() {
+    if (currentModifierPageMain > 1) {
+        loadModifiers(currentModifierGroupIdMain, currentModifierPageMain - 1, currentModifierSearchTermMain);
+    }
+});
+
+// Modifier next page button
+document.querySelector('.modifier-next-page').addEventListener('click', function() {
+    const totalPages = Math.ceil(totalModifiersMain / modifierPageSizeMain);
+    if (currentModifierPageMain < totalPages) {
+        loadModifiers(currentModifierGroupIdMain, currentModifierPageMain + 1, currentModifierSearchTermMain);
+    }
+});
     });
 
     // Category click handler
@@ -829,29 +920,63 @@
             loadItems(categoryId);
         }
     });
-    // Function to load items
-    function loadItems(categoryId) {
-    fetch(`/Menu/GetItems?categoryId=${categoryId}`)
+    // Global variables for pagination
+let currentCategoryId = null;
+let currentItemPage = 1;
+let itemPageSize = 5;
+let totalItems = 0;
+let currentSearchTerm = '';
+let currentModifierGroupIdMain = null;
+let currentModifierPageMain = 1;
+let modifierPageSizeMain = 10;
+let totalModifiersMain = 0;
+let currentModifierSearchTermMain = '';
+function loadItems(categoryId, page = 1, searchTerm = '') {
+    if (!categoryId) return;
+    
+    currentCategoryId = categoryId;
+    currentItemPage = page;
+    currentSearchTerm = searchTerm || '';
+
+    fetch(`/Menu/GetItems?categoryId=${categoryId}&page=${page}&pageSize=${itemPageSize}&searchTerm=${encodeURIComponent(searchTerm)}`)
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector('#itemsTable tbody');
             tbody.innerHTML = '';
-            data.forEach(item => {
+            
+            totalItems = data.totalItems;
+            
+            // Update pagination info
+            updatePaginationInfo();
+            
+            if (data.items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center">No items found</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            data.items.forEach(item => {
                 const imageHtml = item.itemImage 
                     ? `<img src="${item.itemImage}" class="item-thumbnail me-2 rounded-circle" alt="${item.itemName}" style="width: 40px; height: 35px;">`
                     : '';
-                var itemtype=item.itemType;
-                let itemtypesrc="/images/icons/";
-                if(itemtype=="Vegetarian"){
-                    itemtypesrc+="veg-icon.svg";
+                
+                var itemtype = item.itemType;
+                let itemtypesrc = "/images/icons/";
+                if (itemtype == "Vegetarian") {
+                    itemtypesrc += "veg-icon.svg";
                 }
-                else if(itemtype=="Vegan"){
-                    itemtypesrc+="vegan-icon.svg";
+                else if (itemtype == "Vegan") {
+                    itemtypesrc += "vegan-icon.svg";
                 }
-                else{
-                    itemtypesrc+="non-veg-icon.svg";
+                else {
+                    itemtypesrc += "non-veg-icon.svg";
                 }
-                const itemtypeHtml=`<img src="${itemtypesrc}" class=" me-2 rounded-circle" alt="" style="width: 40px; height: 35px;">`;
+                
+                const itemtypeHtml = `<img src="${itemtypesrc}" class="me-2 rounded-circle" alt="" style="width: 40px; height: 35px;">`;
+                
                 const row = `
                     <tr>
                         <td><input class="form-check-input item-checkbox" type="checkbox" data-item-id="${item.itemId}"></td>
@@ -878,6 +1003,19 @@
                 tbody.insertAdjacentHTML('beforeend', row);
             });
         });
+}
+
+function updatePaginationInfo() {
+    const startItem = Math.min((currentItemPage - 1) * itemPageSize + 1, totalItems);
+    const endItem = Math.min(currentItemPage * itemPageSize, totalItems);
+    const totalPages = Math.ceil(totalItems / itemPageSize);
+    
+    // Update showing info
+    document.querySelector('.showing-info').textContent = `Showing ${startItem} - ${endItem} of ${totalItems}`;
+    
+    // Update button states
+    document.querySelector('.prev-page').disabled = currentItemPage <= 1;
+    document.querySelector('.next-page').disabled = currentItemPage >= totalPages;
 }
     // Save Category
     document.getElementById('saveCategory').addEventListener('click', () => {
@@ -1558,7 +1696,7 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
             loadModifiers(modifierGroupId);
         }
     });
-
+    
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function () {
         loadModifierGroups();
@@ -1566,40 +1704,64 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
     });
 
     // Modified loadModifiers function to show selected modifiers
-    function loadModifiers(modifierGroupId) {
-        fetch(`/Menu/GetModifiers?modifierGroupId=${modifierGroupId}`)
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector('#modifiersTable tbody');
-                tbody.innerHTML = '';
+    function loadModifiers(modifierGroupId, page = 1, searchTerm = '') {
+    if (!modifierGroupId) return;
+    
+    currentModifierGroupIdMain = modifierGroupId;
+    currentModifierPageMain = page;
+    currentModifierSearchTermMain = searchTerm || '';
 
-                if (data.length === 0) {
-                    tbody.innerHTML = `
+    fetch(`/Menu/GetModifiers?modifierGroupId=${modifierGroupId}&page=${page}&pageSize=${modifierPageSizeMain}&searchTerm=${encodeURIComponent(searchTerm)}`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#modifiersTable tbody');
+            tbody.innerHTML = '';
+            
+            totalModifiers = data.totalModifiers;
+            
+            // Update pagination info
+            updateModifierPaginationInfo();
+            
+            if (data.modifiers.length === 0) {
+                tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="text-center">No modifiers found for this group</td>
+                        <td colspan="6" class="text-center">No modifiers found</td>
                     </tr>
                 `;
-                    return;
-                }
+                return;
+            }
 
-                data.forEach(modifier => {
-                    const row = `
-    <tr data-modifier-id="${modifier.modifierId}">
-        <td><input class="form-check-input modifier-checkbox" type="checkbox" data-modifier-id="${modifier.modifierId}"></td>
-        <td>${modifier.modifierName}</td>
-        <td>${modifier.unit}</td>
-        <td>${modifier.rate}</td>
-        <td>${modifier.quantity}</td>
-        <td>
-            <i class="material-icons" onclick="editModifier(${modifier.modifierId})">edit</i>
-            <i class="material-icons" onclick="removeModifierFromGroup(${modifier.modifierId}, ${modifierGroupId})">delete</i>
-        </td>
-    </tr>
-`;
-                    tbody.insertAdjacentHTML('beforeend', row);
-                });
+            data.modifiers.forEach(modifier => {
+                const row = `
+                    <tr data-modifier-id="${modifier.modifierId}">
+                        <td><input class="form-check-input modifier-checkbox" type="checkbox" data-modifier-id="${modifier.modifierId}"></td>
+                        <td>${modifier.modifierName}</td>
+                        <td>${modifier.unit}</td>
+                        <td>${modifier.rate}</td>
+                        <td>${modifier.quantity}</td>
+                        <td>
+                            <i class="material-icons" onclick="editModifier(${modifier.modifierId})">edit</i>
+                            <i class="material-icons" onclick="removeModifierFromGroup(${modifier.modifierId}, ${modifierGroupId})">delete</i>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
             });
-    }
+        });
+}
+
+function updateModifierPaginationInfo() {
+    const startItem = Math.min((currentModifierPageMain - 1) * modifierPageSizeMain + 1, totalModifiersMain);
+    const endItem = Math.min(currentModifierPageMain * modifierPageSizeMain, totalModifiersMain);
+    const totalPages = Math.ceil(totalModifiersMain / modifierPageSizeMain);
+    
+    // Update showing info
+    document.querySelector('.modifier-showing-info').textContent = `Showing ${startItem} - ${endItem} of ${totalModifiersMain}`;
+    
+    // Update button states
+    document.querySelector('.modifier-prev-page').disabled = currentModifierPageMain <= 1;
+    document.querySelector('.modifier-next-page').disabled = currentModifierPageMain >= totalPages;
+}
 
     let tempModifierGroupData = null;
 
@@ -2075,6 +2237,7 @@ document.getElementById('editItemForm').addEventListener('submit', async functio
         document.getElementById('addModifierGroupForm').reset();
         tempModifierGroupData = null;
     }
+    
 </script>
 <style>
      #categoryList,

@@ -21,5 +21,6 @@ namespace Service.Interfaces
         Task<MenuCategoryViewModel> GetCategoryAsync(int id);
         Task UpdateCategoryAsync(MenuCategoryViewModel model);
         Task AddModifierGroupsToItemAsync(int itemId, List<ModifierGroupSelection> modifierGroups);
-    }
+        Task<(List<MenuItemViewModel> items, int totalItems)> GetItemsByCategoryAsync(int categoryId, int page, int pageSize, string searchTerm);
+    }   
 }

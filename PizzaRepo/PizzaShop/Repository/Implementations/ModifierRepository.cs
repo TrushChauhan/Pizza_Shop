@@ -34,7 +34,36 @@ namespace Repository.Implementations
                     (mg, m) => m)
                 .ToListAsync();
         }
-
+         public async Task<(List<ModifierViewModel> modifiers, int totalModifiers)> GetModifiersByGroupAsync(int modifierGroupId, int page, int pageSize, string searchTerm){
+                  var query = _context.Modifiergroupandmodifiers
+                .Where(m => m.Modifiergroupid == modifierGroupId && !m.Isdeleted)
+                .Join(_context.Modifiers.Where(m => !m.Isdeleted),
+                    mg => mg.Modifierid,
+                    m => m.Modifierid,
+                    (mg, m) => m);
+            
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            searchTerm = searchTerm.ToLower();
+            query = query.Where(m => m.Modifiername.ToLower().Contains(searchTerm));
+        }
+        
+        int totalModifiers = await query.CountAsync();
+        
+        var modifiers = await query
+            .OrderBy(m => m.Modifiername)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(m => new ModifierViewModel {
+                ModifierId = m.Modifierid,
+                ModifierName = m.Modifiername,
+                Unit = m.Unit,
+                Rate = m.Rate,
+                Quantity = m.Quantity
+            })
+            .ToListAsync();
+            return (modifiers,totalModifiers);
+        }
         public async Task AddModifierAsync(Modifier modifier, int modifierGroupId)
         {
             modifier.Modifierid = await _context.Modifiers.CountAsync() + 1;

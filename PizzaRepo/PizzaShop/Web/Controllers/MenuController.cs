@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Entity.ViewModel;
 using Service.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.Controllers
 {
@@ -13,22 +15,16 @@ namespace Web.Controllers
         private readonly INotyfService _notify;
         public MenuController(IMenuService menuService, IModifierService modifierService, IFileService fileService, INotyfService notify)
         {
-            _notify=notify;
+            _notify = notify;
             _menuService = menuService;
             _modifierService = modifierService;
             _fileService = fileService;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var categories = await _menuService.GetCategoriesAsync();
             return View(categories);
-        }
-
-        public async Task<IActionResult> GetItems(int categoryId)
-        {
-            var items = await _menuService.GetItemsByCategoryAsync(categoryId);
-            return Json(items);
         }
 
         [HttpPost]
@@ -38,7 +34,25 @@ namespace Web.Controllers
             _notify.Custom("Category Added Successfully", 5, "Green", "fa-regular fa-check");
             return Ok();
         }
+        [HttpGet]
+        public async Task<IActionResult> GetItems(int categoryId, int page = 1, int pageSize = 10, string searchTerm = "")
+        {
+            try
+            {
+                var (items, totalItems) = await _menuService.GetItemsByCategoryAsync(categoryId, page, pageSize, searchTerm);
 
+                return Ok(new
+                {
+                    items = items,
+                    totalItems = totalItems
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> DeleteCategory(int id)
         {
@@ -61,10 +75,24 @@ namespace Web.Controllers
             return Json(groups);
         }
 
-        public async Task<IActionResult> GetModifiers(int modifierGroupId)
+        [HttpGet]
+        public async Task<IActionResult> GetModifiers(int modifierGroupId, int page = 1, int pageSize = 10, string searchTerm = "")
         {
-            var modifiers = await _modifierService.GetModifiersByGroupAsync(modifierGroupId);
-            return Json(modifiers);
+            try
+            {
+                var (modifiers, totalModifiers) = await _modifierService.GetModifiersByGroupAsync(modifierGroupId, page, pageSize, searchTerm);
+
+                return Ok(new
+                {
+                    modifiers = modifiers,
+                    totalModifiers = totalModifiers
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost]

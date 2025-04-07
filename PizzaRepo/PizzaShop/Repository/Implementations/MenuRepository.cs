@@ -52,7 +52,37 @@ namespace Repository.Implementations
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<(List<MenuItemViewModel> items, int totalItems)> GetItemsByCategoryAsync(int categoryId, int page, int pageSize, string searchTerm)
+        {
+            
+            var query = _context.Menuitems
+                .Where(i => i.Categoryid == categoryId && !i.Isdeleted);
 
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(i => i.Itemname.Contains(searchTerm));
+            }
+
+            var totalItems = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(i => i.Itemname)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(i => new MenuItemViewModel
+                {
+                    ItemId = i.Itemid,
+                    ItemName = i.Itemname,
+                    ItemType = i.Itemtype,
+                    Rate = i.Rate,
+                    Quantity = i.Quantity,
+                    Available = i.Available,
+                    ItemImage = i.Itemimage
+                })
+                .ToListAsync();
+
+            return (items, totalItems);
+        }
         public async Task<int> AddItemAsync(MenuItemViewModel item)
         {
             var newItem = new Menuitem

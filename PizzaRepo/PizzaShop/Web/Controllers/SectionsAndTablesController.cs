@@ -1,5 +1,6 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Entity.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 
@@ -16,6 +17,7 @@ namespace Web.Controllers
             _sectionTableService = sectionAndTableService;
             _notify = notyfService;
         }
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             List<SectionViewModel> sections = await _sectionTableService.GetSectionsAsync();

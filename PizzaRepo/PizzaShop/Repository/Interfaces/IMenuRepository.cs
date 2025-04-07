@@ -22,6 +22,7 @@ namespace Repository.Interfaces
         Task<Menucategory> GetCategoryAsync(int id);
         Task UpdateCategoryAsync(Menucategory category);
         Task AddModifierGroupsToItemAsync(int itemId, List<ModifierGroupSelection> modifierGroups);
+        Task<(List<MenuItemViewModel> items, int totalItems)> GetItemsByCategoryAsync(int categoryId, int page, int pageSize, string searchTerm);
     }
 
 }

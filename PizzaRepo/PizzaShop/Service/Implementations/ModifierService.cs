@@ -5,6 +5,7 @@ using Repository.Interfaces;
 using Service.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace Service.Implementations
@@ -31,7 +32,9 @@ namespace Service.Implementations
             var modifiers = await _modifierRepository.GetModifiersByGroupAsync(modifierGroupId);
             return modifiers.Select(m => _mappingService.MapToViewModifier(m, modifierGroupId)).ToList();
         }
-
+        public async Task<(List<ModifierViewModel> modifiers, int totalModifiers)> GetModifiersByGroupAsync(int modifiergroupid, int page, int pageSize, string searchTerm){
+            return await _modifierRepository.GetModifiersByGroupAsync(modifiergroupid,  page, pageSize,searchTerm);
+        }
         public async Task AddModifierAsync(ModifierViewModel model)
         {
             var modifier = new Modifier

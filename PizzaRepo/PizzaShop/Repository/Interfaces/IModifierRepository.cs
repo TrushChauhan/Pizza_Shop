@@ -17,4 +17,5 @@ public interface IModifierRepository
     Task UpdateModifierGroupAsync(Modifiergroup group);
     Task<Modifier> GetModifierAsync(int id);
     Task UpdateModifierAsync(ModifierViewModel modifier);
+    Task<(List<ModifierViewModel> modifiers, int totalModifiers)> GetModifiersByGroupAsync(int categoryId, int page, int pageSize, string searchTerm);
 }
