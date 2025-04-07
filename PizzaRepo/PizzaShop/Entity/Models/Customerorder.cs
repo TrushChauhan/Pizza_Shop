@@ -19,11 +19,9 @@ public partial class Customerorder
     [Column("date")]
     public DateOnly Date { get; set; }
 
-    [Column("capacity")]
-    public int Capacity { get; set; }
-
     [Column("status")]
-    public bool Status { get; set; }
+    [StringLength(50)]
+    public string Status { get; set; } = null!;
 
     [Column("paymentmode")]
     [StringLength(50)]
@@ -33,7 +31,7 @@ public partial class Customerorder
     public int Rating { get; set; }
 
     [Column("totalamount")]
-    public int Totalamount { get; set; }
+    public double Totalamount { get; set; }
 
     [Column("createddate", TypeName = "timestamp without time zone")]
     public DateTime Createddate { get; set; }

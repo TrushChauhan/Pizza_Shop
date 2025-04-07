@@ -35,7 +35,7 @@
         </div>
     </div>
 </div>
-<div class="row-12s justify-content-end d-flex">
+<div class="row-12 justify-content-end d-flex">
     <div class="form-floating col-2 m-2">
     <input type="date" id= "fromDate" class=" form-control">
     <label for="fromDate">From Date</label>
@@ -98,3 +98,269 @@
                     </div>
                 </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize variables
+    let currentPage = 1;
+    let pageSize = parseInt($('.page-size-select').val());
+    let sortField = '';
+    let sortAscending = true;
+    let orders = [];
+    let filteredOrders = [];
+
+    // DOM elements
+    const searchInput = $('#search');
+    const orderStatusSelect = $('#orderStatus');
+    const orderTimeSelect = $('#orderTime');
+    const fromDateInput = $('#fromDate');
+    const toDateInput = $('#toDate');
+    const searchButton = $('.send-button').eq(1); // Second send-button is the search button
+    const clearButton = $('.back-button');
+    const prevPageButton = $('.prev-page');
+    const nextPageButton = $('.next-page');
+    const pageSizeSelect = $('.page-size-select');
+    const showingInfo = $('.showing-info');
+    const tbody = $('tbody');
+
+    // Initialize the page
+    loadOrders();
+    setupEventListeners();
+
+    function setupEventListeners() {
+        // Search and filter controls
+        searchInput.on('input', applyFilters);
+        orderStatusSelect.on('change', applyFilters);
+        orderTimeSelect.on('change', applyFilters);
+        searchButton.on('click', applyFilters);
+        clearButton.on('click', clearFilters);
+
+        // Sorting
+        $('th').each(function() {
+            const arrows = $(this).find('i');
+            if (arrows.length > 0) {
+                arrows.on('click', function() {
+                    const field = $(this).parent().text().trim().replace(/↑|↓/g, '').trim();
+                    sortField = field;
+                    sortAscending = $(this).hasClass('fa-arrow-up');
+                    applyFilters();
+                });
+            }
+        });
+
+        // Pagination
+        prevPageButton.on('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                applyFilters();
+            }
+        });
+
+        nextPageButton.on('click', function() {
+            const totalPages = Math.ceil(filteredOrders.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                applyFilters();
+            }
+        });
+
+        pageSizeSelect.on('change', function() {
+            pageSize = parseInt($(this).val());
+            currentPage = 1;
+            applyFilters();
+        });
+    }
+
+    function loadOrders() {
+        // In a real application, this would be an AJAX call to your API
+        // For now, we'll simulate data
+        $.ajax({
+            url: '/Order/GetOrders',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                orders = data;
+                applyFilters();
+            },
+            error: function(error) {
+                console.error('Error loading orders:', error);
+            }
+        });
+    }
+
+    function applyFilters() {
+        // Get filter values
+        const searchTerm = searchInput.val().toLowerCase();
+        const status = orderStatusSelect.val();
+        const timePeriod = orderTimeSelect.val();
+        const fromDate = fromDateInput.val();
+        const toDate = toDateInput.val();
+
+        // Filter orders
+        filteredOrders = orders.filter(order => {
+            // Search term filter (order ID or customer name)
+            const matchesSearch = searchTerm === '' || 
+                                 order.OrderId.toString().includes(searchTerm) || 
+                                 order.CustomerName.toLowerCase().includes(searchTerm);
+
+            // Status filter
+            const matchesStatus = status === 'All Status' || order.Status === status;
+
+            // Time period filter
+            let matchesTimePeriod = true;
+            if (timePeriod !== 'All time') {
+                const now = new Date();
+                const orderDate = new Date(order.Date);
+                
+                switch(timePeriod) {
+                    case 'Last 7 days':
+                        const sevenDaysAgo = new Date(now.setDate(now.getDate() - 7));
+                        matchesTimePeriod = orderDate >= sevenDaysAgo;
+                        break;
+                    case 'Last 30 days':
+                        const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
+                        matchesTimePeriod = orderDate >= thirtyDaysAgo;
+                        break;
+                    case 'Current Month':
+                        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                        matchesTimePeriod = orderDate >= firstDayOfMonth;
+                        break;
+                }
+            }
+
+            // Date range filter
+            let matchesDateRange = true;
+            if (fromDate && toDate) {
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                const orderDate = new Date(order.Date);
+                matchesDateRange = orderDate >= from && orderDate <= to;
+            }
+
+            return matchesSearch && matchesStatus && matchesTimePeriod && matchesDateRange;
+        });
+
+        // Apply sorting
+        if (sortField) {
+            filteredOrders.sort((a, b) => {
+                let valueA, valueB;
+                
+                switch(sortField) {
+                    case 'Order':
+                        valueA = a.OrderId;
+                        valueB = b.OrderId;
+                        break;
+                    case 'Date':
+                        valueA = new Date(a.Date);
+                        valueB = new Date(b.Date);
+                        break;
+                    case 'Customer':
+                        valueA = a.CustomerName.toLowerCase();
+                        valueB = b.CustomerName.toLowerCase();
+                        break;
+                    case 'Total Amount':
+                        valueA = a.TotalAmount;
+                        valueB = b.TotalAmount;
+                        break;
+                    default:
+                        return 0;
+                }
+                
+                if (sortAscending) {
+                    return valueA > valueB ? 1 : -1;
+                } else {
+                    return valueA < valueB ? 1 : -1;
+                }
+            });
+        }
+
+        // Update pagination
+        updatePagination();
+        renderOrders();
+    }
+
+    function renderOrders() {
+        tbody.empty();
+        
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, filteredOrders.length);
+        const paginatedOrders = filteredOrders.slice(startIndex, endIndex);
+
+        paginatedOrders.forEach(order => {
+            const row = `
+                <tr>
+                    <td>${order.OrderId}</td>
+                    <td>${new Date(order.Date).toLocaleDateString()}</td>
+                    <td>${order.CustomerName}</td>
+                    <td><span class="badge ${getStatusBadgeClass(order.Status)}">${order.Status}</span></td>
+                    <td>${order.PaymentMode}</td>
+                    <td>${renderRatingStars(order.Rating)}</td>
+                    <td>$${order.TotalAmount.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary view-order" data-id="${order.OrderId}">View</button>
+                    </td>
+                </tr>
+            `;
+            tbody.append(row);
+        });
+
+        // Add event listeners to view buttons
+        $('.view-order').on('click', function() {
+            const orderId = $(this).data('id');
+            // Implement view order functionality
+            console.log('View order:', orderId);
+        });
+    }
+
+    function getStatusBadgeClass(status) {
+        switch(status) {
+            case 'Pending': return 'bg-warning';
+            case 'In Progress': return 'bg-info';
+            case 'Served': return 'bg-primary';
+            case 'Completed': return 'bg-success';
+            case 'Cancelled': return 'bg-danger';
+            case 'On Hold': return 'bg-secondary';
+            case 'Failed': return 'bg-dark';
+            default: return 'bg-light text-dark';
+        }
+    }
+
+    function renderRatingStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars += '<i class="fas fa-star text-warning"></i>';
+            } else {
+                stars += '<i class="far fa-star text-warning"></i>';
+            }
+        }
+        return stars;
+    }
+
+    function updatePagination() {
+        const totalOrders = filteredOrders.length;
+        const totalPages = Math.ceil(totalOrders / pageSize);
+        
+        // Update showing info
+        const startItem = totalOrders === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+        const endItem = Math.min(currentPage * pageSize, totalOrders);
+        showingInfo.text(`Showing ${startItem} - ${endItem} of ${totalOrders}`);
+
+        // Update button states
+        prevPageButton.prop('disabled', currentPage === 1);
+        nextPageButton.prop('disabled', currentPage === totalPages || totalPages === 0);
+    }
+
+    function clearFilters() {
+        searchInput.val('');
+        orderStatusSelect.val('All Status');
+        orderTimeSelect.val('All time');
+        fromDateInput.val('');
+        toDateInput.val('');
+        sortField = '';
+        sortAscending = true;
+        currentPage = 1;
+        applyFilters();
+    }
+});
+</script>
