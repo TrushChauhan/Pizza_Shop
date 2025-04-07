@@ -14,12 +14,12 @@
     </div>
 </div>
 <form asp-action="EditUser" method="post" enctype="multipart/form-data">
-<input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="UserId" />
     <input type="hidden" asp-for="ExistingProfileImage" />
     <div class="add-user-frame">
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="text" class="form-control" asp-for="Firstname" id="firstName" placeholder="First Name" >
+                <input type="text" class="form-control" asp-for="Firstname" id="firstName" placeholder="First Name">
                 <span class="text-danger" asp-validation-for="Firstname"></span>
                 <label for="firstName">First Name</label>
             </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-    
+
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <input type="text" class="form-control" asp-for="Username" id="userName" placeholder="User Name">
@@ -47,10 +47,10 @@
             </div>
         </div>
 
-      
+
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
-                <input type="" class="form-control" asp-for="Email" id="email"  placeholder="Email" disabled>
+                <input type="" class="form-control" asp-for="Email" id="email" placeholder="Email" disabled>
                 <label for="email">Email</label>
             </div>
             <div class="col form-floating m-2 p-0">
@@ -63,15 +63,22 @@
             </div>
         </div>
 
-        
+
         <div class="row m-2">
+
             <div class="col form-floating m-2 p-0">
-                <input type="file" class="form-control" id="profileImage" asp-for="ProfileImageFile" placeholder="Profile Image">
-                <label for="profileImage">Profile Image</label>
+                <div class="custom-file-upload">
+                    <label for="profileImage" class="browse-file-button w-100 p-3 d-flex flex-column justify-content-center align-items-center">
+                        <i class="fa-solid fa-cloud-arrow-up mt-3"></i>
+                        <p>Browse Files</p>
+                    </label>
+                    <input type="file" class="" id="profileImage" asp-for="ProfileImageFile" style="display: none;">
+                </div>
             </div>
+
         </div>
 
-        
+
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <select class="form-select" id="ddlCountry" asp-for="Countryid">
@@ -93,8 +100,8 @@
             </div>
         </div>
         <input type="hidden" id="selectedCountryId" value="@Model.Countryid" />
-<input type="hidden" id="selectedStateId" value="@Model.Stateid" />
-<input type="hidden" id="selectedCityId" value="@Model.Cityid" />
+        <input type="hidden" id="selectedStateId" value="@Model.Stateid" />
+        <input type="hidden" id="selectedCityId" value="@Model.Cityid" />
         <div class="row m-2">
             <div class="col form-floating m-2 p-0">
                 <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" asp-for="Zipcode">
@@ -123,88 +130,90 @@
     </div>
 </form>
 <script>
-    
+
     $(document).ready(function () {
-    var selectedCountryId = $('#selectedCountryId').val();
-    var selectedStateId = $('#selectedStateId').val();
-    var selectedCityId = $('#selectedCityId').val();
+        $('#profileImage').removeAttr('required');
+        var selectedCountryId = $('#selectedCountryId').val();
+        var selectedStateId = $('#selectedStateId').val();
+        var selectedCityId = $('#selectedCityId').val();
 
-    var ddlCountry = $('#ddlCountry');
-    ddlCountry.append($("<option></option>").val('').html('Please Select Country'));
+        var ddlCountry = $('#ddlCountry');
+        ddlCountry.append($("<option></option>").val('').html('Please Select Country'));
 
-    $.ajax({
-        url: '@Url.Action("LoadCountry", "Main")',
-        type: 'GET',
-        dataType: 'json',
-        success: function (d) {
-            $.each(d, function (i, country) {
-                ddlCountry.append($("<option></option>").val(country.countryid).html(country.name));
-            });
-            if (selectedCountryId) {
-                ddlCountry.val(selectedCountryId).trigger('change');
+        $.ajax({
+            url: '@Url.Action("LoadCountry", "Main")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (d) {
+                $.each(d, function (i, country) {
+                    ddlCountry.append($("<option></option>").val(country.countryid).html(country.name));
+                });
+                if (selectedCountryId) {
+                    ddlCountry.val(selectedCountryId).trigger('change');
+                }
+            },
+            error: function () {
+                alert('Error loading countries!');
             }
-        },
-        error: function () {
-            alert('Error loading countries!');
-        }
-    });
+        });
 
-    $("#ddlCountry").change(function () {
-        var countryId = parseInt($(this).val());
-        if (!isNaN(countryId)) {
-            var ddlState = $('#ddlState');
-            ddlState.empty();
+        $("#ddlCountry").change(function () {
+            var countryId = parseInt($(this).val());
+            if (!isNaN(countryId)) {
+                var ddlState = $('#ddlState');
+                ddlState.empty();
 
-            $.ajax({
-                url: '@Url.Action("GetState", "Main")',
-                type: 'GET',
-                dataType: 'json',
-                data: { countryId: countryId },
-                success: function (d) {
-                    ddlState.append($("<option></option>").val('').html('Select State'));
-                    $.each(d, function (i, state) {
-                        ddlState.append($("<option></option>").val(state.stateid).html(state.name));
-                    });
-                    if (selectedStateId) {
-                        ddlState.val(selectedStateId).trigger('change');
+                $.ajax({
+                    url: '@Url.Action("GetState", "Main")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { countryId: countryId },
+                    success: function (d) {
+                        ddlState.append($("<option></option>").val('').html('Select State'));
+                        $.each(d, function (i, state) {
+                            ddlState.append($("<option></option>").val(state.stateid).html(state.name));
+                        });
+                        if (selectedStateId) {
+                            ddlState.val(selectedStateId).trigger('change');
+                        }
+                    },
+                    error: function () {
+                        alert('Error loading states!');
                     }
-                },
-                error: function () {
-                    alert('Error loading states!');
-                }
-            });
-        }
-    });
-    $("#ddlState").change(function () {
-        var stateId = parseInt($(this).val());
-        if (!isNaN(stateId)) {
-            var ddlCity = $('#ddlCity');
-            ddlCity.empty();
-            ddlCity.append($("<option></option>").val('').html('Please wait ...'));
+                });
+            }
+        });
+        $("#ddlState").change(function () {
+            var stateId = parseInt($(this).val());
+            if (!isNaN(stateId)) {
+                var ddlCity = $('#ddlCity');
+                ddlCity.empty();
+                ddlCity.append($("<option></option>").val('').html('Please wait ...'));
 
-            $.ajax({
-                url: '@Url.Action("GetCity", "Main")',
-                type: 'GET',
-                dataType: 'json',
-                data: { stateId: stateId },
-                success: function (d) {
-                    ddlCity.empty();
-                    ddlCity.append($("<option></option>").val('').html('Select City'));
-                    $.each(d, function (i, city) {
-                        ddlCity.append($("<option></option>").val(city.cityid).html(city.name));
-                    });
-                    if (selectedCityId) {
-                        ddlCity.val(selectedCityId);
+                $.ajax({
+                    url: '@Url.Action("GetCity", "Main")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { stateId: stateId },
+                    success: function (d) {
+                        ddlCity.empty();
+                        ddlCity.append($("<option></option>").val('').html('Select City'));
+                        $.each(d, function (i, city) {
+                            ddlCity.append($("<option></option>").val(city.cityid).html(city.name));
+                        });
+                        if (selectedCityId) {
+                            ddlCity.val(selectedCityId);
+                        }
+                    },
+                    error: function () {
+                        alert('Error loading cities!');
                     }
-                },
-                error: function () {
-                    alert('Error loading cities!');
-                }
-            });
-        }
+                });
+            }
+        });
     });
-});
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>

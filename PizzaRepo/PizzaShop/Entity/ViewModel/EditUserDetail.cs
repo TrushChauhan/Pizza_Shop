@@ -7,7 +7,7 @@ public class EditUserDetail
 {
     public int UserId{get; set;}
     public string ExistingProfileImage{get; set;}
-    public IFormFile ProfileImageFile{get; set; }
+    public IFormFile? ProfileImageFile{get; set; }
     public string ProfileimagePath { get; set; }
 
     [Required(ErrorMessage = "Role is required")]

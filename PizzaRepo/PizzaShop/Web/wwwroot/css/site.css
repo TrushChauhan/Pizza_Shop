@@ -191,6 +191,11 @@ th{
 .select-profile-picture{
   border: 1px solid gray;
 }
+.browse-file-button{
+  border: black dashed 1px;
+  cursor: pointer;
+  
+}
 .add-user-button{
   background-color: rgba(66,119,153,255);
   color: white;

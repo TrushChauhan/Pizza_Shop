@@ -8,17 +8,21 @@
         My Profile
     </div>
     <form asp-action="UpdateUserProfile" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="UserId" />
-    <input type="hidden" asp-for="ExistingProfileImage" />
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="ExistingProfileImage" />
         <div class="My-Profile col">
             <div class="row">
                 <img class="" src="~/images/profile_div_bg.jpg" alt="" height="50px">
             </div>
             <div class="row p-0 ">
                 <div class="col mt-4 d-flex">
-                    
                     <img src="@Model.ExistingProfileImage"
                         class="rounded-circle w-25 position-relative bottom-50 mt-5 mx-4 p-0">
+                    <label for="profileImageInput" class="profile-edit-icon">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" class="d-none" asp-for="ProfileImageFile" id="profileImageInput"
+                        accept="image/*">
                     <div class="row d-flex flex-column">
                         <div class="d-flex col">
                             <p class="Firstname fs-4 fw-bold">@Model.Firstname</p>
@@ -109,10 +113,46 @@
         </div>
     </form>
 </div>
+<style>
+    .profile-edit-icon {
+        position: relative;
+        top: 40px;
+        right: 30px;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        width: 5%;
+        height: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-edit-icon:hover {
+        background-color: #0b5ed7;
+        transform: scale(1.1);
+    }
 
+</style>
 <script>
-
     $(document).ready(function () {
+        document.getElementById('profileImageInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImagePreview').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            // If no file is selected, revert to the original image
+            const originalImage = '@(string.IsNullOrEmpty(Model.ExistingProfileImage) ? "/images/Default_pfp.svg.png" : Model.ExistingProfileImage)';
+            document.getElementById('profileImagePreview').src = originalImage;
+        }
+    });
         var selectedCountryId = $('#selectedCountryId').val();
         var selectedStateId = $('#selectedStateId').val();
         var selectedCityId = $('#selectedCityId').val();
