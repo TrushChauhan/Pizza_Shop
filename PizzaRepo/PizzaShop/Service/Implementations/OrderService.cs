@@ -15,12 +15,13 @@ public class OrderService : IOrderService
         _orderRepository = orderRepository;
     }
 
-    public async Task<List<Customerorder>> GetOrders(OrderFilterModel filters)
+    public async Task<(List<Customerorder> Orders, int TotalCount)> GetOrders(OrderFilterModel filters)
     {
         var query = _orderRepository.GetAll()
             .Include(o => o.Customer)
             .Where(o => !o.Isdeleted);
 
+        // Search Term Filter
         if (!string.IsNullOrEmpty(filters.SearchTerm))
         {
             query = query.Where(o =>
@@ -28,21 +29,26 @@ public class OrderService : IOrderService
                 o.Customer.Customername.Contains(filters.SearchTerm));
         }
 
+        // Status Filter
         if (filters.Status != "All Status" && !string.IsNullOrEmpty(filters.Status))
         {
             query = query.Where(o => o.Status == filters.Status);
         }
 
+        // Date Range Filter
         if (filters.FromDate.HasValue)
         {
-            query = query.Where(o => o.Date >= DateOnly.FromDateTime(filters.FromDate.Value));
+            var fromDate = DateOnly.FromDateTime(filters.FromDate.Value);
+            query = query.Where(o => o.Date >= fromDate);
         }
 
         if (filters.ToDate.HasValue)
         {
-            query = query.Where(o => o.Date <= DateOnly.FromDateTime(filters.ToDate.Value));
+            var toDate = DateOnly.FromDateTime(filters.ToDate.Value);
+            query = query.Where(o => o.Date <= toDate);
         }
 
+        // Time Period Filter (using Createddate)
         if (filters.TimePeriod != "All time" && !string.IsNullOrEmpty(filters.TimePeriod))
         {
             var now = DateTime.Now;
@@ -63,40 +69,45 @@ public class OrderService : IOrderService
             }
         }
 
-        // Apply sorting
+        // Sorting
         if (!string.IsNullOrEmpty(filters.SortField))
         {
             switch (filters.SortField)
             {
                 case "Order":
-                    query = filters.SortAscending ?
-                        query.OrderBy(o => o.Orderid) :
-                        query.OrderByDescending(o => o.Orderid);
+                    query = filters.SortAscending
+                        ? query.OrderBy(o => o.Orderid)
+                        : query.OrderByDescending(o => o.Orderid);
                     break;
                 case "Date":
-                    query = filters.SortAscending ?
-                        query.OrderBy(o => o.Date) :
-                        query.OrderByDescending(o => o.Date);
+                    query = filters.SortAscending
+                        ? query.OrderBy(o => o.Date)
+                        : query.OrderByDescending(o => o.Date);
                     break;
                 case "Customer":
-                    query = filters.SortAscending ?
-                        query.OrderBy(o => o.Customer.Customername) :
-                        query.OrderByDescending(o => o.Customer.Customername);
+                    query = filters.SortAscending
+                        ? query.OrderBy(o => o.Customer.Customername)
+                        : query.OrderByDescending(o => o.Customer.Customername);
                     break;
                 case "Total Amount":
-                    query = filters.SortAscending ?
-                        query.OrderBy(o => o.Totalamount) :
-                        query.OrderByDescending(o => o.Totalamount);
+                    query = filters.SortAscending
+                        ? query.OrderBy(o => o.Totalamount)
+                        : query.OrderByDescending(o => o.Totalamount);
                     break;
             }
         }
-        if (filters.PageSize > 0)
-        {
-            query = query
-                .Skip((filters.PageNumber - 1) * filters.PageSize)
-                .Take(filters.PageSize);
-        }
 
-        return await query.ToListAsync();
+        // Total Count before pagination
+        int totalCount = await query.CountAsync();
+
+        // Pagination
+        var pagedQuery = query
+            .Skip((filters.PageNumber - 1) * filters.PageSize)
+            .Take(filters.PageSize);
+
+        var orders = await pagedQuery.ToListAsync();
+
+        return (orders, totalCount);
     }
+
 }

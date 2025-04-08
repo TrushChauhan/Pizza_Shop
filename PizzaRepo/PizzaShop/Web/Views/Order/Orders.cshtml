@@ -3,10 +3,7 @@
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
     ViewData["Title"] = "Orders";
 }
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
 <div class="row-11 d-flex">
     <div class="text-Users-title my-3 mx-2 fs-2 col-3">
         Orders
@@ -14,40 +11,40 @@
     <div class="d-flex col-9 p-0">
         <div class="row w-100 p-0 d-flex justify-content-end">
 
-        <input type="text" class="my-3 mx-2 col-3" id="search" placeholder="Search">
-        <select class="form-floating my-3 mx-2 col-3" id="orderStatus" required>
-            <option value="All Status">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Served">Served</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
-            <option value="On Hold">On Hold</option>
-            <option value="Failed">Failed</option>
-        </select>
-        <select class="my-3 mx-2 form-floating col-3" id="orderTime" required>
-            <option value="All time">All time</option>
-            <option value="Last 7 days">Last 7 days</option>
-            <option value="Last 30 days">Last 30 days</option>
-            <option value="Current Month">Current Month</option>
-        </select>
-        <button class="col-1 my-3 mx-2 p-2 send-button w-auto">
-            <div class="row d-flex">
-            <i class=" fa-solid fa-file-export col-1 my-2"></i>
-            <p class="col-1 my-1">Export</p>
-            </div>
-        </button>
+            <input type="text" class="my-3 mx-2 col-3" id="search" placeholder="Search">
+            <select class="form-floating my-3 mx-2 col-3" id="orderStatus" required>
+                <option value="All Status">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Served">Served</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Failed">Failed</option>
+            </select>
+            <select class="my-3 mx-2 form-floating col-3" id="orderTime" required>
+                <option value="All time">All time</option>
+                <option value="Last 7 days">Last 7 days</option>
+                <option value="Last 30 days">Last 30 days</option>
+                <option value="Current Month">Current Month</option>
+            </select>
+            <button class="col-1 my-3 mx-2 p-2 send-button w-auto">
+                <div class="row d-flex">
+                    <i class=" fa-solid fa-file-export col-1 my-2"></i>
+                    <p class="col-1 my-1">Export</p>
+                </div>
+            </button>
         </div>
     </div>
 </div>
 <div class="row-12 justify-content-end d-flex">
     <div class="form-floating col-2 m-2">
-    <input type="date" id= "fromDate" class=" form-control">
-    <label for="fromDate">From Date</label>
+        <input type="date" id="fromDate" class=" form-control">
+        <label for="fromDate">From Date</label>
     </div>
     <div class="form-floating col-2 m-2">
-    <input type="date" id="toDate" class="form-control">
-    <label for="toDate">To Date</label>
+        <input type="date" id="toDate" class="form-control">
+        <label for="toDate">To Date</label>
     </div>
     <div class="col-1 w-auto m-2">
         <button class="send-button w-auto px-4 py-3">
@@ -61,302 +58,197 @@
     </div>
 </div>
 <div class="table-responsive table-shadow row m-2">
-  <table class="table ">
-    <thead>
-      <tr>
-        <th scope="col" class="text-black-50">Order<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
-        <th scope="col" class="text-black-50">Date<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
-        <th scope="col" class="text-black-50">Customer<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
-        <th scope="col" class="text-black-50">Status</th>
-        <th scope="col" class="text-black-50">Payment Mode</th>
-        <th scope="col" class="text-black-50">Rating</th>
-        <th scope="col" class="text-black-50">Total Amount<i class="fa-solid fa-arrow-up p-1"></i><i class="fa-solid fa-arrow-down"></i></th>
-        <th scope="col" class="text-black-50">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-    </tbody>
-  </table>
-  <div class="row mt-4 pagination-container justify-content-end">
-                    <div class="col-md-8 d-flex align-items-center justify-content-end">
-                        <div class="row mx-2">
-                            <select class="form-select page-size-select">
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                            </select>
-                        </div>
-                        <div>
-                            <span class="text-muted showing-info">
-                                Showing 0 - 0 of 0
-                            </span>
-                        </div>
-                        <div>
-                            <button class="btn btn-outline-primary mx-1 prev-page" disabled>
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button class="btn btn-outline-primary mx-1 next-page" disabled>
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col" class="text-black-50">Order<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
+                        class="fa-solid fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Date<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
+                        class="fa-solid fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Customer<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
+                        class="fa-solid fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Status</th>
+                <th scope="col" class="text-black-50">Payment Mode</th>
+                <th scope="col" class="text-black-50">Rating</th>
+                <th scope="col" class="text-black-50">Total Amount<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
+                        class="fa-solid fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <div class="row mt-4 pagination-container justify-content-end">
+        <div class="col-md-8 d-flex align-items-center justify-content-end">
+            <div class="row mx-2">
+                <select class="form-select page-size-select">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </div>
+            <div>
+                <span class="text-muted showing-info">
+                    Showing 0 - 0 of 0
+                </span>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary mx-1 prev-page" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="btn btn-outline-primary mx-1 next-page" disabled>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentPage = 1;
+        let pageSize = parseInt($('.page-size-select').val());
+        let sortField = '';
+        let sortAscending = true;
+        let totalCount = 0;
 
-    let currentPage = 1;
-    let pageSize = parseInt($('.page-size-select').val());
-    let sortField = '';
-    let sortAscending = true;
-    let orders = [];
-    let filteredOrders = [];
+        const searchInput = $('#search');
+        const orderStatusSelect = $('#orderStatus');
+        const orderTimeSelect = $('#orderTime');
+        const fromDateInput = $('#fromDate');
+        const toDateInput = $('#toDate');
+        const searchButton = $('.send-button').eq(1);
+        const clearButton = $('.back-button');
+        const prevPageButton = $('.prev-page');
+        const nextPageButton = $('.next-page');
+        const pageSizeSelect = $('.page-size-select');
+        const showingInfo = $('.showing-info');
+        const tbody = $('tbody');
 
-    const searchInput = $('#search');
-    const orderStatusSelect = $('#orderStatus');
-    const orderTimeSelect = $('#orderTime');
-    const fromDateInput = $('#fromDate');
-    const toDateInput = $('#toDate');
-    const searchButton = $('.send-button').eq(1);
-    const clearButton = $('.back-button');
-    const prevPageButton = $('.prev-page');
-    const nextPageButton = $('.next-page');
-    const pageSizeSelect = $('.page-size-select');
-    const showingInfo = $('.showing-info');
-    const tbody = $('tbody');
+        loadOrders();
 
-    // Initialize the page
-    loadOrders();
-    setupEventListeners();
-
-    function setupEventListeners() {
-        // Search and filter controls
-        searchInput.on('input', applyFilters);
-        orderStatusSelect.on('change', applyFilters);
-        orderTimeSelect.on('change', applyFilters);
-        searchButton.on('click', applyFilters);
+        // Event Listeners
+        searchInput.on('input', loadOrders);
+        orderStatusSelect.on('change', loadOrders);
+        orderTimeSelect.on('change', loadOrders);
+        fromDateInput.on('change', loadOrders);
+        toDateInput.on('change', loadOrders);
+        searchButton.on('click', loadOrders);
         clearButton.on('click', clearFilters);
+        pageSizeSelect.on('change', function () {
+            pageSize = parseInt($(this).val());
+            currentPage = 1;
+            loadOrders();
+        });
+        prevPageButton.on('click', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                loadOrders();
+            }
+        });
+        nextPageButton.on('click', function () {
+            const totalPages = Math.ceil(totalCount / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadOrders();
+            }
+        });
 
         // Sorting
-        $('th').each(function() {
-            const arrows = $(this).find('i');
+        $('th').each(function () {
+            const th = $(this);
+            const arrows = th.find('i');
             if (arrows.length > 0) {
-                arrows.on('click', function() {
-                    const field = $(this).parent().text().trim().replace(/↑|↓/g, '').trim();
+                arrows.on('click', function () {
+                    const field = th.text().trim().replace(/↑|↓/g, '').trim();
+                    const isAsc = $(this).hasClass('fa-arrow-up');
+
                     sortField = field;
-                    sortAscending = $(this).hasClass('fa-arrow-up');
-                    applyFilters();
+                    sortAscending = isAsc;
+                    currentPage = 1;
+
+                    loadOrders();
                 });
             }
         });
 
-        // Pagination
-        prevPageButton.on('click', function() {
-            if (currentPage > 1) {
-                currentPage--;
-                applyFilters();
-            }
-        });
+        function loadOrders() {
+            const filters = {
+                searchTerm: searchInput.val(),
+                status: orderStatusSelect.val(),
+                timePeriod: orderTimeSelect.val(),
+                fromDate: fromDateInput.val(),
+                toDate: toDateInput.val(),
+                sortField: sortField,
+                sortAscending: sortAscending,
+                pageNumber: currentPage,
+                pageSize: pageSize
+            };
 
-        nextPageButton.on('click', function() {
-            const totalPages = Math.ceil(filteredOrders.length / pageSize);
-            if (currentPage < totalPages) {
-                currentPage++;
-                applyFilters();
-            }
-        });
-
-        pageSizeSelect.on('change', function() {
-            pageSize = parseInt($(this).val());
-            currentPage = 1;
-            applyFilters();
-        });
-    }
-
-    function loadOrders() {
-        $.ajax({
-            url: '/Order/GetOrders',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                orders = data;
-                applyFilters();
-            },
-            error: function(error) {
-                console.error('Error loading orders:', error);
-            }
-        });
-    }
-
-    function applyFilters() {
-        // Get filter values
-        const searchTerm = searchInput.val().toLowerCase();
-        const status = orderStatusSelect.val();
-        const timePeriod = orderTimeSelect.val();
-        const fromDate = fromDateInput.val();
-        const toDate = toDateInput.val();
-
-        filteredOrders = orders.filter(order => {
-            // Search term filter (order ID or customer name)
-            const matchesSearch = searchTerm === '' || 
-                                 order.OrderId.toString().includes(searchTerm) || 
-                                 order.CustomerName.toLowerCase().includes(searchTerm);
-
-            // Status filter
-            const matchesStatus = status === 'All Status' || order.Status === status;
-
-            // Time period filter
-            let matchesTimePeriod = true;
-            if (timePeriod !== 'All time') {
-                const now = new Date();
-                const orderDate = new Date(order.Date);
-                
-                switch(timePeriod) {
-                    case 'Last 7 days':
-                        const sevenDaysAgo = new Date(now.setDate(now.getDate() - 7));
-                        matchesTimePeriod = orderDate >= sevenDaysAgo;
-                        break;
-                    case 'Last 30 days':
-                        const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
-                        matchesTimePeriod = orderDate >= thirtyDaysAgo;
-                        break;
-                    case 'Current Month':
-                        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-                        matchesTimePeriod = orderDate >= firstDayOfMonth;
-                        break;
-                }
-            }
-
-            let matchesDateRange = true;
-            if (fromDate && toDate) {
-                const from = new Date(fromDate);
-                const to = new Date(toDate);
-                const orderDate = new Date(order.Date);
-                matchesDateRange = orderDate >= from && orderDate <= to;
-            }
-
-            return matchesSearch && matchesStatus && matchesTimePeriod && matchesDateRange;
-        });
-
-        // Apply sorting
-        if (sortField) {
-            filteredOrders.sort((a, b) => {
-                let valueA, valueB;
-                
-                switch(sortField) {
-                    case 'Order':
-                        valueA = a.OrderId;
-                        valueB = b.OrderId;
-                        break;
-                    case 'Date':
-                        valueA = new Date(a.Date);
-                        valueB = new Date(b.Date);
-                        break;
-                    case 'Customer':
-                        valueA = a.CustomerName.toLowerCase();
-                        valueB = b.CustomerName.toLowerCase();
-                        break;
-                    case 'Total Amount':
-                        valueA = a.TotalAmount;
-                        valueB = b.TotalAmount;
-                        break;
-                    default:
-                        return 0;
-                }
-                
-                if (sortAscending) {
-                    return valueA > valueB ? 1 : -1;
-                } else {
-                    return valueA < valueB ? 1 : -1;
+            $.ajax({
+                url: '/Order/GetOrders',
+                type: 'GET',
+                data: filters,
+                success: function (response) {
+                    tbody.empty();
+                    response.data.forEach(order => {
+                        const row = `
+                        <tr>
+                            <td>${order.orderId}</td>
+                            <td>${new Date(order.date).toLocaleDateString()}</td>
+                            <td>${order.customerName}</td>
+                            <td>${order.status}</span></td>
+                            <td>${order.paymentMode}</td>
+                            <td>${renderRatingStars(order.rating)}</td>
+                            <td>${order.totalAmount}</td>
+                            <td>
+                                <i class="fa-regular fa-file-pdf" data-id="${order.orderId}"></i>
+                                <i class="fa-regular fa-eye"></i>
+                            </td>
+                        </tr>
+                    `;
+                        tbody.append(row);
+                    });
+                    totalCount = response.totalCount;
+                    updatePagination();
+                },
+                error: function (error) {
+                    console.error('Error loading orders:', error);
                 }
             });
         }
-        updatePagination();
-        renderOrders();
-    }
 
-    function renderOrders() {
-        tbody.empty();
-        
-        const startIndex = (currentPage - 1) * pageSize;
-        const endIndex = Math.min(startIndex + pageSize, filteredOrders.length);
-        const paginatedOrders = filteredOrders.slice(startIndex, endIndex);
-
-        paginatedOrders.forEach(order => {
-            const row = `
-                <tr>
-                    <td>${order.OrderId}</td>
-                    <td>${new Date(order.Date).toLocaleDateString()}</td>
-                    <td>${order.CustomerName}</td>
-                    <td><span class="badge ${getStatusBadgeClass(order.Status)}">${order.Status}</span></td>
-                    <td>${order.PaymentMode}</td>
-                    <td>${renderRatingStars(order.Rating)}</td>
-                    <td>$${order.TotalAmount}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary view-order" data-id="${order.OrderId}">View</button>
-                    </td>
-                </tr>
-            `;
-            tbody.append(row);
-        });
-        $('.view-order').on('click', function() {
-            const orderId = $(this).data('id');
-
-            console.log('View order:', orderId);
-        });
-    }
-
-    function getStatusBadgeClass(status) {
-        switch(status) {
-            case 'Pending': return 'bg-warning';
-            case 'In Progress': return 'bg-info';
-            case 'Served': return 'bg-primary';
-            case 'Completed': return 'bg-success';
-            case 'Cancelled': return 'bg-danger';
-            case 'On Hold': return 'bg-secondary';
-            case 'Failed': return 'bg-dark';
-            default: return 'bg-light text-dark';
+        function clearFilters() {
+            searchInput.val('');
+            orderStatusSelect.val('All Status');
+            orderTimeSelect.val('All time');
+            fromDateInput.val('');
+            toDateInput.val('');
+            sortField = '';
+            sortAscending = true;
+            currentPage = 1;
+            loadOrders();
         }
-    }
 
-    function renderRatingStars(rating) {
-        let stars = '';
-        for (let i = 1; i <= 5; i++) {
-            if (i <= rating) {
-                stars += '<i class="fas fa-star text-warning"></i>';
-            } else {
-                stars += '<i class="far fa-star text-warning"></i>';
+        function updatePagination() {
+            const totalPages = Math.ceil(totalCount / pageSize);
+            const startItem = totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+            const endItem = Math.min(currentPage * pageSize, totalCount);
+            showingInfo.text(`Showing ${startItem} - ${endItem} of ${totalCount}`);
+
+            prevPageButton.prop('disabled', currentPage === 1);
+            nextPageButton.prop('disabled', currentPage === totalPages || totalPages === 0);
+        }
+
+        function renderRatingStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += i <= rating
+                    ? '<i class="fas fa-star text-warning"></i>'
+                    : '<i class="far fa-star text-warning"></i>';
             }
+            return stars;
         }
-        return stars;
-    }
-
-    function updatePagination() {
-        const totalOrders = filteredOrders.length;
-        const totalPages = Math.ceil(totalOrders / pageSize);
-        
-        // Update showing info
-        const startItem = totalOrders === 0 ? 0 : (currentPage - 1) * pageSize + 1;
-        const endItem = Math.min(currentPage * pageSize, totalOrders);
-        showingInfo.text(`Showing ${startItem} - ${endItem} of ${totalOrders}`);
-
-        // Update button states
-        prevPageButton.prop('disabled', currentPage === 1);
-        nextPageButton.prop('disabled', currentPage === totalPages || totalPages === 0);
-    }
-
-    function clearFilters() {
-        searchInput.val('');
-        orderStatusSelect.val('All Status');
-        orderTimeSelect.val('All time');
-        fromDateInput.val('');
-        toDateInput.val('');
-        sortField = '';
-        sortAscending = true;
-        currentPage = 1;
-        applyFilters();
-    }
-});
+    });
 </script>

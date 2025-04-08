@@ -5,5 +5,5 @@ namespace Service.Interfaces;
 
 public interface IOrderService
 {
-    Task<List<Customerorder>> GetOrders(OrderFilterModel filters);
+    Task<(List<Customerorder> Orders, int TotalCount)> GetOrders(OrderFilterModel filters);
 }

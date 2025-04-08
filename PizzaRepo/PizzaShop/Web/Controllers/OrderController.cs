@@ -3,45 +3,46 @@ using Entity.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 
-namespace Web.Controllers{
-public class OrderController : Controller
+namespace Web.Controllers
 {
-    private readonly IOrderService _orderService;
-
-    public OrderController(IOrderService orderService)
+    public class OrderController : Controller
     {
-        _orderService = orderService;
-    }
+        private readonly IOrderService _orderService;
 
-    public IActionResult Index()
-    {
-        return View("Orders");
-    }
-
-    [HttpGet]
-public async Task<IActionResult> GetOrders([FromQuery] OrderFilterModel filters)
-{
-    try
-    {
-        var orders = await _orderService.GetOrders(filters);
-
-        var orderViewModels = orders.Select(o => new OrderViewModel
+        public OrderController(IOrderService orderService)
         {
-            OrderId = o.Orderid,
-            Date = o.Date.ToDateTime(TimeOnly.MinValue),
-            CustomerName = o.Customer?.Customername ?? "Unknown",
-            Status = o.Status,
-            PaymentMode = o.Paymentmode,
-            Rating = o.Rating,
-            TotalAmount = o.Totalamount
-        }).ToList();
+            _orderService = orderService;
+        }
 
-        return Ok(orderViewModels);
+        public IActionResult Index()
+        {
+            return View("Orders");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOrders([FromQuery] OrderFilterModel filters)
+        {
+            try
+            {
+                var (orders, totalCount) = await _orderService.GetOrders(filters);
+
+                var orderViewModels = orders.Select(o => new OrderViewModel
+                {
+                    OrderId = o.Orderid,
+                    Date = o.Date.ToDateTime(TimeOnly.MinValue),
+                    CustomerName = o.Customer.Customername,
+                    Status = o.Status,
+                    PaymentMode = o.Paymentmode,
+                    Rating = o.Rating,
+                    TotalAmount = o.Totalamount
+                }).ToList();
+
+                return Ok(new { data = orderViewModels, totalCount });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
     }
-    catch (Exception ex)
-    {
-        return StatusCode(500, new { error = ex.Message });
-    }
-}
-}
 }
