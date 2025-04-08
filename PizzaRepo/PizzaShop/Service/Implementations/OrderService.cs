@@ -15,13 +15,12 @@ public class OrderService : IOrderService
         _orderRepository = orderRepository;
     }
 
-    public List<Customerorder> GetOrders(OrderFilterModel filters)
+    public async Task<List<Customerorder>> GetOrders(OrderFilterModel filters)
     {
         var query = _orderRepository.GetAll()
             .Include(o => o.Customer)
             .Where(o => !o.Isdeleted);
 
-        // Apply filters
         if (!string.IsNullOrEmpty(filters.SearchTerm))
         {
             query = query.Where(o =>
@@ -29,7 +28,7 @@ public class OrderService : IOrderService
                 o.Customer.Customername.Contains(filters.SearchTerm));
         }
 
-        if (filters.Status != "All Status")
+        if (filters.Status != "All Status" && !string.IsNullOrEmpty(filters.Status))
         {
             query = query.Where(o => o.Status == filters.Status);
         }
@@ -44,8 +43,7 @@ public class OrderService : IOrderService
             query = query.Where(o => o.Date <= DateOnly.FromDateTime(filters.ToDate.Value));
         }
 
-        // Apply time period filter
-        if (filters.TimePeriod != "All time")
+        if (filters.TimePeriod != "All time" && !string.IsNullOrEmpty(filters.TimePeriod))
         {
             var now = DateTime.Now;
             switch (filters.TimePeriod)
@@ -92,8 +90,6 @@ public class OrderService : IOrderService
                     break;
             }
         }
-
-        // Apply pagination
         if (filters.PageSize > 0)
         {
             query = query
@@ -101,6 +97,6 @@ public class OrderService : IOrderService
                 .Take(filters.PageSize);
         }
 
-        return query.ToList();
+        return await query.ToListAsync();
     }
 }

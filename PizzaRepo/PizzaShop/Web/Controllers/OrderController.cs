@@ -19,19 +19,18 @@ public class OrderController : Controller
     }
 
     [HttpGet]
-public IActionResult GetOrders([FromQuery] OrderFilterModel filters)
+public async Task<IActionResult> GetOrders([FromQuery] OrderFilterModel filters)
 {
     try
     {
-        var orders = _orderService.GetOrders(filters);
-        
-        // Convert to ViewModel
+        var orders = await _orderService.GetOrders(filters);
+
         var orderViewModels = orders.Select(o => new OrderViewModel
         {
             OrderId = o.Orderid,
             Date = o.Date.ToDateTime(TimeOnly.MinValue),
             CustomerName = o.Customer?.Customername ?? "Unknown",
-            Status = o.Status, // Directly use the string status now
+            Status = o.Status,
             PaymentMode = o.Paymentmode,
             Rating = o.Rating,
             TotalAmount = o.Totalamount

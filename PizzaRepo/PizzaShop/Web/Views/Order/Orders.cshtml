@@ -1,7 +1,12 @@
+@model List<Entity.ViewModel.OrderViewModel>
 @{
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
     ViewData["Title"] = "Orders";
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <div class="row-11 d-flex">
     <div class="text-Users-title my-3 mx-2 fs-2 col-3">
         Orders
@@ -101,7 +106,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Initialize variables
+
     let currentPage = 1;
     let pageSize = parseInt($('.page-size-select').val());
     let sortField = '';
@@ -109,13 +114,12 @@
     let orders = [];
     let filteredOrders = [];
 
-    // DOM elements
     const searchInput = $('#search');
     const orderStatusSelect = $('#orderStatus');
     const orderTimeSelect = $('#orderTime');
     const fromDateInput = $('#fromDate');
     const toDateInput = $('#toDate');
-    const searchButton = $('.send-button').eq(1); // Second send-button is the search button
+    const searchButton = $('.send-button').eq(1);
     const clearButton = $('.back-button');
     const prevPageButton = $('.prev-page');
     const nextPageButton = $('.next-page');
@@ -172,8 +176,6 @@
     }
 
     function loadOrders() {
-        // In a real application, this would be an AJAX call to your API
-        // For now, we'll simulate data
         $.ajax({
             url: '/Order/GetOrders',
             type: 'GET',
@@ -196,7 +198,6 @@
         const fromDate = fromDateInput.val();
         const toDate = toDateInput.val();
 
-        // Filter orders
         filteredOrders = orders.filter(order => {
             // Search term filter (order ID or customer name)
             const matchesSearch = searchTerm === '' || 
@@ -228,7 +229,6 @@
                 }
             }
 
-            // Date range filter
             let matchesDateRange = true;
             if (fromDate && toDate) {
                 const from = new Date(fromDate);
@@ -273,8 +273,6 @@
                 }
             });
         }
-
-        // Update pagination
         updatePagination();
         renderOrders();
     }
@@ -295,7 +293,7 @@
                     <td><span class="badge ${getStatusBadgeClass(order.Status)}">${order.Status}</span></td>
                     <td>${order.PaymentMode}</td>
                     <td>${renderRatingStars(order.Rating)}</td>
-                    <td>$${order.TotalAmount.toFixed(2)}</td>
+                    <td>$${order.TotalAmount}</td>
                     <td>
                         <button class="btn btn-sm btn-primary view-order" data-id="${order.OrderId}">View</button>
                     </td>
@@ -303,11 +301,9 @@
             `;
             tbody.append(row);
         });
-
-        // Add event listeners to view buttons
         $('.view-order').on('click', function() {
             const orderId = $(this).data('id');
-            // Implement view order functionality
+
             console.log('View order:', orderId);
         });
     }
