@@ -28,7 +28,7 @@
                 <option value="Last 30 days">Last 30 days</option>
                 <option value="Current Month">Current Month</option>
             </select>
-            <button class="col-1 my-3 mx-2 p-2 send-button w-auto">
+            <button class="col-1 my-3 mx-2 p-2 send-button export-button w-auto">
                 <div class="row d-flex">
                     <i class=" fa-solid fa-file-export col-1 my-2"></i>
                     <p class="col-1 my-1">Export</p>
@@ -61,17 +61,21 @@
     <table class="table ">
         <thead>
             <tr>
-                <th scope="col" class="text-black-50">Order<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
-                        class="fa-solid fa-arrow-down sort-desc"></i></th>
-                <th scope="col" class="text-black-50">Date<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
-                        class="fa-solid fa-arrow-down sort-desc"></i></th>
-                <th scope="col" class="text-black-50">Customer<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
-                        class="fa-solid fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Order<i
+                        class="fa-solid fa-arrow-up material-icons p-1 sort-asc"></i><i
+                        class="fa-solid material-icons fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Date<i
+                        class="fa-solid fa-arrow-up material-icons p-1 sort-asc"></i><i
+                        class="fa-solid material-icons fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Customer<i
+                        class="fa-solid material-icons fa-arrow-up p-1 sort-asc"></i><i
+                        class="fa-solid material-icons fa-arrow-down sort-desc"></i></th>
                 <th scope="col" class="text-black-50">Status</th>
                 <th scope="col" class="text-black-50">Payment Mode</th>
                 <th scope="col" class="text-black-50">Rating</th>
-                <th scope="col" class="text-black-50">Total Amount<i class="fa-solid fa-arrow-up p-1 sort-asc"></i><i
-                        class="fa-solid fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Total Amount<i
+                        class="fa-solid fa-arrow-up p-1 material-icons sort-asc"></i><i
+                        class="fa-solid fa-arrow-down material-icons sort-desc"></i></th>
                 <th scope="col" class="text-black-50">Action</th>
             </tr>
         </thead>
@@ -250,5 +254,19 @@
             }
             return stars;
         }
+        $('.export-button').on('click', function () {
+            const filters = {
+                searchTerm: searchInput.val(),
+                status: orderStatusSelect.val(),
+                timePeriod: orderTimeSelect.val(),
+                fromDate: fromDateInput.val(),
+                toDate: toDateInput.val(),
+                sortField: sortField,
+                sortAscending: sortAscending
+            };
+            const queryString = $.param(filters);
+
+            window.location.href = `/Order/Export?${queryString}`;
+        });
     });
 </script>

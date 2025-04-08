@@ -15,7 +15,7 @@ public class OrderService : IOrderService
         _orderRepository = orderRepository;
     }
 
-    public async Task<(List<Customerorder> Orders, int TotalCount)> GetOrders(OrderFilterModel filters)
+    public async Task<(List<OrderViewModel> Orders, int TotalCount)> GetOrders(OrderFilterModel filters)
     {
         var query = _orderRepository.GetAll()
             .Include(o => o.Customer)
@@ -44,14 +44,13 @@ public class OrderService : IOrderService
 
         if (filters.ToDate.HasValue)
         {
-            var toDate = DateOnly.FromDateTime(filters.ToDate.Value);
+            DateOnly toDate = DateOnly.FromDateTime(filters.ToDate.Value);
             query = query.Where(o => o.Date <= toDate);
         }
 
-        // Time Period Filter (using Createddate)
         if (filters.TimePeriod != "All time" && !string.IsNullOrEmpty(filters.TimePeriod))
         {
-            var now = DateTime.Now;
+            DateTime now = DateTime.Now;
             switch (filters.TimePeriod)
             {
                 case "Last 7 days":
@@ -69,7 +68,6 @@ public class OrderService : IOrderService
             }
         }
 
-        // Sorting
         if (!string.IsNullOrEmpty(filters.SortField))
         {
             switch (filters.SortField)
@@ -96,18 +94,24 @@ public class OrderService : IOrderService
                     break;
             }
         }
-
-        // Total Count before pagination
         int totalCount = await query.CountAsync();
 
-        // Pagination
         var pagedQuery = query
             .Skip((filters.PageNumber - 1) * filters.PageSize)
             .Take(filters.PageSize);
 
         var orders = await pagedQuery.ToListAsync();
-
-        return (orders, totalCount);
+        var orderViewModels = orders.Select(o => new OrderViewModel
+        {
+            OrderId = o.Orderid,
+            Date = o.Date.ToDateTime(TimeOnly.MinValue),
+            CustomerName = o.Customer.Customername,
+            Status = o.Status,
+            PaymentMode = o.Paymentmode,
+            Rating = o.Rating,
+            TotalAmount = o.Totalamount
+        }).ToList();
+        return (orderViewModels, totalCount);
     }
 
 }
