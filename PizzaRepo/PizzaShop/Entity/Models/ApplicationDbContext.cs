@@ -45,6 +45,10 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Orderdetail> Orderdetails { get; set; }
 
+    public virtual DbSet<Orderdetailmodifier> Orderdetailmodifiers { get; set; }
+
+    public virtual DbSet<Ordertable> Ordertables { get; set; }
+
     public virtual DbSet<Ordertax> Ordertaxes { get; set; }
 
     public virtual DbSet<Roleandpermission> Roleandpermissions { get; set; }
@@ -267,6 +271,26 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Order).WithMany(p => p.Orderdetails)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("orderdetail_orderid_fkey");
+        });
+
+        modelBuilder.Entity<Orderdetailmodifier>(entity =>
+        {
+            entity.HasKey(e => e.Ordermodifierid).HasName("orderdetailmodifier_pkey");
+
+            entity.HasOne(d => d.Modifier).WithMany(p => p.Orderdetailmodifiers).HasConstraintName("orderdetailmodifier_modifierid_fkey");
+
+            entity.HasOne(d => d.Orderdetail).WithMany(p => p.Orderdetailmodifiers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("orderdetailmodifier_orderdetailid_fkey");
+        });
+
+        modelBuilder.Entity<Ordertable>(entity =>
+        {
+            entity.HasKey(e => e.Ordertableid).HasName("ordertable_pkey");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Ordertables).HasConstraintName("ordertable_orderid_fkey");
+
+            entity.HasOne(d => d.Table).WithMany(p => p.Ordertables).HasConstraintName("ordertable_tableid_fkey");
         });
 
         modelBuilder.Entity<Ordertax>(entity =>

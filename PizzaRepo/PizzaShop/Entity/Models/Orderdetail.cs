@@ -34,8 +34,8 @@ public partial class Orderdetail
     [Column("orderid")]
     public int Orderid { get; set; }
 
-    [Column("invoiceid")]
-    public int Invoiceid { get; set; }
+    [Column("quantity")]
+    public int Quantity { get; set; }
 
     [ForeignKey("Createdby")]
     [InverseProperty("OrderdetailCreatedbyNavigations")]
@@ -52,4 +52,7 @@ public partial class Orderdetail
     [ForeignKey("Orderid")]
     [InverseProperty("Orderdetails")]
     public virtual Customerorder Order { get; set; } = null!;
+
+    [InverseProperty("Orderdetail")]
+    public virtual ICollection<Orderdetailmodifier> Orderdetailmodifiers { get; } = new List<Orderdetailmodifier>();
 }

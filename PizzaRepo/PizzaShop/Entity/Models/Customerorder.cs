@@ -73,5 +73,8 @@ public partial class Customerorder
     public virtual ICollection<Orderdetail> Orderdetails { get; } = new List<Orderdetail>();
 
     [InverseProperty("Order")]
+    public virtual ICollection<Ordertable> Ordertables { get; } = new List<Ordertable>();
+
+    [InverseProperty("Order")]
     public virtual ICollection<Ordertax> Ordertaxes { get; } = new List<Ordertax>();
 }

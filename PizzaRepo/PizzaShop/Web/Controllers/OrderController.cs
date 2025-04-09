@@ -52,7 +52,6 @@ namespace Web.Controllers
         "Payment Mode", "Rating", "Total Amount"
             };
 
-            // Helper to create merged info cells
             void SetInfoCell(string title, string value, int startRow, int startCol)
             {
                 var titleCell = worksheet.Cells[startRow, startCol, startRow + 1, startCol + 1];
@@ -125,8 +124,6 @@ namespace Web.Controllers
                     worksheet.Cells[i, j].Style.HorizontalAlignment = ExcelHorizontalAlignment.CenterContinuous;
                 }
             }
-
-            // Set specific column widths
             worksheet.Column(1).Width = 2;
             worksheet.Column(2).Width = 4;
             worksheet.Column(3).Width = 3;
@@ -139,6 +136,9 @@ namespace Web.Controllers
 
             var fileName = $"OrdersExport.xlsx";
             return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+        public IActionResult GetOrderDetails(){
+            return View("OrderDetails");
         }
     }
 }

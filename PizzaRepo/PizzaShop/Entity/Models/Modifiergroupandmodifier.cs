@@ -17,7 +17,7 @@ public partial class Modifiergroupandmodifier
     public int Modifierid { get; set; }
 
     [Column("modifiergroupid")]
-    public int Modifiergroupid { get; set; }
+    public int? Modifiergroupid { get; set; }
 
     [Column("isdeleted")]
     public bool Isdeleted { get; set; }

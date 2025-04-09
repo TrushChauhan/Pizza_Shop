@@ -56,4 +56,7 @@ public partial class Modifier
 
     [InverseProperty("Modifier")]
     public virtual ICollection<Modifiergroupandmodifier> Modifiergroupandmodifiers { get; } = new List<Modifiergroupandmodifier>();
+
+    [InverseProperty("Modifier")]
+    public virtual ICollection<Orderdetailmodifier> Orderdetailmodifiers { get; } = new List<Orderdetailmodifier>();
 }

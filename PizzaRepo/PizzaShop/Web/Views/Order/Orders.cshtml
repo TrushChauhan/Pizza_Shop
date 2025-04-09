@@ -208,7 +208,7 @@
                             <td>${order.totalAmount}</td>
                             <td>
                                 <i class="fa-regular fa-file-pdf" data-id="${order.orderId}"></i>
-                                <i class="fa-regular fa-eye"></i>
+                                <i class="fa-regular fa-eye ordereye"></i>
                             </td>
                         </tr>
                     `;
@@ -254,6 +254,10 @@
             }
             return stars;
         }
+        $('.ordereye').on('click',function(){
+            console.log("Click");
+            fetch('/Order/GetOrderDetails')
+        });
         $('.export-button').on('click', function () {
             const filters = {
                 searchTerm: searchInput.val(),

@@ -55,6 +55,9 @@ public partial class Dinetable
     [InverseProperty("DinetableModifiedbyNavigations")]
     public virtual Userlogin? ModifiedbyNavigation { get; set; }
 
+    [InverseProperty("Table")]
+    public virtual ICollection<Ordertable> Ordertables { get; } = new List<Ordertable>();
+
     [ForeignKey("Sectionid")]
     [InverseProperty("Dinetables")]
     public virtual Section Section { get; set; } = null!;
