@@ -1,23 +1,25 @@
+@model Entity.ViewModel.OrderDetailsViewModel
 @{
     Layout = "~/Views/Shared/_SecondLayout.cshtml";
     ViewData["Title"] = "OrderDetails";
 }
+
 <div class="row-11 d-flex align-items-center justify-content-center">
     <div class="row" style="width: 1000px;">
         <div class="text-Users-title my-3 mx-2 fs-2 col-6">
             Order-Details
         </div>
         <div class="col my-3 text-align-right">
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" onclick="window.history.back()">
                 Back
             </button>
         </div>
         <div class=" col-12 my-3 bg-white table-shadow p-2">
             <div class="row-12 d-flex w-100 align-items-center">
                 <p class=" col-3 fs-4 ">Order Summary</p>
-                <p class="order-status fs-5 col-2">InProgress</p>
+                <p class="order-status fs-5 col-2">@Model.Status</p>
                 <div class="col-7 d-flex justify-content-end p-2">
-                    <button class="row px-3 p-2 send-button export-button ">
+                    <button class="row px-3 p-2 send-button export-button" onclick="exportOrderDetails(@Model.OrderId)">
                         <div class=" d-flex">
                             <i class=" fa-solid fa-file-export my-2"></i>
                             <p class=" my-1">Export</p>
@@ -30,7 +32,7 @@
                     Invoice No :
                 </div>
                 <div class="col-1">
-                    #123
+                    @Model.InvoiceNumber
                 </div>
             </div>
             <div class="row w-100">
@@ -38,25 +40,25 @@
                     Paid On:
                 </div>
                 <div class="col-1 w-auto">
-                    22-10-2024 11:30
+                    @Model.PaidOn.ToString("yyyy-MM-dd HH:mm")
                 </div>
                 <div class="col-2 w-auto">
                     Placed On:
                 </div>
                 <div class="col-1 w-auto">
-                    22-10-2024 11:30
+                    @Model.PlacedOn.ToString("yyyy-MM-dd HH:mm")
                 </div>
                 <div class="col-2 w-auto">
                     Modified On:
                 </div>
                 <div class="col-1 w-auto">
-                    22-10-2024 11:30
+                    @(Model.ModifiedOn?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")
                 </div>
                 <div class="col-2 w-auto">
                     Order Duration:
                 </div>
                 <div class="col-1 w-auto">
-                    15:30
+                    @Model.OrderDuration.ToString(@"hh\:mm")
                 </div>
             </div>
         </div>
@@ -68,16 +70,16 @@
                 </p>
             </div>
             <div class="row">
-                <p class="col">Name: JohnDoe</p>
+                <p class="col">Name: @Model.CustomerName</p>
             </div>
             <div class="row">
-                <p class="col">Phone: 1234567890</p>
+                <p class="col">Phone: @Model.Phone</p>
             </div>
             <div class="row">
-                <p class="col">No. Of Person: 7</p>
+                <p class="col">No. Of Person: @Model.NumberOfPersons</p>
             </div>
             <div class="row">
-                <p class="col">Email : john@test.com</p>
+                <p class="col">Email : @Model.Email</p>
             </div>
         </div>
         <div class="col-6 bg-white table-shadow">
@@ -88,10 +90,10 @@
                 </p>
             </div>
             <div class="row">
-                <p class="col">Table: T3</p>
+                <p class="col">Table: @Model.TableName</p>
             </div>
             <div class="row">
-                <p class="col">Section: Groundfloor</p>
+                <p class="col">Section: @Model.SectionName</p>
             </div>
         </div>
         <div class="col-12 my-2 bg-white table-shadow">
@@ -108,67 +110,81 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                Grilled Burger
-                                <!-- modifiers -->
-                                <ul>
-                                <li>
-                                    tomato
-                                </li>
-                                <li>
-                                    capsicum
-                                </li>
-                                </ul>
-                            </td>
-                            <td>
-                                2
-                                <ul>
-                                    <li>
-                                        2
-                                    </li>
-                                    <li>
-                                        2
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>
-                                70.00
-                                <ul>
-                                    <li>
-                                        10.00
-                                    </li>
-                                    <li>
-                                        15.00
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>
-                                140
-                                <ul>
-                                    <li>
-                                        20
-                                    </li>
-                                    <li>
-                                        30
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td>
+                                    @item.SrNo
+                                </td>
+                                <td>
+                                    @item.ItemName
+                                    @if (item.Modifiers.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var modifier in item.Modifiers)
+                                            {
+                                                <li>
+                                                    @modifier.ModifierName
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </td>
+                                <td>
+                                    @item.Quantity
+                                    @if (item.Modifiers.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var modifier in item.Modifiers)
+                                            {
+                                                <li>
+                                                    @modifier.Quantity
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </td>
+                                <td>
+                                    @item.Price.ToString("0.00")
+                                    @if (item.Modifiers.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var modifier in item.Modifiers)
+                                            {
+                                                <li>
+                                                    @modifier.Price.ToString("0.00")
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </td>
+                                <td>
+                                    @item.TotalAmount.ToString("0.00")
+                                    @if (item.Modifiers.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var modifier in item.Modifiers)
+                                            {
+                                                <li>
+                                                    @modifier.TotalAmount.ToString("0.00")
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
-            <div class="justify-content-end  col">
-                <p> SubTotal: 399.00</p>
-                <p> SGST: 39.00</p>
-                <p> CGST: 39.00</p>
-                <p> GST: 39.00</p>
-                <p> Other: 39.00</p>
-                <p> Total: 599.00</p>
+            <div class="justify-content-end col">
+                <p> SubTotal: @Model.SubTotal.ToString("0.00")</p>
+                @foreach (var tax in Model.Taxes)
+                {
+                    <p> @tax.TaxName: @tax.TaxValue.ToString("0.00")</p>
+                }
+                <p> Total: @Model.TotalAmount.ToString("0.00")</p>
             </div>
         </div>
-    
     </div>
+</div>

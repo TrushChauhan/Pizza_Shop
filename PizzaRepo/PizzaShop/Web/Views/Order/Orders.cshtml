@@ -254,9 +254,9 @@
             }
             return stars;
         }
-        $('.ordereye').on('click',function(){
-            console.log("Click");
-            fetch('/Order/GetOrderDetails')
+        $('tbody').on('click', '.ordereye', function () {
+            const orderId = $(this).closest('tr').find('td:first').text();
+            window.location.href = `/Order/GetOrderDetails?orderId=${orderId}`;
         });
         $('.export-button').on('click', function () {
             const filters = {

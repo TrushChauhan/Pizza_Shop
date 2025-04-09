@@ -137,8 +137,17 @@ namespace Web.Controllers
             var fileName = $"OrdersExport.xlsx";
             return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
-        public IActionResult GetOrderDetails(){
-            return View("OrderDetails");
+        public async Task<IActionResult> GetOrderDetails(int orderId)
+        {
+            try
+            {
+                var orderDetails = await _orderService.GetOrderDetails(orderId);
+                return View("OrderDetails", orderDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
     }
 }

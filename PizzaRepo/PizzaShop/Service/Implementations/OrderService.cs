@@ -9,10 +9,12 @@ namespace Service.Implementations;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly ApplicationDbContext _context;
 
-    public OrderService(IOrderRepository orderRepository)
+    public OrderService(IOrderRepository orderRepository,ApplicationDbContext context)
     {
         _orderRepository = orderRepository;
+        _context=context;
     }
 
     public async Task<(List<OrderViewModel> Orders, int TotalCount)> GetOrders(OrderFilterModel filters)
@@ -112,6 +114,80 @@ public class OrderService : IOrderService
             TotalAmount = o.Totalamount
         }).ToList();
         return (orderViewModels, totalCount);
+    }
+    public async Task<OrderDetailsViewModel> GetOrderDetails(int orderId)
+    {
+        var order = await _context.Customerorders
+            .Include(o => o.Customer)
+            .Include(o => o.Ordertables)
+                .ThenInclude(ot => ot.Table)
+                    .ThenInclude(t => t.Section)
+            .Include(o => o.Orderdetails)
+                .ThenInclude(od => od.Item)
+            .Include(o => o.Orderdetails)
+                .ThenInclude(od => od.Orderdetailmodifiers)
+                    .ThenInclude(odm => odm.Modifier)
+            .Include(o => o.Ordertaxes)
+                .ThenInclude(ot => ot.Tax)
+            .Include(o => o.Invoices)
+            .FirstOrDefaultAsync(o => o.Orderid == orderId);
+
+        if (order == null)
+        {
+            return null;
+        }
+
+        var invoice = order.Invoices.FirstOrDefault();
+
+        var orderDetails = new OrderDetailsViewModel
+        {
+            OrderId = order.Orderid,
+            InvoiceNumber = invoice != null ? $"#{invoice.Invoiceid}" : "N/A",
+            Status = order.Status,
+            PaymentMode = order.Paymentmode,
+            PaidOn = invoice?.Createddate ?? order.Createddate,
+            PlacedOn = order.Createddate,
+            ModifiedOn = order.Modifieddate,
+            OrderDuration = (invoice?.Createddate ?? DateTime.Now) - order.Createddate,
+            TotalAmount = order.Totalamount,
+            SubTotal = order.Orderdetails.Sum(od => od.Quantity * od.Item.Rate),
+
+            // Customer Details
+            CustomerName = order.Customer?.Customername,
+            Phone = order.Customer?.Phonenumber,
+            Email = order.Customer?.Email,
+            NumberOfPersons = order.Ordertables.FirstOrDefault()?.Table?.Capacity ?? 0,
+
+            // Table Details
+            TableName = order.Ordertables.FirstOrDefault()?.Table?.Tablename ?? "N/A",
+            SectionName = order.Ordertables.FirstOrDefault()?.Table?.Section?.Sectionname ?? "N/A",
+
+            // Order Items
+            OrderItems = order.Orderdetails.Select((od, index) => new OrderItemViewModel
+            {
+                SrNo = index + 1,
+                ItemName = od.Item.Itemname,
+                Quantity = od.Quantity,
+                Price = od.Item.Rate,
+                TotalAmount = od.Quantity * od.Item.Rate,
+                Modifiers = od.Orderdetailmodifiers.Select(odm => new OrderItemModifierViewModel
+                {
+                    ModifierName = odm.Modifier?.Modifiername,
+                    Quantity = 1, // Assuming 1 quantity per modifier
+                    Price = odm.Modifier?.Rate ?? 0,
+                    TotalAmount = odm.Modifier?.Rate ?? 0
+                }).ToList()
+            }).ToList(),
+
+            // Taxes
+            Taxes = order.Ordertaxes.Select(ot => new OrderTaxViewModel
+            {
+                TaxName = ot.Tax?.Taxname,
+                TaxValue = ot.Taxvalue
+            }).ToList()
+        };
+
+        return orderDetails;
     }
 
 }
