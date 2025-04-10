@@ -13,8 +13,8 @@
     <SourceRoot Include="C:\Users\pci203\.nuget\packages\" />
   </ItemGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Content Include="$(NuGetPackageRoot)select.htmltopdf\24.1.0\contentFiles\any\any\Select.Html.dep" Condition="Exists('$(NuGetPackageRoot)select.htmltopdf\24.1.0\contentFiles\any\any\Select.Html.dep')">
-      <NuGetPackageId>Select.HtmlToPdf</NuGetPackageId>
+    <Content Include="$(NuGetPackageRoot)select.htmltopdf.netcore\24.1.0\contentFiles\any\any\Select.Html.dep" Condition="Exists('$(NuGetPackageRoot)select.htmltopdf.netcore\24.1.0\contentFiles\any\any\Select.Html.dep')">
+      <NuGetPackageId>Select.HtmlToPdf.NetCore</NuGetPackageId>
       <NuGetPackageVersion>24.1.0</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>

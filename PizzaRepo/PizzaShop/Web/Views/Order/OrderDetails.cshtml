@@ -21,14 +21,12 @@
                 <p class=" col-3 fs-4 ">Order Summary</p>
                 <p class="order-status fs-5 col-2">@Model.Status</p>
                 <div class="col-7 d-flex justify-content-end p-2">
-                    <a asp-action="GetPdf" asp-controller="Order">
-                    <button class="row px-3 p-2 send-button export-button">
-                        <div class=" d-flex">
-                            <i class=" fa-solid fa-file-export my-2"></i>
-                            <p class=" my-1">Export</p>
+                    <button id="exportPdfBtn" class="row px-3 p-2 send-button export-button">
+                        <div class="d-flex">
+                            <i class="fa-solid fa-file-export my-2"></i>
+                            <p class="my-1">Export</p>
                         </div>
                     </button>
-                    </a>
                 </div>
             </div>
             <div class="row">
@@ -184,7 +182,7 @@
             <div class="justify-content-end w-100 col">
                 <p class="text-align-right"> SubTotal:
                     @{
-                        double subTotal = 0,total=0;
+                        double subTotal = 0, total = 0;
                         @foreach (var item in Model.OrderItems)
                         {
                             subTotal += item.Price * item.Quantity;
@@ -192,11 +190,11 @@
                             {
                                 @foreach (var modifier in item.Modifiers)
                                 {
-                                    subTotal+=modifier.Price * modifier.Quantity;
+                                    subTotal += modifier.Price * modifier.Quantity;
                                 }
                             }
                         }
-                        total+=subTotal;
+                        total += subTotal;
                     }
                     @("₹ " + subTotal.ToString("0.00"))</p>
                 @foreach (var tax in Model.Taxes)
@@ -209,3 +207,48 @@
         </div>
     </div>
 </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const exportBtn = document.getElementById('exportPdfBtn');
+
+            exportBtn.addEventListener('click', function () {
+                // Get the order ID from the URL or you can pass it from the model
+                const orderId = @Model.OrderId; 
+
+                exportBtn.disabled = true;
+                exportBtn.querySelector('p').textContent = 'Generating...';
+
+                // Call the controller method
+                fetch(`/Order/GetPdf?id=${orderId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        // Create download link
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `invoice.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+
+                        // Clean up
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to generate PDF. Please try again.');
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        exportBtn.disabled = false;
+                        exportBtn.querySelector('p').textContent = 'Export';
+                    });
+            });
+        });
+    </script>

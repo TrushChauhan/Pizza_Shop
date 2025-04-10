@@ -281,7 +281,7 @@
               "target": "Package",
               "version": "[4.11.0, )"
             },
-            "Select.HtmlToPdf": {
+            "Select.HtmlToPdf.NetCore": {
               "target": "Package",
               "version": "[24.1.0, )"
             }

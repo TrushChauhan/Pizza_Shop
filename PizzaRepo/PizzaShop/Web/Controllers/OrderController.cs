@@ -4,6 +4,10 @@ using Service.Interfaces;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using SelectPdf;
+using System.IO;
+using System.Threading.Tasks;
+
 using OfficeOpenXml.Drawing;
 namespace Web.Controllers
 {
@@ -149,8 +153,40 @@ namespace Web.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
-        public async Task<IActionResult> GetPdf(){
-            return View("OrderDetailPdf");
+
+        [HttpGet]
+        public async Task<IActionResult> GetPdf(int id)
+        {
+            // Fetch order details
+            var orderDetails = await _orderService.GetOrderDetails(id);
+
+            // Render the view to HTML string
+            var viewHtml = await this.RenderViewAsync("OrderDetailPdf", orderDetails);
+
+            // Instantiate the HTML to PDF converter
+            var converter = new HtmlToPdf();
+
+            // Configure converter options
+            converter.Options.PdfPageSize = PdfPageSize.A4;
+            converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+            converter.Options.MarginLeft = 10;
+            converter.Options.MarginRight = 10;
+            converter.Options.MarginTop = 10;
+            converter.Options.MarginBottom = 10;
+
+            // Convert HTML to PDF
+            var pdfDocument = converter.ConvertHtmlString(viewHtml);
+
+            // Save the PDF to a memory stream
+            var pdfStream = new MemoryStream();
+            pdfDocument.Save(pdfStream);
+            pdfStream.Position = 0; 
+
+            // Close the PDF document
+            pdfDocument.Close();
+
+            // Return PDF file
+            return File(pdfStream, "application/pdf", $"Invoice_{orderDetails.InvoiceNumber}.pdf");
         }
     }
 }

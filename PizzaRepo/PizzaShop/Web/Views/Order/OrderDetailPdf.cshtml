@@ -1,6 +1,6 @@
+@model Entity.ViewModel.OrderDetailsViewModel
 @{
-    Layout = "~/Views/Shared/_SecondLayout.cshtml";
-    ViewData["Title"] = "OrderDetails";
+    Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en" class="">
@@ -13,12 +13,14 @@
             font-family: Arial, sans-serif;
             width: auto;
             display: flex;
-            justify-content :center;
-            align-items : center;
+            justify-content: center;
+            align-items: center;
         }
-        .info-container{
+
+        .info-container {
             display: flex;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
@@ -27,10 +29,12 @@
         .section-customer {
             margin-bottom: 20px;
         }
-        .section-order{
-            margin-left: 160px;
+
+        .section-order {
+            margin-left: 380px;
             margin-bottom: 20px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -43,6 +47,7 @@
         }
 
         th {
+            border: black;
             background-color: #0066cc;
             color: white;
         }
@@ -50,91 +55,123 @@
         .total {
             font-weight: bold;
         }
-        .text-right{
+
+        .text-right {
             text-align: right;
         }
-        .center-horizon-vertical{
+
+        .center-horizon-vertical {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .font-blue{
+
+        .font-blue {
             color: #0066cc;
+        }
+
+        .modifier-row {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        tr:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 
-<body class="">
+<body class="w-100">
     <div>
-    <div class="header font-blue">
-        <h2>PIZZASHOP</h2>
-    </div>
-    <div class="info-container">
+        <div>
+            <img src="~/images/logos/pizzashop_logo.png">
+        </div>
+        <div class="header font-blue">
+            <h2>PIZZASHOP</h2>
+        </div>
+        <div class="info-container">
+            <div class="section-customer">
+                <strong class="font-blue">Customer Details:</strong><br>
+                Name: @Model.CustomerName<br>
+                Mob: @Model.Phone
+            </div>
+            <div class="section-order">
+                <strong class="font-blue">Order Details:</strong><br>
+                Invoice Number: @Model.InvoiceNumber<br>
+                Date: @Model.PlacedOn.ToString("yyyy-MM-dd HH:mm")<br>
+                Section: @Model.SectionName<br>
+                Table: @Model.TableName
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr.No.</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th class="text-right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                    double subTotal = 0;
+                }
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@counter</td>
+                        <td>@item.ItemName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("0.00")</td>
+                        <td class="text-right">@((item.Price * item.Quantity).ToString("0.00"))</td>
+                    </tr>
+                    subTotal += item.Price * item.Quantity;
 
-    <div class="section-customer">
-        <strong class="font-blue">Customer Details:</strong><br>
-        Name: ajeet lodhi<br>
-        Mob: 9012345231
-    </div>
-    <div class="section-order">
-        <strong class="font-blue">Order Details:</strong><br>
-        Invoice Number: #DQM2025000229<br>
-        Date: 20-38-2024 15:12<br>
-        Section: Ground Floor<br>
-        Table: T3
-    </div>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Sr.No.</th>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th class="text-right">Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Grilled burger<br>Tomato</td>
-                <td>1<br>5.00</td>
-                <td>70.00<br>5.00</td>
-                <td class="text-right">70.00<br>4.00</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Margherita<br>test</td>
-                <td>2<br>2.00</td>
-                <td>120.00<br>2.00</td>
-                <td class="text-right">240.00<br>4.00</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Grilled burger<br>Babycorn</td>
-                <td>1<br>10.00</td>
-                <td>70.00<br>10.00</td>
-                <td class="text-right">70.00<br>10.00</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="section">
-        <div class="center-horizon-vertical">Sub Total: <p class="text-right">399.00</p></div>
-        <div class="center-horizon-vertical">SGST:<p class="text-right">150.00</p></div>
-        <div class="center-horizon-vertical">GST:<p class="text-right">399.00</p></div>
-        <div class="center-horizon-vertical">Other: <p class="text-right">19.95</p></div>
-    </div>
-    <hr class="font-blue">
+                    @if (item.Modifiers.Any())
+                    {
+                        @foreach (var modifier in item.Modifiers)
+                        {
+                            <tr class="modifier-row">
+                                <td></td>
+                                <td>@modifier.ModifierName</td>
+                                <td>@modifier.Quantity</td>
+                                <td>@modifier.Price.ToString("0.00")</td>
+                                <td class="text-right">@((modifier.Price * modifier.Quantity).ToString("0.00"))</td>
+                            </tr>
+                            subTotal += modifier.Price * modifier.Quantity;
+                        }
+                    }
+                    counter++;
+                }
+            </tbody>
+        </table>
+        <div class="section">
+            @{
+                double total = subTotal;
+            }
+            <div class="center-horizon-vertical">Sub Total: <p class="text-right">@subTotal.ToString("0.00")</p>
+            </div>
 
-    <div class="section">
-        <div class="center-horizon-vertical font-blue">Total Amount Due: <p class="text-right font-blue">624.95</p></div>
-        <strong class="font-blue">Payment Information:</strong><br>
-        Payment Method: Pending
-    </div>
-    <div class="header font-blue">
-        <strong>THANK YOU!</strong>
-    </div>
+            @foreach (var tax in Model.Taxes)
+            {
+                var taxAmount = subTotal * tax.TaxValue * 0.01;
+                total += taxAmount;
+                <div class="center-horizon-vertical">@tax.TaxName: <p class="text-right">@taxAmount.ToString("0.00")</p>
+                </div>
+            }
+            <hr class="font-blue">
+            <div class="center-horizon-vertical font-blue">Total Amount Due: <p class="text-right font-blue">
+                    @total.ToString("0.00")</p>
+            </div>
+            <strong class="font-blue">Payment Information</strong><br>
+            Payment Method: @Model.PaymentMode
+        </div>
+        <div class="header font-blue">
+            <strong>THANK YOU!</strong>
+        </div>
     </div>
 </body>
-</html>
 
+</html>
