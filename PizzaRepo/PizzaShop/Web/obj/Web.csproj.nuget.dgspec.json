@@ -280,6 +280,10 @@
             "MimeKit": {
               "target": "Package",
               "version": "[4.11.0, )"
+            },
+            "Select.HtmlToPdf": {
+              "target": "Package",
+              "version": "[24.1.0, )"
             }
           },
           "imports": [

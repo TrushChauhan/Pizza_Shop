@@ -141,13 +141,16 @@ namespace Web.Controllers
         {
             try
             {
-                var orderDetails = await _orderService.GetOrderDetails(orderId);
+                OrderDetailsViewModel orderDetails = await _orderService.GetOrderDetails(orderId);
                 return View("OrderDetails", orderDetails);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = ex.Message });
             }
+        }
+        public async Task<IActionResult> GetPdf(){
+            return View("OrderDetailPdf");
         }
     }
 }

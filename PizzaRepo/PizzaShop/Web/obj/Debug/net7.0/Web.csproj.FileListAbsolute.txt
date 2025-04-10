@@ -142,3 +142,4 @@ D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\EPPlus.System.Dra
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\System.Drawing.Common.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Web\bin\Debug\net7.0\Select.Html.dep

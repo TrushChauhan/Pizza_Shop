@@ -804,6 +804,17 @@
           }
         }
       },
+      "Select.HtmlToPdf/24.1.0": {
+        "type": "package",
+        "contentFiles": {
+          "contentFiles/any/any/Select.Html.dep": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": true,
+            "outputPath": "Select.Html.dep"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.5.0": {
         "type": "package",
         "dependencies": {
@@ -2503,6 +2514,26 @@
         "postgresql.png"
       ]
     },
+    "Select.HtmlToPdf/24.1.0": {
+      "sha512": "lqmAva90oeN26F+/K5RxNaHFA3TS5ANaQZUhdNa/GIJ6Q6ZTb8ISZuTSS5DpEVP+0pmxutSEXVW2ysvmgdGIBg==",
+      "type": "package",
+      "path": "select.htmltopdf/24.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "contentFiles/any/any/Select.Html.dep",
+        "images/icon.png",
+        "lib/net20/Select.Html.dep",
+        "lib/net20/Select.HtmlToPdf.dll",
+        "lib/net20/Select.HtmlToPdf.xml",
+        "lib/net40/Select.Html.dep",
+        "lib/net40/Select.HtmlToPdf.dll",
+        "lib/net40/Select.HtmlToPdf.xml",
+        "readme.txt",
+        "select.htmltopdf.24.1.0.nupkg.sha512",
+        "select.htmltopdf.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/6.5.0": {
       "sha512": "FK05XokgjgwlCI6wCT+D4/abtQkL1X1/B9Oas6uIwHFmYrIO9WUD5aLC9IzMs9GnHfUXOtXZ2S43gN1mhs5+aA==",
       "type": "package",
@@ -3092,6 +3123,7 @@
       "Microsoft.AspNetCore.OpenApi >= 7.0.20",
       "Microsoft.EntityFrameworkCore >= 7.0.7",
       "MimeKit >= 4.11.0",
+      "Select.HtmlToPdf >= 24.1.0",
       "Service >= 1.0.0"
     ]
   },
@@ -3166,6 +3198,10 @@
           "MimeKit": {
             "target": "Package",
             "version": "[4.11.0, )"
+          },
+          "Select.HtmlToPdf": {
+            "target": "Package",
+            "version": "[24.1.0, )"
           }
         },
         "imports": [

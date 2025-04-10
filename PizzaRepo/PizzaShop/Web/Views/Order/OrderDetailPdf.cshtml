@@ -1,0 +1,140 @@
+@{
+    Layout = "~/Views/Shared/_SecondLayout.cshtml";
+    ViewData["Title"] = "OrderDetails";
+}
+<!DOCTYPE html>
+<html lang="en" class="">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PIZZASHOP Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: auto;
+            display: flex;
+            justify-content :center;
+            align-items : center;
+        }
+        .info-container{
+            display: flex;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section-customer {
+            margin-bottom: 20px;
+        }
+        .section-order{
+            margin-left: 160px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+        .text-right{
+            text-align: right;
+        }
+        .center-horizon-vertical{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .font-blue{
+            color: #0066cc;
+        }
+    </style>
+</head>
+
+<body class="">
+    <div>
+    <div class="header font-blue">
+        <h2>PIZZASHOP</h2>
+    </div>
+    <div class="info-container">
+
+    <div class="section-customer">
+        <strong class="font-blue">Customer Details:</strong><br>
+        Name: ajeet lodhi<br>
+        Mob: 9012345231
+    </div>
+    <div class="section-order">
+        <strong class="font-blue">Order Details:</strong><br>
+        Invoice Number: #DQM2025000229<br>
+        Date: 20-38-2024 15:12<br>
+        Section: Ground Floor<br>
+        Table: T3
+    </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Sr.No.</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Grilled burger<br>Tomato</td>
+                <td>1<br>5.00</td>
+                <td>70.00<br>5.00</td>
+                <td class="text-right">70.00<br>4.00</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Margherita<br>test</td>
+                <td>2<br>2.00</td>
+                <td>120.00<br>2.00</td>
+                <td class="text-right">240.00<br>4.00</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Grilled burger<br>Babycorn</td>
+                <td>1<br>10.00</td>
+                <td>70.00<br>10.00</td>
+                <td class="text-right">70.00<br>10.00</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="section">
+        <div class="center-horizon-vertical">Sub Total: <p class="text-right">399.00</p></div>
+        <div class="center-horizon-vertical">SGST:<p class="text-right">150.00</p></div>
+        <div class="center-horizon-vertical">GST:<p class="text-right">399.00</p></div>
+        <div class="center-horizon-vertical">Other: <p class="text-right">19.95</p></div>
+    </div>
+    <hr class="font-blue">
+
+    <div class="section">
+        <div class="center-horizon-vertical font-blue">Total Amount Due: <p class="text-right font-blue">624.95</p></div>
+        <strong class="font-blue">Payment Information:</strong><br>
+        Payment Method: Pending
+    </div>
+    <div class="header font-blue">
+        <strong>THANK YOU!</strong>
+    </div>
+    </div>
+</body>
+</html>
+

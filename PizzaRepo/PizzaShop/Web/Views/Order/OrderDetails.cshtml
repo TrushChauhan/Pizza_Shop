@@ -5,26 +5,30 @@
 }
 
 <div class="row-11 d-flex align-items-center justify-content-center">
-    <div class="row" style="width: 1000px;">
+    <div class="row w-75">
         <div class="text-Users-title my-3 mx-2 fs-2 col-6">
             Order-Details
         </div>
         <div class="col my-3 text-align-right">
-            <button class="btn btn-primary" onclick="window.history.back()">
-                Back
-            </button>
+            <a asp-controller="Order" asp-action="Index">
+                <button class="px-3 py-2 back-button">
+                    Back
+                </button>
+            </a>
         </div>
         <div class=" col-12 my-3 bg-white table-shadow p-2">
             <div class="row-12 d-flex w-100 align-items-center">
                 <p class=" col-3 fs-4 ">Order Summary</p>
                 <p class="order-status fs-5 col-2">@Model.Status</p>
                 <div class="col-7 d-flex justify-content-end p-2">
-                    <button class="row px-3 p-2 send-button export-button" onclick="exportOrderDetails(@Model.OrderId)">
+                    <a asp-action="GetPdf" asp-controller="Order">
+                    <button class="row px-3 p-2 send-button export-button">
                         <div class=" d-flex">
                             <i class=" fa-solid fa-file-export my-2"></i>
                             <p class=" my-1">Export</p>
                         </div>
                     </button>
+                    </a>
                 </div>
             </div>
             <div class="row">
@@ -120,56 +124,56 @@
                                     @item.ItemName
                                     @if (item.Modifiers.Any())
                                     {
-                                        <ul>
+                                        <div>
                                             @foreach (var modifier in item.Modifiers)
                                             {
                                                 <li>
                                                     @modifier.ModifierName
                                                 </li>
                                             }
-                                        </ul>
+                                        </div>
                                     }
                                 </td>
                                 <td>
                                     @item.Quantity
                                     @if (item.Modifiers.Any())
                                     {
-                                        <ul>
+                                        <div>
                                             @foreach (var modifier in item.Modifiers)
                                             {
-                                                <li>
+                                                <div>
                                                     @modifier.Quantity
-                                                </li>
+                                                </div>
                                             }
-                                        </ul>
+                                        </div>
                                     }
                                 </td>
                                 <td>
                                     @item.Price.ToString("0.00")
                                     @if (item.Modifiers.Any())
                                     {
-                                        <ul>
+                                        <div>
                                             @foreach (var modifier in item.Modifiers)
                                             {
-                                                <li>
+                                                <div>
                                                     @modifier.Price.ToString("0.00")
-                                                </li>
+                                                </div>
                                             }
-                                        </ul>
+                                        </div>
                                     }
                                 </td>
                                 <td>
-                                    @item.TotalAmount.ToString("0.00")
+                                    @((item.Price * item.Quantity).ToString("0.00"))
                                     @if (item.Modifiers.Any())
                                     {
-                                        <ul>
+                                        <div>
                                             @foreach (var modifier in item.Modifiers)
                                             {
-                                                <li>
-                                                    @modifier.TotalAmount.ToString("0.00")
-                                                </li>
+                                                <div>
+                                                    @((modifier.Price * modifier.Quantity).ToString("0.00"))
+                                                </div>
                                             }
-                                        </ul>
+                                        </div>
                                     }
                                 </td>
                             </tr>
@@ -177,13 +181,30 @@
                     </tbody>
                 </table>
             </div>
-            <div class="justify-content-end col">
-                <p> SubTotal: @Model.SubTotal.ToString("0.00")</p>
+            <div class="justify-content-end w-100 col">
+                <p class="text-align-right"> SubTotal:
+                    @{
+                        double subTotal = 0,total=0;
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            subTotal += item.Price * item.Quantity;
+                            @if (item.Modifiers.Any())
+                            {
+                                @foreach (var modifier in item.Modifiers)
+                                {
+                                    subTotal+=modifier.Price * modifier.Quantity;
+                                }
+                            }
+                        }
+                        total+=subTotal;
+                    }
+                    @("₹ " + subTotal.ToString("0.00"))</p>
                 @foreach (var tax in Model.Taxes)
                 {
-                    <p> @tax.TaxName: @tax.TaxValue.ToString("0.00")</p>
+                    <p class="text-align-right"> @tax.TaxName: @((subTotal * tax.TaxValue * 0.01).ToString("0.00"))</p>
+                    total += (subTotal * tax.TaxValue * 0.01);
                 }
-                <p> Total: @Model.TotalAmount.ToString("0.00")</p>
+                <p class="text-align-right"> Total: @total.ToString("0.00")</p>
             </div>
         </div>
     </div>

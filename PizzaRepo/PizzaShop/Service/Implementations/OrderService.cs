@@ -173,7 +173,7 @@ public class OrderService : IOrderService
                 Modifiers = od.Orderdetailmodifiers.Select(odm => new OrderItemModifierViewModel
                 {
                     ModifierName = odm.Modifier?.Modifiername,
-                    Quantity = 1, // Assuming 1 quantity per modifier
+                    Quantity = 1,
                     Price = odm.Modifier?.Rate ?? 0,
                     TotalAmount = odm.Modifier?.Rate ?? 0
                 }).ToList()
@@ -183,7 +183,7 @@ public class OrderService : IOrderService
             Taxes = order.Ordertaxes.Select(ot => new OrderTaxViewModel
             {
                 TaxName = ot.Tax?.Taxname,
-                TaxValue = ot.Taxvalue
+                TaxValue = ot.Taxvalue,
             }).ToList()
         };
 

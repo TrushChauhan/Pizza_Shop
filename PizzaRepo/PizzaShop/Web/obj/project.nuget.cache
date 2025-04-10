@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QA+VHE+o00N+BhPnld87GB594l89LrHP+e9k/K1OB33xKJuQ5a7n43RkhlDH6E+xTS8irsKfwLJ7XYw76sqzEg==",
+  "dgSpecHash": "+s8/H2ztpE2wgausW3GtwYTSS9KvTzvVUJX4ZvKjTTMFpSloFO++4Z0urfG/46gYLpI5U+e2jMtj5mNSFSYagQ==",
   "success": true,
   "projectFilePath": "D:\\Project\\Pizza_Shop\\PizzaRepo\\PizzaShop\\Web\\Web.csproj",
   "expectedPackageFiles": [
@@ -51,6 +51,7 @@
     "C:\\Users\\pci203\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\npgsql\\7.0.0\\npgsql.7.0.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.0\\npgsql.entityframeworkcore.postgresql.7.0.0.nupkg.sha512",
+    "C:\\Users\\pci203\\.nuget\\packages\\select.htmltopdf\\24.1.0\\select.htmltopdf.24.1.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
     "C:\\Users\\pci203\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",

@@ -13,20 +13,17 @@ namespace Entity.ViewModel
         public double TotalAmount { get; set; }
         public double SubTotal { get; set; }
         
-        // Customer Details
+        
         public string CustomerName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public int NumberOfPersons { get; set; }
         
-        // Table Details
         public string TableName { get; set; }
         public string SectionName { get; set; }
         
-        // Order Items
         public List<OrderItemViewModel> OrderItems { get; set; }
         
-        // Taxes
         public List<OrderTaxViewModel> Taxes { get; set; }
     }
 
