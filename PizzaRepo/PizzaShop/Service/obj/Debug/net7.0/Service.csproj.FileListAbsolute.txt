@@ -32,3 +32,4 @@ D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Service\obj\Debug\net7.0\Service.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Service\obj\Debug\net7.0\refint\Service.dll
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Service\obj\Debug\net7.0\Service.pdb
 D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Service\obj\Debug\net7.0\ref\Service.dll
+D:\Project\Pizza_Shop\PizzaRepo\PizzaShop\Service\bin\Debug\net7.0\Select.Html.dep

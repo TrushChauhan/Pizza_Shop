@@ -207,7 +207,7 @@
                             <td>${renderRatingStars(order.rating)}</td>
                             <td>${order.totalAmount}</td>
                             <td>
-                                <i class="fa-regular fa-file-pdf" data-id="${order.orderId}"></i>
+                                <i class="fa-regular fa-file-pdf pdffile" data-id="${order.orderId}"></i>
                                 <i class="fa-regular fa-eye ordereye"></i>
                             </td>
                         </tr>
@@ -257,6 +257,10 @@
         $('tbody').on('click', '.ordereye', function () {
             const orderId = $(this).closest('tr').find('td:first').text();
             window.location.href = `/Order/GetOrderDetails?orderId=${orderId}`;
+        });
+        $('tbody').on('click', '.pdffile', function () {
+            const orderId = $(this).closest('tr').find('td:first').text();
+            window.location.href = `/Order/GetPdf?id=${orderId}`;
         });
         $('.export-button').on('click', function () {
             const filters = {

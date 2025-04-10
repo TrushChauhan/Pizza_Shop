@@ -3,7 +3,6 @@ using Entity.ViewModel;
 using Service.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace Web.Controllers
 {

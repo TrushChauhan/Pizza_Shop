@@ -9,14 +9,12 @@
       "Web/1.0.0": {
         "dependencies": {
           "AspNetCoreHero.ToastNotification": "1.1.0",
-          "EPPlus": "7.7.0",
           "Entity": "1.0.0",
           "MailKit": "4.11.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.7",
           "Microsoft.AspNetCore.OpenApi": "7.0.20",
           "Microsoft.EntityFrameworkCore": "7.0.7",
           "MimeKit": "4.11.0",
-          "Select.HtmlToPdf.NetCore": "24.1.0",
           "Service": "1.0.0"
         },
         "runtime": {
@@ -659,11 +657,13 @@
       },
       "Service/1.0.0": {
         "dependencies": {
+          "EPPlus": "7.7.0",
           "Entity": "1.0.0",
           "MailKit": "4.11.0",
           "Microsoft.EntityFrameworkCore": "7.0.7",
           "MimeKit": "4.11.0",
           "Repository": "1.0.0",
+          "Select.HtmlToPdf.NetCore": "24.1.0",
           "Swashbuckle.AspNetCore": "6.5.0"
         },
         "runtime": {
