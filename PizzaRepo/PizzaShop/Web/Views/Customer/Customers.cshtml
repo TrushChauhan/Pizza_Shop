@@ -92,22 +92,157 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="send-button px-3 py-1" id="confirmTaxDelete">Submit</button>
-                <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="send-button px-3 py-1" id="confirmDateSelection">Submit</button>
+                <button type="button" class="back-button px-3 py-1" id="cancelDateSelection">Cancel</button>
             </div>
         </div>
     </div>
 </div>
 <script>
-    let dateSelected=false;
-    $("#orderTime").bind("click", function () {
-        if (this.value == "Custom Date" && !dateSelected){
-            $('#dateModal').modal('show');
-            dateSelected=true;
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentPage = 1;
+        let pageSize = parseInt($('.page-size-select').val());
+        let sortField = '';
+        let sortAscending = true;
+        let totalCount = 0;
+        let dateSelected = false;
+
+        const searchInput = $('#search');
+        const orderTimeSelect = $('#orderTime');
+        const fromDateInput = $('#startDate');
+        const toDateInput = $('#endDate');
+        const exportButton = $('.export-button');
+        const prevPageButton = $('.prev-page');
+        const nextPageButton = $('.next-page');
+        const pageSizeSelect = $('.page-size-select');
+        const showingInfo = $('.showing-info');
+        const tbody = $('tbody');
+        const dateModal = $('#dateModal');
+
+        // Initial load
+        loadCustomers();
+
+        // Event listeners
+        searchInput.on('input', loadCustomers);
+        $("#orderTime").bind("click", function () {
+            if (this.value == "Custom Date" && !dateSelected) {
+                $('#dateModal').modal('show');
+                dateSelected = true;
             }
-        else{
-            dateSelected=false;
+            else {
+                dateSelected = false;
+                loadCustomers();
+            }
+        }).change();
+        $('#confirmDateSelection').on('click', function () {
+            dateSelected = true;
+            dateModal.modal('hide');
+            loadCustomers();
+        });
+        $('#cancelDateSelection').on('click', function () {
+            dateSelected = true;
+            dateModal.modal('hide');
+            loadCustomers();
+        });
+        pageSizeSelect.on('change', function () {
+            pageSize = parseInt($(this).val());
+            currentPage = 1;
+            loadCustomers();
+        });
+
+        prevPageButton.on('click', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                loadCustomers();
+            }
+        });
+
+        nextPageButton.on('click', function () {
+            const totalPages = Math.ceil(totalCount / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadCustomers();
+            }
+        });
+
+        // Sorting
+        $('th').each(function () {
+            const th = $(this);
+            const arrows = th.find('i');
+            if (arrows.length > 0) {
+                arrows.on('click', function () {
+                    const field = th.text().trim().replace(/↑|↓/g, '').trim();
+                    const isAsc = $(this).hasClass('fa-arrow-up');
+
+                    sortField = field;
+                    sortAscending = isAsc;
+                    currentPage = 1;
+
+                    loadCustomers();
+                });
+            }
+        });
+
+        // Export
+        exportButton.on('click', function () {
+            const filters = getFilters();
+            const queryString = $.param(filters);
+            window.location.href = `/Customer/Export?${queryString}`;
+        });
+
+        function loadCustomers() {
+            const filters = getFilters();
+
+            $.ajax({
+                url: '/Customer/GetCustomers',
+                type: 'GET',
+                data: filters,
+                success: function (response) {
+                    tbody.empty();
+                    response.data.forEach(customer => {
+                        const row = `
+                        <tr>
+                            <td>${customer.name}</td>
+                            <td>${customer.email}</td>
+                            <td>${customer.phoneNumber}</td>
+                            <td>${new Date(customer.date).toLocaleDateString()}</td>
+                            <td>${customer.totalOrders}</td>
+                        </tr>
+                    `;
+                        tbody.append(row);
+                    });
+
+                    totalCount = response.totalCount;
+                    updatePagination();
+                },
+                error: function (error) {
+                    console.error('Error loading customers:', error);
+                }
+            });
         }
-    }).change();
+
+        function getFilters() {
+            return {
+                searchTerm: searchInput.val(),
+                timePeriod: orderTimeSelect.val(),
+                fromDate: dateSelected ? fromDateInput.val() : null,
+                toDate: dateSelected ? toDateInput.val() : null,
+                sortField: sortField,
+                sortAscending: sortAscending,
+                pageNumber: currentPage,
+                pageSize: pageSize
+            };
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(totalCount / pageSize);
+            const startItem = totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+            const endItem = Math.min(currentPage * pageSize, totalCount);
+            showingInfo.text(`Showing ${startItem} - ${endItem} of ${totalCount}`);
+
+            prevPageButton.prop('disabled', currentPage === 1);
+            nextPageButton.prop('disabled', currentPage === totalPages || totalPages === 0);
+        }
+    });
 
 </script>

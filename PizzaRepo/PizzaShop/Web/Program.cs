@@ -9,9 +9,7 @@ using Service.Interfaces;
 using Service.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Service.Implementations;
 using AspNetCoreHero.ToastNotification;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,6 +24,7 @@ builder.Services.AddScoped<ITaxRepository,TaxRepository>();
 builder.Services.AddScoped<IModifierRepository,ModifierRepository>();
 builder.Services.AddScoped<ISectionAndTableRepository, SectionAndTableRepository>();
 builder.Services.AddScoped<IOrderRepository,OrderRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -37,6 +36,7 @@ builder.Services.AddScoped<ITaxService, TaxService>();
 builder.Services.AddScoped<ISectionAndTableService, SectionAndTableService>();
 builder.Services.AddScoped<IOrderService,OrderService>();
 builder.Services.AddScoped<MappingService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddNotyf(config=>
 {
     config.DurationInSeconds = 10;

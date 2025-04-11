@@ -1,5 +1,9 @@
-namespace Repository.Interfaces;
+using Entity.Models;
 
-public interface ICustomerRepository
+namespace Repository.Interfaces
 {
+    public interface ICustomerRepository
+    {
+        IQueryable<Customer> GetAll();
+    }
 }

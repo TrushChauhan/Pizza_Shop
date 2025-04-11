@@ -205,7 +205,7 @@
                             <td>${order.status}</span></td>
                             <td>${order.paymentMode}</td>
                             <td>${renderRatingStars(order.rating)}</td>
-                            <td>${order.totalAmount}</td>
+                            <td>${order.totalAmount.toFixed(2)}</td>
                             <td>
                                 <i class="fa-regular fa-file-pdf pdffile" data-id="${order.orderId}"></i>
                                 <i class="fa-regular fa-eye ordereye"></i>

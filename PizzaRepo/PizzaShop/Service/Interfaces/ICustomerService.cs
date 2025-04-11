@@ -1,5 +1,11 @@
-namespace Service.Interfaces;
+using Entity.Models;
+using Entity.ViewModel;
 
-public interface ICustomerService
+namespace Service.Interfaces
 {
+    public interface ICustomerService
+    {
+        Task<(List<CustomerViewModel> Customers, int TotalCount)> GetCustomers(CustomerFilterModel filters);
+        Task<byte[]> ExportCustomersToExcelAsync(CustomerFilterModel filters);
+    }
 }
