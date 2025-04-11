@@ -1,0 +1,113 @@
+@model List<Entity.ViewModel.OrderViewModel>
+@{
+    Layout = "~/Views/Shared/_SecondLayout.cshtml";
+    ViewData["Title"] = "Customer";
+}
+
+<div class="row-11 d-flex">
+    <div class="text-Users-title my-3 mx-2 fs-2 col-3">
+        Customers
+    </div>
+    <div class="d-flex col-9 p-0">
+        <div class="row w-100 p-0 d-flex justify-content-end">
+
+            <input type="text" class="my-3 mx-2 col-3" id="search" placeholder="Search">
+            <select class="my-3 mx-2 form-floating col-3" id="orderTime" required>
+                <option value="All time">All time</option>
+                <option value="Last 7 days">Last 7 days</option>
+                <option value="Last 30 days">Last 30 days</option>
+                <option value="Current Month">Current Month</option>
+                <option value="Custom Date">Custom Date</option>
+            </select>
+            <button class="col-1 my-3 mx-2 p-2 send-button export-button w-auto">
+                <div class="row d-flex">
+                    <i class=" fa-solid fa-file-export col-1 my-2"></i>
+                    <p class="col-1 my-1">Export</p>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="table-responsive table-shadow row m-2">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th scope="col" class="text-black-50">Name<i
+                        class="fa-solid material-icons fa-arrow-up p-1 sort-asc"></i><i
+                        class="fa-solid material-icons fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Email</th>
+                <th scope="col" class="text-black-50">Phone Number</th>
+                <th scope="col" class="text-black-50">Date<i
+                        class="fa-solid fa-arrow-up material-icons p-1 sort-asc"></i><i
+                        class="fa-solid material-icons fa-arrow-down sort-desc"></i></th>
+                <th scope="col" class="text-black-50">Total Order<i
+                        class="fa-solid fa-arrow-up p-1 material-icons sort-asc"></i><i
+                        class="fa-solid fa-arrow-down material-icons sort-desc"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <div class="row mt-4 pagination-container justify-content-end">
+        <div class="col-md-8 d-flex align-items-center justify-content-end">
+            <div class="row mx-2">
+                <select class="form-select page-size-select">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </div>
+            <div>
+                <span class="text-muted showing-info">
+                    Showing 0 - 0 of 0
+                </span>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary mx-1 prev-page" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="btn btn-outline-primary mx-1 next-page" disabled>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dateModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Date Range</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row modal-body text-center d-flex ">
+                <div class="form-floating col-6 ">
+                    <input type="date" id="startDate" class=" form-control">
+                    <label for="startDate">Start Date</label>
+                </div>
+                <div class="form-floating col-6 ">
+                    <input type="date" id="endDate" class="form-control">
+                    <label for="endDate">End Date</label>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="send-button px-3 py-1" id="confirmTaxDelete">Submit</button>
+                <button type="button" class="back-button px-3 py-1" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let dateSelected=false;
+    $("#orderTime").bind("click", function () {
+        if (this.value == "Custom Date" && !dateSelected){
+            $('#dateModal').modal('show');
+            dateSelected=true;
+            }
+        else{
+            dateSelected=false;
+        }
+    }).change();
+
+</script>

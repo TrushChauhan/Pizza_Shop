@@ -30,7 +30,7 @@ namespace Service.Implementations
                 .Include(o => o.Customer)
                 .Where(o => !o.Isdeleted);
 
-            // Apply filters (same as before)
+            // Apply filters 
             if (!string.IsNullOrEmpty(filters.SearchTerm))
             {
                 query = query.Where(o =>
@@ -295,15 +295,15 @@ namespace Service.Implementations
                     worksheet.Cells[i, j].Style.HorizontalAlignment = ExcelHorizontalAlignment.CenterContinuous;
                 }
             }
-            worksheet.Column(1).Width = 2;
-            worksheet.Column(2).Width = 4;
-            worksheet.Column(3).Width = 3;
-            worksheet.Column(4).Width = 3;
-            worksheet.Column(5).Width = 2;
-            worksheet.Column(6).Width = 2;
-            worksheet.Column(7).Width = 2;
+            worksheet.Column(1).Width = 10;
+            worksheet.Column(2).Width = 20;
+            worksheet.Column(3).Width = 20;
+            worksheet.Column(4).Width = 30;
+            worksheet.Column(5).Width = 30;
+            worksheet.Column(6).Width = 10;
+            worksheet.Column(7).Width = 10;
 
-            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+            //worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
             return package.GetAsByteArray();
         }
 
